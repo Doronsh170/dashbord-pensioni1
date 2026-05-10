@@ -593,8 +593,13 @@
     font-size: 12.5px;
     font-weight: 700;
   }
-  .add-another-btn {
-    margin-right: 10px;
+  .quick-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .add-another-btn, .go-dashboard-btn, .reset-all-btn {
     border: 1px solid var(--accent-soft-2);
     background: var(--accent-soft);
     color: var(--accent-dark);
@@ -604,8 +609,28 @@
     padding: 8px 12px;
     border-radius: var(--r-pill);
     cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.18s ease;
   }
-  .add-another-btn:hover { background: var(--accent-soft-2); }
+  .add-another-btn:hover, .go-dashboard-btn:hover { background: var(--accent-soft-2); }
+  .go-dashboard-btn {
+    border-color: var(--line);
+    background: var(--ink);
+    color: #fff;
+  }
+  .go-dashboard-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .reset-all-btn {
+    border-color: rgba(220, 38, 38, 0.20);
+    background: var(--danger-soft);
+    color: var(--danger);
+  }
+  .reset-all-btn:hover {
+    background: #fecaca;
+    border-color: rgba(220, 38, 38, 0.35);
+  }
 
   /* === Fund card === */
   .funds-list { margin-top: 14px; }
@@ -969,7 +994,7 @@
   /* === Action toolbar === */
   .action-toolbar {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     flex-wrap: wrap;
     margin: 10px 0 24px;
@@ -1003,6 +1028,7 @@
   }
   .action-btn[onclick*="saveAsPDF"]::before { content: "📄"; }
   .action-btn[onclick*="shareWhatsApp"]::before { content: "💬"; }
+  .action-btn[onclick*="resetAllData"]::before { content: "↺"; }
   .action-btn:hover {
     border-color: rgba(255, 255, 255, 0.45);
     background: rgba(255, 255, 255, 0.16);
@@ -1353,7 +1379,8 @@
     .quick-editor-title { font-size: 14.5px; }
     .quick-editor-form { grid-template-columns: 1fr; gap: 10px; }
     .update-dashboard-btn, .quick-remove-btn { width: 100%; padding: 13px 14px; }
-    .add-another-btn { display: block; width: 100%; margin: 10px 0 0; padding: 11px 12px; }
+    .quick-action-row { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .add-another-btn, .go-dashboard-btn, .reset-all-btn { width: 100%; padding: 11px 12px; border-radius: var(--r-sm); }
 
     /* Portfolio cards */
     #portfolioSection { padding-top: 6px !important; }
@@ -1582,6 +1609,7 @@
     <div class="action-toolbar" aria-label="פעולות דוח">
       <button type="button" class="action-btn" onclick="saveAsPDF()">שמירה / הדפסה ל-PDF</button>
       <button type="button" class="action-btn" onclick="shareWhatsApp()">שליחה לווטסאפ</button>
+      <button type="button" class="action-btn" onclick="resetAllData()">איפוס הכל</button>
     </div>
     <div class="action-note">שמירה ל-PDF נפתחת דרך חלון ההדפסה של הדפדפן. בשל מגבלות דפדפן, שליחה לווטסאפ שולחת סיכום טקסטואלי וקישור, לא מצרפת PDF אוטומטית.</div>
 
@@ -2058,8 +2086,49 @@ async function shareWhatsApp() {
   const url = 'https://wa.me/?text=' + encodeURIComponent(text);
   window.open(url, '_blank', 'noopener,noreferrer');
 }
+function goToDashboard() {
+  if (!hasReportData()) {
+    alert('כדי לעבור לדשבורד צריך להוסיף לפחות מוצר אחד ולהזין יתרה.');
+    return;
+  }
+  renderDashboard();
+  const dashboard = document.getElementById('dashboard');
+  if (dashboard) dashboard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function resetAllData() {
+  const hasData = userFunds.length > 0 || localStorage.getItem(STORAGE_KEY);
+  if (!hasData) {
+    prepareAnotherFund();
+    return;
+  }
+  const ok = window.confirm('לאפס את כל הקופות, היתרות ודמי הניהול שהוזנו?');
+  if (!ok) return;
+  userFunds = [];
+  CURRENT_EDIT_FUND = null;
+  LAST_FOCUSED_UID = null;
+  QUICK_RETURN_VISIBLE = false;
+  localStorage.removeItem(STORAGE_KEY);
+  const editor = document.getElementById('quickEditor');
+  if (editor) {
+    editor.classList.remove('active');
+    editor.innerHTML = '';
+  }
+  const results = document.getElementById('searchResults');
+  if (results) {
+    results.classList.remove('active');
+    results.innerHTML = '';
+  }
+  const input = document.getElementById('searchInput');
+  if (input) input.value = '';
+  renderDashboard();
+  const section = document.getElementById('searchSection');
+  if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  window.setTimeout(() => { if (input) input.focus({ preventScroll: true }); }, 350);
+}
 window.saveAsPDF = saveAsPDF;
 window.shareWhatsApp = shareWhatsApp;
+window.goToDashboard = goToDashboard;
+window.resetAllData = resetAllData;
 
 function findUserFundIndex(uid) {
   return userFunds.findIndex(item => item.fund && item.fund.uid === uid);
@@ -2129,7 +2198,14 @@ function commitQuickUpdate() {
   renderDashboard();
   const msg = document.getElementById('quickEditorMessage');
   if (msg) {
-    msg.innerHTML = 'עודכן בדשבורד. <button type="button" class="add-another-btn" onclick="prepareAnotherFund()">הוסף קופה נוספת</button>';
+    msg.innerHTML = `
+      <div>עודכן בדשבורד.</div>
+      <div class="quick-action-row">
+        <button type="button" class="add-another-btn" onclick="prepareAnotherFund()">הוסף קופה נוספת</button>
+        <button type="button" class="go-dashboard-btn" onclick="goToDashboard()">עבור לדשבורד</button>
+        <button type="button" class="reset-all-btn" onclick="resetAllData()">איפוס הכל</button>
+      </div>
+    `;
   }
   showResults(document.getElementById('searchInput').value || '');
   const wrap = document.getElementById('searchResults');
