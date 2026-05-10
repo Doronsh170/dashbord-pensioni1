@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.27</title>
+<title>דשבורד חשיפות חיסכון | v3.32</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -1694,33 +1694,282 @@
 
   /* v3.26: hide section number badge next to search title */
   .section-title .num { display: none !important; }
+
+
+  /* === v3.32 Home screen redesign: search-first layout === */
+  .home-screen {
+    padding: 38px 0 34px;
+    background:
+      radial-gradient(circle at 88% 8%, rgba(13, 148, 136, 0.08), transparent 28%),
+      linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .home-title-block {
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto 24px;
+  }
+  .home-title-block h1 {
+    margin: 0 0 8px;
+    font-size: clamp(32px, 4.7vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    font-weight: 900;
+    color: var(--ink);
+  }
+  .home-title-block p {
+    margin: 0 auto;
+    max-width: 620px;
+    color: var(--ink-soft);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .home-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas:
+      "search search search"
+      "dash info source";
+    gap: 14px;
+    align-items: stretch;
+  }
+  .home-card {
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid var(--line);
+    border-radius: var(--r-xl);
+    box-shadow: var(--shadow-sm);
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .home-card::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    top: 18px;
+    bottom: 18px;
+    width: 4px;
+    background: var(--accent);
+    border-radius: 0 4px 4px 0;
+    opacity: 0.85;
+  }
+  .home-card-search {
+    grid-area: search;
+    padding: 22px 24px;
+  }
+  .home-card-info { grid-area: info; }
+  .home-card-source { grid-area: source; }
+  .home-card-dashboard { grid-area: dash; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); }
+  .home-card-head { margin-bottom: 12px; }
+  .home-card-kicker {
+    display: inline-flex;
+    align-items: center;
+    color: var(--accent-dark);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-soft-2);
+    border-radius: var(--r-pill);
+    font-size: 10.5px;
+    font-weight: 900;
+    padding: 3px 9px;
+    margin-bottom: 7px;
+  }
+  .home-card h2 {
+    margin: 0;
+    font-size: 21px;
+    line-height: 1.2;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .home-card p {
+    margin: 0;
+    color: var(--ink-mid);
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+  .home-card-search .home-card-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+  .home-card-search h2 { font-size: 25px; }
+  .home-filters {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start;
+    margin: 0 0 14px !important;
+    gap: 8px !important;
+  }
+  .home-filters .filter-btn {
+    min-height: 36px !important;
+    padding: 8px 18px !important;
+    font-size: 13px !important;
+    border-radius: var(--r-pill) !important;
+    box-shadow: var(--shadow-xs);
+    width: auto !important;
+  }
+  .home-card-search .search-help {
+    background: var(--bg-soft);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r-sm);
+    padding: 9px 12px;
+    margin: 10px 0 0;
+    font-size: 12.5px;
+  }
+  .home-dashboard-btn {
+    width: 100%;
+    margin-top: 14px;
+    border: 0;
+    background: var(--ink);
+    color: #fff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 900;
+    padding: 12px 16px;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.18s ease;
+  }
+  .home-dashboard-btn:hover {
+    background: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  @media (max-width: 760px) {
+    .home-screen {
+      padding: 20px 0 22px;
+      background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+    }
+    .home-title-block {
+      text-align: right;
+      margin-bottom: 14px;
+    }
+    .home-title-block h1 {
+      font-size: 28px;
+      line-height: 1.13;
+      margin-bottom: 6px;
+    }
+    .home-title-block p {
+      font-size: 13.5px;
+      line-height: 1.45;
+      margin: 0;
+    }
+    .home-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "search"
+        "dash"
+        "info"
+        "source";
+      gap: 10px;
+    }
+    .home-card {
+      border-radius: var(--r-lg);
+      padding: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+    .home-card::before { top: 14px; bottom: 14px; }
+    .home-card-search { padding: 15px; }
+    .home-card-search .home-card-head {
+      display: block;
+      margin-bottom: 10px;
+    }
+    .home-card h2 { font-size: 18px; }
+    .home-card-search h2 { font-size: 20px; }
+    .home-card p { font-size: 12.5px; line-height: 1.55; }
+    .home-card-kicker { font-size: 10px; padding: 3px 9px; margin-bottom: 6px; }
+    .home-filters {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      gap: 7px !important;
+      padding: 1px 0 7px;
+      margin: 0 0 8px !important;
+      scrollbar-width: none;
+    }
+    .home-filters::-webkit-scrollbar { display: none; }
+    .home-filters .filter-btn {
+      flex: 0 0 auto !important;
+      min-height: 34px !important;
+      padding: 7px 15px !important;
+      font-size: 12px !important;
+      border-radius: var(--r-pill) !important;
+      width: auto !important;
+      box-shadow: var(--shadow-xs) !important;
+    }
+    .home-card-search .search-input {
+      padding: 13px 44px 13px 13px;
+      font-size: 15px;
+      border-radius: var(--r-md);
+    }
+    .home-card-search .search-help {
+      font-size: 11.2px;
+      line-height: 1.45;
+      padding: 8px 10px;
+      margin-top: 8px;
+    }
+    .home-dashboard-btn { padding: 12px 14px; margin-top: 12px; }
+  }
+
 </style>
 </head>
 <body>
-<section class="hero">
+<section class="home-screen" id="searchSection">
   <div class="container">
-    <h1>הקופות והקרנות שלך במקום אחד-  ומה <em>החשיפה</em> שלך למניות ולמט״ח</h1>
-    <p>מוסיפים את היתרה של כל קופה ורואים בשנייה איך ההשקעה שלך מחולקת - מה החשיפה למניות, מה החשיפה למט״ח, ומה התמונה הכוללת. בלי הרשמה ובלי פרטים אישיים.</p>
-    <div class="note">
-      הסכומים שאתה מזין נשמרים על המכשיר שלך בלבד ולא נשלחים לאף מקום. הכלי הזה רק ממחיש לך איך הכסף שלך מושקע — הוא לא ייעוץ פיננסי או פנסיוני, ואינו ממליץ לעשות שום פעולה.
+    <div class="home-title-block">
+      <h1>הקופות והקרנות שלך במקום אחד</h1>
+      <p>בדוק מה החשיפה שלך למניות, לחו״ל ולמט״ח - בלי הרשמה ובלי פרטים אישיים.</p>
     </div>
-  </div>
-</section>
 
-<section class="section" id="searchSection">
-  <div class="container">
-    <h2 class="section-title">מצא את הקופות שלך</h2>
-    <div class="filters" id="filters">
-      <button class="filter-btn active" data-filter="all" data-label="הכל">הכל</button>
-      <button class="filter-btn" data-filter="gemelnet" data-label="גמל / השתלמות / גמל להשקעה">גמל / השתלמות / גמל להשקעה</button>
-      <button class="filter-btn" data-filter="pensia" data-label="קרנות פנסיה">קרנות פנסיה</button>
-      <button class="filter-btn" data-filter="bituach" data-label="פוליסות חיסכון / ביטוחי מנהלים">פוליסות חיסכון / ביטוחי מנהלים</button>
-    </div>
-    <div class="search-wrap">
-      <input type="text" class="search-input" id="searchInput" placeholder="שם החברה או המסלול — לדוגמה: מנורה, הראל, מיטב, אלטשולר" autocomplete="off" />
-      <div class="search-help">כתוב את שם החברה שמנהלת לך את הקופה - אפשר למצוא אותו על הדוח השנתי שאתה מקבל בדואר או במייל. אחרי שמצאת, לוחצים על "עדכן", מזינים יתרה ודמי ניהול ולוחצים על "עדכן בדשבורד".</div>
-      <div class="quick-editor" id="quickEditor"></div>
-      <div class="search-results" id="searchResults"></div>
+    <div class="home-grid">
+      <div class="home-card home-card-search">
+        <div class="home-card-head">
+          <span class="home-card-kicker">חיפוש</span>
+                  </div>
+        <div class="filters home-filters" id="filters">
+          <button class="filter-btn active" data-filter="all" data-label="הכל">הכל</button>
+          <button class="filter-btn" data-filter="gemelnet" data-label="גמל / השתלמות / גמל להשקעה">גמל</button>
+          <button class="filter-btn" data-filter="pensia" data-label="קרנות פנסיה">פנסיה</button>
+          <button class="filter-btn" data-filter="bituach" data-label="פוליסות חיסכון / ביטוחי מנהלים">ביטוח</button>
+        </div>
+        <div class="search-wrap">
+          <input type="text" class="search-input" id="searchInput" placeholder="שם החברה או המסלול - לדוגמה: מנורה, הראל, מיטב" autocomplete="off" />
+          <div class="search-help">חפש את החברה או המסלול, לחץ על "עדכן", הזן יתרה ודמי ניהול, והוסף לדשבורד.</div>
+          <div class="quick-editor" id="quickEditor"></div>
+          <div class="search-results" id="searchResults"></div>
+        </div>
+      </div>
+
+      <div class="home-card home-card-info">
+        <div class="home-card-head">
+          <span class="home-card-kicker">מה מקבלים?</span>
+          <h2>תמונה אחת ברורה</h2>
+        </div>
+        <p>באמצעות הכלי אפשר לראות מה החשיפה הכוללת שלך למניות, כמה מהחיסכון מושקע בחו״ל, ומה רמת החשיפה למט״ח - לפי הקופות והיתרות שהזנת.</p>
+      </div>
+
+      <div class="home-card home-card-source">
+        <div class="home-card-head">
+          <span class="home-card-kicker">מידע</span>
+          <h2>נתונים ופרטיות</h2>
+        </div>
+        <p>הסכומים נשמרים רק במכשיר שלך. הנתונים מבוססים על מאגרי גמל נט, פנסיה נט וביטוח נט דרך data.gov.il.</p>
+      </div>
+
+      <div class="home-card home-card-dashboard">
+        <div class="home-card-head">
+          <span class="home-card-kicker">תוצאה</span>
+          <h2>דשבורד</h2>
+        </div>
+        <p>לאחר עדכון קופה אחת לפחות, אפשר לעבור לדשבורד ולראות את התמונה הכוללת.</p>
+        <button type="button" class="home-dashboard-btn" onclick="goToDashboard()">עבור לדשבורד</button>
+      </div>
     </div>
   </div>
 </section>
