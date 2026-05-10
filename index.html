@@ -254,87 +254,51 @@
 
   /* === Filter pills === */
   .filters {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 28px;
   }
   .filter-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 8px;
-    padding: 16px 18px;
-    min-height: 92px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    min-height: 44px;
     font: inherit;
     font-size: 14px;
     font-weight: 800;
     background: var(--card);
     border: 1.5px solid var(--line);
-    border-radius: var(--r-md);
-    color: var(--ink);
+    border-radius: var(--r-pill);
+    color: var(--ink-soft);
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: var(--shadow-xs);
-    line-height: 1.35;
-    text-align: right;
+    transition: all 0.18s ease;
+    box-shadow: var(--shadow-sm);
+    line-height: 1.2;
+    text-align: center;
+    white-space: nowrap;
     position: relative;
     -webkit-tap-highlight-color: transparent;
-    overflow: hidden;
   }
-  .filter-btn::before {
-    content: "";
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--ink-faint);
-    flex-shrink: 0;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
-    transition: transform 0.2s ease;
-  }
-  .filter-btn[data-filter="gemelnet"]::before { background: var(--gemel-tag); box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12); }
-  .filter-btn[data-filter="pensia"]::before { background: var(--pensia-tag); box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12); }
-  .filter-btn[data-filter="bituach"]::before { background: var(--bituach-tag); box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.12); }
-  .filter-btn[data-filter="all"]::before {
-    background: linear-gradient(135deg, var(--gemel-tag) 0%, var(--pensia-tag) 50%, var(--bituach-tag) 100%);
-    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.14);
-  }
+  .filter-btn::before { display: none; }
   .filter-btn:hover:not(.active) {
     border-color: var(--ink-faint);
-    background: var(--card);
+    color: var(--ink);
+    background: #fff;
     box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
   }
-  .filter-btn:hover:not(.active)::before { transform: scale(1.1); }
   .filter-btn.active {
     background: var(--ink);
     color: #fff;
     border-color: var(--ink);
     box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
-  }
-  .filter-btn.active::before {
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.18);
-    transform: scale(1.15);
   }
   .filter-btn:active { transform: translateY(0) scale(0.985); }
-  .filter-count {
-    display: block;
-    margin-right: 0;
-    margin-top: -2px;
-    padding: 0;
-    background: transparent;
-    color: var(--ink-muted);
-    font-size: 12.5px;
-    font-weight: 700;
-    line-height: 1.3;
-    font-variant-numeric: tabular-nums;
-  }
-  .filter-btn.active .filter-count {
-    background: transparent;
-    color: rgba(255, 255, 255, 0.65);
-  }
+  .filter-count { display: none; }
 
   /* === Search === */
   .search-wrap { position: relative; max-width: none; }
@@ -548,6 +512,86 @@
     color: #065f46;
     box-shadow: none;
     transform: none;
+  }
+
+
+  /* === Quick update panel === */
+  .quick-editor {
+    display: none;
+    margin: 16px 0 18px;
+  }
+  .quick-editor.active { display: block; }
+  .quick-editor-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-right: 4px solid var(--accent);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-sm);
+    padding: 16px 18px;
+  }
+  .quick-editor-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .quick-editor-meta {
+    color: var(--ink-mid);
+    font-size: 12.5px;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .quick-editor-form {
+    display: grid;
+    grid-template-columns: minmax(160px, 0.8fr) minmax(150px, 0.6fr) auto auto;
+    gap: 10px;
+    align-items: end;
+  }
+  .update-dashboard-btn {
+    border: 0;
+    background: var(--accent);
+    color: #fff;
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 900;
+    padding: 13px 20px;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+    transition: all 0.18s ease;
+  }
+  .update-dashboard-btn:hover {
+    background: var(--accent-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  .quick-remove-btn {
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink-muted);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 14px;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .quick-remove-btn:hover {
+    color: var(--danger);
+    background: var(--danger-soft);
+    border-color: rgba(220, 38, 38, 0.18);
+  }
+  .quick-editor-message {
+    margin-top: 10px;
+    color: var(--success);
+    font-size: 12.5px;
+    font-weight: 700;
   }
 
   /* === Fund card === */
@@ -1207,29 +1251,27 @@
       padding: 4px 9px;
     }
 
-    /* Filters: 2x2 card grid */
+    /* Filters: compact pills */
     .filters {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      overflow: visible;
-      padding: 0;
-      margin: 0 0 18px;
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 8px;
+      padding: 0 0 6px;
+      margin: 0 0 16px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
+    .filters::-webkit-scrollbar { display: none; }
     .filter-btn {
-      flex: initial;
-      padding: 14px 14px;
-      min-height: 84px;
-      font-size: 13px;
+      flex: 0 0 auto;
+      padding: 11px 17px;
+      min-height: 42px;
+      font-size: 12.5px;
       box-shadow: var(--shadow-sm);
-      border-radius: var(--r-md);
-    }
-    .filter-btn::before {
-      width: 12px;
-      height: 12px;
+      border-radius: var(--r-pill);
     }
     .filter-btn.active { box-shadow: var(--shadow-md); }
-    .filter-count { font-size: 11.5px; }
 
     /* Search */
     .search-input {
@@ -1283,6 +1325,12 @@
       padding: 13px 16px;
       font-size: 14px;
     }
+
+
+    .quick-editor-card { padding: 14px; border-right-width: 0; border-top: 4px solid var(--accent); }
+    .quick-editor-title { font-size: 14.5px; }
+    .quick-editor-form { grid-template-columns: 1fr; gap: 10px; }
+    .update-dashboard-btn, .quick-remove-btn { width: 100%; padding: 13px 14px; }
 
     /* Portfolio cards */
     #portfolioSection { padding-top: 6px !important; }
@@ -1440,7 +1488,7 @@
   /* === Small mobile === */
   @media (max-width: 420px) {
     .container { padding: 0 16px; }
-    .filters { padding: 0; margin: 0 0 16px; gap: 8px; }
+    .filters { padding: 0 0 6px; margin: 0 0 16px; gap: 8px; }
     .tagline {
       max-width: 158px;
       font-size: 8px;
@@ -1483,15 +1531,22 @@
 <section class="section" id="searchSection">
   <div class="container">
     <h2 class="section-title"><span class="num">01</span>מצא את הקופות שלך</h2>
+    <div class="filters" id="filters">
+      <button class="filter-btn active" data-filter="all" data-label="הכל">הכל</button>
+      <button class="filter-btn" data-filter="gemelnet" data-label="גמל / השתלמות / גמל להשקעה">גמל / השתלמות / גמל להשקעה</button>
+      <button class="filter-btn" data-filter="pensia" data-label="קרנות פנסיה">קרנות פנסיה</button>
+      <button class="filter-btn" data-filter="bituach" data-label="פוליסות חיסכון / ביטוחי מנהלים">פוליסות חיסכון / ביטוחי מנהלים</button>
+    </div>
     <div class="search-wrap">
       <input type="text" class="search-input" id="searchInput" placeholder="שם החברה או המסלול — לדוגמה: מנורה, הראל, מיטב, אלטשולר" autocomplete="off" />
-      <div class="search-help">כתוב את שם החברה שמנהלת לך את הקופה - אפשר למצוא אותו על הדוח השנתי שאתה מקבל בדואר או במייל. אחרי שמצאת, לוחצים על "בחר" ומזינים את היתרה.</div>
+      <div class="search-help">כתוב את שם החברה שמנהלת לך את הקופה - אפשר למצוא אותו על הדוח השנתי שאתה מקבל בדואר או במייל. אחרי שמצאת, לוחצים על "עדכן", מזינים יתרה ודמי ניהול ולוחצים על "עדכן בדשבורד".</div>
+      <div class="quick-editor" id="quickEditor"></div>
       <div class="search-results" id="searchResults"></div>
     </div>
   </div>
 </section>
 
-<section class="section" id="portfolioSection" style="padding-top: 4px;">
+<section class="section" id="portfolioSection" style="display:none;">
   <div class="container">
     <h2 class="section-title"><span class="num">02</span>התיק שלך</h2>
     <div class="funds-list" id="fundsList"></div>
@@ -1604,6 +1659,7 @@ let META = {};
 let DATASET_MAX_PERIOD = null;
 let activeFilter = 'all';
 let userFunds = [];
+let CURRENT_EDIT_FUND = null;
 let LAST_FOCUSED_UID = null;
 let QUICK_RETURN_VISIBLE = false;
 const balanceInputTimers = {};
@@ -1789,59 +1845,11 @@ function renderDatasetMeta() {
 }
 
 function renderFunds() {
+  const section = document.getElementById('portfolioSection');
   const wrap = document.getElementById('fundsList');
-  if (!userFunds.length) {
-    wrap.innerHTML = `
-      <div class="empty">
-        <div class="arrow">↟</div>
-        <div>הוסף לפחות קופה אחת כדי לראות כיצד הכסף שלך מושקע</div>
-      </div>
-    `;
-    document.getElementById('dashboard').style.display = 'none';
-    document.getElementById('detailsSection').style.display = 'none';
-    QUICK_RETURN_VISIBLE = false;
-    updateFloatingSearchButton();
-    return;
-  }
-  wrap.innerHTML = userFunds.map((item, idx) => {
-    const f = item.fund;
-    const stale = f.is_stale ? `<span class="stale-badge">דיווח ${fmtPeriod(f.report_period)}</span>` : '';
-    const micro = f.is_micro_fund ? `<span class="micro-badge">קופה קטנה</span>` : '';
-    const sub = [f.managing_corp, f.classification, f.specialization, f.sub_specialization].filter(Boolean).join(' • ');
-    return `
-      <div class="fund-card ${escapeHtml(f.source)} ${LAST_FOCUSED_UID === f.uid ? 'focused' : ''}" data-uid="${escapeHtml(f.uid)}">
-        <div>
-          <div class="fund-name"><span class="source-tag ${escapeHtml(f.source)}">${SOURCE_LABEL[f.source]}</span>${escapeHtml(f.fund_name)} ${stale} ${micro}</div>
-          <div class="fund-meta">${escapeHtml(sub || '-')} • תקופה ${fmtPeriod(f.report_period)}</div>
-        </div>
-        <div class="fund-mini-exp">
-          <div class="mini-exp"><span class="label">מניות</span><span class="val">${fmtPct(f.stock_pct, 0)}</span></div>
-          <div class="mini-exp"><span class="label">חו״ל</span><span class="val">${fmtPct(f.foreign_pct, 0)}</span></div>
-          <div class="mini-exp"><span class="label">מט״ח</span><span class="val">${fmtPct(f.fx_pct, 0)}</span></div>
-          <div class="mini-exp"><span class="label">YTD</span><span class="val ${metricClass(f.ytd_yield)}">${fmtPct(f.ytd_yield, 1)}</span></div>
-          <div class="mini-exp"><span class="label">3Y מצטבר</span><span class="val ${metricClass(f.yield_trailing_3yrs)}">${fmtPct(f.yield_trailing_3yrs, 1)}</span></div>
-        </div>
-        <div class="balance-input-wrap">
-          <label class="field-group">
-            <span class="field-label">יתרה</span>
-            <span class="inline-input">
-              <input type="number" class="balance-input" data-uid="${escapeHtml(f.uid)}" value="${item.balance || ''}" placeholder="0" min="0" inputmode="numeric" oninput="handleBalanceInput(${idx}, this.value)" onchange="handleBalanceInput(${idx}, this.value, true)" />
-              <span class="currency">₪</span>
-            </span>
-          </label>
-          <label class="field-group">
-            <span class="field-label">דמי ניהול מצבירה</span>
-            <span class="inline-input">
-              <input type="number" class="fee-input" data-uid="${escapeHtml(f.uid)}" value="${Number.isFinite(item.managementFee) ? item.managementFee : ''}" placeholder="לא הוזן" min="0" step="0.01" inputmode="decimal" oninput="handleFeeInput(${idx}, this.value)" onchange="handleFeeInput(${idx}, this.value, true)" />
-              <span class="currency">%</span>
-            </span>
-          </label>
-          <button type="button" class="return-search-btn" data-return-idx="${idx}" style="display:${Number(item.balance) > 0 ? 'inline-block' : 'none'}" onclick="returnToSearch()">חזור לחיפוש</button>
-          <button class="remove-btn" onclick="removeFund(${idx})" title="הסרה">✕</button>
-        </div>
-      </div>
-    `;
-  }).join('');
+  if (section) section.style.display = 'none';
+  if (wrap) wrap.innerHTML = '';
+  QUICK_RETURN_VISIBLE = false;
   updateFloatingSearchButton();
   renderDashboard();
 }
@@ -1890,7 +1898,8 @@ function setMetric(id, value, digits = 1) {
 }
 
 function renderDashboard() {
-  const totalBalance = userFunds.reduce((sum, item) => sum + (Number(item.balance) || 0), 0);
+  const activeItems = userFunds.filter(item => (Number(item.balance) || 0) > 0);
+  const totalBalance = activeItems.reduce((sum, item) => sum + (Number(item.balance) || 0), 0);
   if (totalBalance <= 0) {
     document.getElementById('dashboard').style.display = 'none';
     document.getElementById('detailsSection').style.display = 'none';
@@ -1927,7 +1936,7 @@ function renderDashboard() {
   }
 
   const sourceTotals = {};
-  for (const item of userFunds) {
+  for (const item of activeItems) {
     const src = item.fund.source;
     sourceTotals[src] = (sourceTotals[src] || 0) + (Number(item.balance) || 0);
   }
@@ -1936,7 +1945,7 @@ function renderDashboard() {
     .map(([src, val]) => `<div class="source-mix-item"><span class="dot" style="background:${SOURCE_DOT_COLOR[src]}"></span>${SOURCE_LABEL[src]}: ${(val / totalBalance * 100).toFixed(0)}%</div>`)
     .join('');
 
-  const rows = userFunds
+  const rows = activeItems
     .slice()
     .sort((a, b) => (Number(b.balance) || 0) - (Number(a.balance) || 0))
     .map(item => {
@@ -1987,7 +1996,7 @@ function buildShareText() {
     `חשיפה למט״ח: ${fmtPct(aggFx, 1)}`,
     `נכסים סחירים: ${fmtPct(aggLiquid, 1)}`,
     `תשואה מתחילת שנה לפי מסלולים, משוקללת: ${fmtPct(perfYtd, 2)}`,
-    `תשואה 3 שנים מצטברת לפי מסלולים, משוקללת: ${fmtPct(weightedMetric('yield_trailing_3yrs', totalBalance), 2)}`,
+    `לשוניות קומפקטיות ועדכון מהיר לפי מסלולים, משוקללת: ${fmtPct(weightedMetric('yield_trailing_3yrs', totalBalance), 2)}`,
     `דמי ניהול אישיים משוקללים: ${Number.isFinite(feeSavings) ? fmtPct(feeSavings, 2) : 'לא הוזן'}`,
     '',
     'פירוט מוצרים:'
@@ -2033,6 +2042,98 @@ async function shareWhatsApp() {
 window.saveAsPDF = saveAsPDF;
 window.shareWhatsApp = shareWhatsApp;
 
+function findUserFundIndex(uid) {
+  return userFunds.findIndex(item => item.fund && item.fund.uid === uid);
+}
+function openQuickEditor(fund) {
+  CURRENT_EDIT_FUND = withRuntimeFlags(fund);
+  const existingIndex = findUserFundIndex(CURRENT_EDIT_FUND.uid);
+  const existing = existingIndex >= 0 ? userFunds[existingIndex] : null;
+  const balanceValue = existing && Number(existing.balance) > 0 ? Number(existing.balance) : '';
+  const feeValue = existing && Number.isFinite(existing.managementFee) ? existing.managementFee : '';
+  const sub = [CURRENT_EDIT_FUND.managing_corp, CURRENT_EDIT_FUND.classification, CURRENT_EDIT_FUND.specialization, CURRENT_EDIT_FUND.sub_specialization].filter(Boolean).join(' • ');
+  const editor = document.getElementById('quickEditor');
+  if (!editor) return;
+  editor.innerHTML = `
+    <div class="quick-editor-card">
+      <div class="quick-editor-title"><span class="source-tag ${escapeHtml(CURRENT_EDIT_FUND.source)}">${SOURCE_LABEL[CURRENT_EDIT_FUND.source]}</span>${escapeHtml(CURRENT_EDIT_FUND.fund_name)}</div>
+      <div class="quick-editor-meta">${escapeHtml(sub || '-')} • מספר קופה: ${escapeHtml(CURRENT_EDIT_FUND.fund_id || '')}</div>
+      <div class="quick-editor-form">
+        <label class="field-group">
+          <span class="field-label">יתרה</span>
+          <span class="inline-input">
+            <input type="number" class="balance-input" id="quickBalanceInput" value="${escapeHtml(balanceValue)}" placeholder="0" min="0" inputmode="numeric" />
+            <span class="currency">₪</span>
+          </span>
+        </label>
+        <label class="field-group">
+          <span class="field-label">דמי ניהול מצבירה</span>
+          <span class="inline-input">
+            <input type="number" class="fee-input" id="quickFeeInput" value="${escapeHtml(feeValue)}" placeholder="לא הוזן" min="0" step="0.01" inputmode="decimal" />
+            <span class="currency">%</span>
+          </span>
+        </label>
+        <button type="button" class="update-dashboard-btn" onclick="commitQuickUpdate()">עדכן בדשבורד</button>
+        ${existing ? '<button type="button" class="quick-remove-btn" onclick="removeCurrentQuickFund()">הסר מהדשבורד</button>' : ''}
+      </div>
+      <div class="quick-editor-message" id="quickEditorMessage"></div>
+    </div>
+  `;
+  editor.classList.add('active');
+  editor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  window.setTimeout(() => {
+    const input = document.getElementById('quickBalanceInput');
+    if (input) { input.focus({ preventScroll: true }); input.select(); }
+  }, 120);
+}
+function commitQuickUpdate() {
+  if (!CURRENT_EDIT_FUND) return;
+  const balanceInput = document.getElementById('quickBalanceInput');
+  const feeInput = document.getElementById('quickFeeInput');
+  const balance = Math.max(0, Number(balanceInput ? balanceInput.value : 0) || 0);
+  const fee = normalizeUserFee(feeInput ? feeInput.value : null);
+  if (balance <= 0) {
+    alert('יש להזין יתרה גבוהה מאפס כדי לעדכן את הדשבורד.');
+    if (balanceInput) balanceInput.focus();
+    return;
+  }
+  const idx = findUserFundIndex(CURRENT_EDIT_FUND.uid);
+  const payload = {
+    fund: CURRENT_EDIT_FUND,
+    balance,
+    managementFee: fee,
+    updated_at: new Date().toISOString()
+  };
+  if (idx >= 0) userFunds[idx] = payload;
+  else userFunds.push(payload);
+  saveState();
+  renderDashboard();
+  const msg = document.getElementById('quickEditorMessage');
+  if (msg) msg.textContent = 'עודכן בדשבורד.';
+  showResults(document.getElementById('searchInput').value || '');
+  const wrap = document.getElementById('searchResults');
+  if (wrap) wrap.classList.remove('active');
+  window.setTimeout(() => {
+    const dash = document.getElementById('dashboard');
+    if (dash && dash.style.display !== 'none') dash.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 180);
+}
+function removeCurrentQuickFund() {
+  if (!CURRENT_EDIT_FUND) return;
+  const idx = findUserFundIndex(CURRENT_EDIT_FUND.uid);
+  if (idx >= 0) {
+    userFunds.splice(idx, 1);
+    saveState();
+    renderDashboard();
+    const msg = document.getElementById('quickEditorMessage');
+    if (msg) msg.textContent = 'הוסר מהדשבורד.';
+    showResults(document.getElementById('searchInput').value || '');
+  }
+}
+window.openQuickEditor = openQuickEditor;
+window.commitQuickUpdate = commitQuickUpdate;
+window.removeCurrentQuickFund = removeCurrentQuickFund;
+
 function updateFloatingSearchButton() {
   // אין יותר כפתור צף קבוע. החזרה לחיפוש מופיעה רק בתוך שורת הקופה לאחר הזנת סכום.
 }
@@ -2069,16 +2170,7 @@ function focusFundInput(uid) {
 }
 
 function addFund(fund) {
-  QUICK_RETURN_VISIBLE = false;
-  updateFloatingSearchButton();
-  const exists = userFunds.some(item => item.fund.uid === fund.uid);
-  if (!exists) {
-    userFunds.push({ fund, balance: 0, managementFee: null, updated_at: new Date().toISOString() });
-    saveState();
-  }
-  const currentQuery = document.getElementById('searchInput').value;
-  showResults(currentQuery);
-  focusFundInput(fund.uid);
+  openQuickEditor(fund);
 }
 function removeFund(idx) {
   if (balanceInputTimers[idx]) clearTimeout(balanceInputTimers[idx]);
@@ -2143,7 +2235,7 @@ function buildResultSummary(query, results) {
     <div class="result-item result-summary">
       <div class="result-name">${title}</div>
       <div class="result-meta">
-        <span>לחיצה על “בחר” מוסיפה את המוצר ומעבירה להזנת סכום ודמי ניהול</span>
+        <span>לחיצה על “עדכן” פותחת אזור מהיר להזנת יתרה ודמי ניהול</span>
         <span>כל התוצאות מוצגות בעמוד</span>
       </div>
       <div class="result-counts">${countPills}</div>
@@ -2153,10 +2245,8 @@ function buildResultSummary(query, results) {
 
 function updateFilterCounts(query) {
   document.querySelectorAll('.filter-btn').forEach(btn => {
-    const filter = btn.dataset.filter;
     const label = btn.dataset.label || btn.textContent.trim();
-    const count = searchFunds(query, Infinity, filter, true).length;
-    btn.innerHTML = `${escapeHtml(label)} <span class="filter-count">${count.toLocaleString('he-IL')}</span>`;
+    btn.innerHTML = escapeHtml(label);
   });
 }
 
@@ -2192,7 +2282,7 @@ function showResults(query) {
               <span>מספר: ${escapeHtml(r.fund_id || '')}</span>
             </div>
           </div>
-          <button type="button" class="select-btn" data-uid="${escapeHtml(r.uid)}" ${alreadySelected ? 'disabled' : ''}>${alreadySelected ? 'נבחר' : 'בחר'}</button>
+          <button type="button" class="select-btn" data-uid="${escapeHtml(r.uid)}">עדכן</button>
         </div>
       </div>
     `;
