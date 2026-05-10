@@ -593,6 +593,19 @@
     font-size: 12.5px;
     font-weight: 700;
   }
+  .add-another-btn {
+    margin-right: 10px;
+    border: 1px solid var(--accent-soft-2);
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 8px 12px;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+  }
+  .add-another-btn:hover { background: var(--accent-soft-2); }
 
   /* === Fund card === */
   .funds-list { margin-top: 14px; }
@@ -1071,9 +1084,17 @@
     background: var(--card);
   }
   footer strong { color: var(--ink-soft); font-weight: 700; }
+  .data-update-meta {
+    margin-top: 14px;
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    text-align: center;
+    direction: rtl;
+    font-weight: 600;
+  }
   .developer-credit {
-    margin-top: 18px;
-    padding-top: 16px;
+    margin-top: 10px;
+    padding-top: 12px;
     border-top: 1px solid var(--line-soft);
     font-size: 11px;
     color: var(--ink-muted);
@@ -1154,6 +1175,7 @@
     th:first-child, td:first-child { width: 31% !important; }
     .source-tag { color: #fff !important; font-size: 6px !important; padding: 2px 3px !important; border-radius: 2px !important; }
     footer { display: block !important; border-top: 1px solid #bbb !important; padding: 5px 0 0 !important; font-size: 7.5px !important; line-height: 1.25 !important; color: #444 !important; background: #fff !important; page-break-inside: avoid; }
+    .data-update-meta { font-size: 7.5px !important; margin-top: 3px !important; color: #444 !important; text-align: center !important; }
     .developer-credit { font-size: 8px !important; margin-top: 4px !important; padding-top: 3px !important; color: #444 !important; text-align: center !important; width: 100% !important; }
   }
 
@@ -1331,6 +1353,7 @@
     .quick-editor-title { font-size: 14.5px; }
     .quick-editor-form { grid-template-columns: 1fr; gap: 10px; }
     .update-dashboard-btn, .quick-remove-btn { width: 100%; padding: 13px 14px; }
+    .add-another-btn { display: block; width: 100%; margin: 10px 0 0; padding: 11px 12px; }
 
     /* Portfolio cards */
     #portfolioSection { padding-top: 6px !important; }
@@ -1521,7 +1544,6 @@
   <div class="container">
     <h1>הקופות והקרנות שלך במקום אחד-  ומה <em>החשיפה</em> שלך למניות ולמט״ח</h1>
     <p>מוסיפים את היתרה של כל קופה ורואים בשנייה איך ההשקעה שלך מחולקת - מה החשיפה למניות, מה החשיפה למט״ח, ומה התמונה הכוללת. בלי הרשמה ובלי פרטים אישיים.</p>
-    <div class="meta" id="datasetMeta"></div>
     <div class="note">
       הסכומים שאתה מזין נשמרים על המכשיר שלך בלבד ולא נשלחים לאף מקום. הכלי הזה רק ממחיש לך איך הכסף שלך מושקע — הוא לא ייעוץ פיננסי או פנסיוני, ואינו ממליץ לעשות שום פעולה.
     </div>
@@ -1647,6 +1669,7 @@
 <footer>
   <div class="container">
     <strong>הבהרה מקצועית:</strong> הדשבורד מציג חשיפות וביצועים מתוך נתונים ציבוריים של המסלולים בלבד. הוא אינו מושך יתרות אישיות ממסלקה פנסיונית, אינו מחליף ייעוץ פנסיוני או פיננסי, ואינו מציג המלצה. "חשיפה לחו״ל" אינה שקולה בהכרח ל"מניות חו״ל", משום שבקבצים היא כוללת גם חשיפות זרות שאינן מנייתיות. נתוני התשואה הם נתוני מסלול ציבוריים: חודשית, מתחילת שנה ו-3 שנים מצטבר. דמי הניהול בדשבורד מבוססים רק על הנתון שהוזן ידנית עבור כל מוצר, ולא על דמי הניהול הממוצעים במאגר.
+    <div class="data-update-meta" id="dataUpdateMeta"></div>
     <div class="developer-credit">פותח ע"י דורון שרייבמן</div>
   </div>
 </footer>
@@ -1834,14 +1857,10 @@ function loadState() {
 }
 
 function renderDatasetMeta() {
-  const counts = META.counts || {};
-  const el = document.getElementById('datasetMeta');
-  el.innerHTML = `
-    <span><strong>${(counts.gemelnet_active_count || 0).toLocaleString('he-IL')}</strong> קופות גמל / השתלמות פעילות</span>
-    <span><strong>${(counts.pensia_active_count || 0).toLocaleString('he-IL')}</strong> קרנות פנסיה פעילות</span>
-    <span><strong>${(counts.bituach_active_count || 0).toLocaleString('he-IL')}</strong> פוליסות ביטוח פעילות</span>
-    <span>תקופת דיווח אחרונה: <strong>${fmtPeriod(DATASET_MAX_PERIOD)}</strong></span>
-  `;
+  const el = document.getElementById('dataUpdateMeta');
+  if (el) {
+    el.textContent = `תאריך עדכון נתוני המאגר: ${fmtPeriod(DATASET_MAX_PERIOD)}`;
+  }
 }
 
 function renderFunds() {
@@ -2109,14 +2128,14 @@ function commitQuickUpdate() {
   saveState();
   renderDashboard();
   const msg = document.getElementById('quickEditorMessage');
-  if (msg) msg.textContent = 'עודכן בדשבורד.';
+  if (msg) {
+    msg.innerHTML = 'עודכן בדשבורד. <button type="button" class="add-another-btn" onclick="prepareAnotherFund()">הוסף קופה נוספת</button>';
+  }
   showResults(document.getElementById('searchInput').value || '');
   const wrap = document.getElementById('searchResults');
-  if (wrap) wrap.classList.remove('active');
-  window.setTimeout(() => {
-    const dash = document.getElementById('dashboard');
-    if (dash && dash.style.display !== 'none') dash.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 180);
+  if (wrap) wrap.classList.add('active');
+  const input = document.getElementById('searchInput');
+  if (input) input.focus({ preventScroll: true });
 }
 function removeCurrentQuickFund() {
   if (!CURRENT_EDIT_FUND) return;
@@ -2130,6 +2149,20 @@ function removeCurrentQuickFund() {
     showResults(document.getElementById('searchInput').value || '');
   }
 }
+function prepareAnotherFund() {
+  CURRENT_EDIT_FUND = null;
+  const editor = document.getElementById('quickEditor');
+  if (editor) {
+    editor.classList.remove('active');
+    editor.innerHTML = '';
+  }
+  const input = document.getElementById('searchInput');
+  if (input) {
+    input.focus({ preventScroll: false });
+    showResults(input.value || '');
+  }
+}
+window.prepareAnotherFund = prepareAnotherFund;
 window.openQuickEditor = openQuickEditor;
 window.commitQuickUpdate = commitQuickUpdate;
 window.removeCurrentQuickFund = removeCurrentQuickFund;
