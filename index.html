@@ -810,32 +810,17 @@
 
   /* === Dashboard (dark, premium) === */
   .dashboard {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    background: #0f172a;
     color: #fff;
     padding: 60px 0 56px;
     display: none;
     position: relative;
     overflow: hidden;
   }
-  .dashboard::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 50%;
-    height: 60%;
-    background: radial-gradient(circle at top right, rgba(13, 148, 136, 0.18), transparent 60%);
-    pointer-events: none;
-  }
+  .dashboard::before,
   .dashboard::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 50%;
-    height: 50%;
-    background: radial-gradient(circle at bottom left, rgba(124, 58, 237, 0.10), transparent 65%);
-    pointer-events: none;
+    display: none !important;
+    content: none !important;
   }
   .dashboard .container { position: relative; z-index: 1; }
   .dashboard h2 {
@@ -1244,8 +1229,9 @@
 
     /* Hero */
     .hero {
-      padding: 28px 0 24px;
+      padding: 22px 0 18px;
       border-bottom: 0;
+      background: linear-gradient(180deg, #ffffff 0%, #f5f7fb 100%);
     }
     .hero::before {
       top: -80px;
@@ -1254,16 +1240,18 @@
       height: 240px;
     }
     .hero h1 {
-      font-size: 28px;
-      line-height: 1.2;
+      font-size: 25px;
+      line-height: 1.18;
       letter-spacing: -0.02em;
-      margin: 0 0 12px;
+      margin: 0 0 10px;
       max-width: none;
       font-weight: 900;
+      text-wrap: balance;
     }
     .hero p {
-      font-size: 14px;
-      line-height: 1.65;
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--ink-mid);
     }
     .meta {
       display: grid;
@@ -1280,10 +1268,11 @@
     }
     .note {
       border-radius: var(--r-sm);
-      padding: 13px 14px 13px 14px;
-      margin-top: 16px;
-      font-size: 12.5px;
-      line-height: 1.65;
+      padding: 12px 14px;
+      margin-top: 14px;
+      font-size: 12px;
+      line-height: 1.55;
+      box-shadow: var(--shadow-xs);
     }
 
     /* Sections */
@@ -1299,27 +1288,26 @@
       padding: 4px 9px;
     }
 
-    /* Filters: compact pills */
+    /* Filters: compact mobile grid, no clipped pills */
     .filters {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
-      padding: 0 0 6px;
-      margin: 0 0 16px;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      padding: 0;
+      margin: 0 0 14px;
+      overflow: visible;
     }
-    .filters::-webkit-scrollbar { display: none; }
     .filter-btn {
-      flex: 0 0 auto;
-      padding: 11px 17px;
-      min-height: 42px;
-      font-size: 12.5px;
-      box-shadow: var(--shadow-sm);
+      width: 100%;
+      padding: 10px 12px;
+      min-height: 40px;
+      font-size: 12px;
+      box-shadow: var(--shadow-xs);
       border-radius: var(--r-pill);
+      white-space: normal;
+      line-height: 1.25;
     }
-    .filter-btn.active { box-shadow: var(--shadow-md); }
+    .filter-btn.active { box-shadow: var(--shadow-sm); }
 
     /* Search */
     .search-input {
@@ -1331,13 +1319,14 @@
     .search-wrap::before { right: 18px; width: 15px; height: 15px; }
     .search-wrap::after { right: 11px; }
     .search-help {
-      background: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.86);
       border: 1px solid var(--line-soft);
       border-radius: var(--r-sm);
-      padding: 10px 12px;
-      margin: 11px 0 0;
-      font-size: 12px;
-      line-height: 1.55;
+      padding: 9px 11px;
+      margin: 10px 0 0;
+      font-size: 11.5px;
+      line-height: 1.45;
+      box-shadow: var(--shadow-xs);
     }
 
     /* Search results */
@@ -1458,6 +1447,7 @@
     .dashboard {
       padding: 32px 0 36px;
       margin-top: 8px;
+      background: #0f172a !important;
     }
     .dashboard h2 { font-size: 26px; margin-bottom: 5px; }
     .dashboard .subtitle { font-size: 12px; line-height: 1.55; margin-bottom: 18px; }
@@ -1538,7 +1528,7 @@
   /* === Small mobile === */
   @media (max-width: 420px) {
     .container { padding: 0 16px; }
-    .filters { padding: 0 0 6px; margin: 0 0 16px; gap: 8px; }
+    .filters { grid-template-columns: 1fr; padding: 0; margin: 0 0 14px; gap: 7px; }
     .tagline {
       max-width: 158px;
       font-size: 8px;
