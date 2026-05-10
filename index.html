@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון</title>
+<title>דשבורד חשיפות חיסכון | v3.24</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -1624,6 +1624,73 @@
     }
   }
 
+
+  /* === Forced light PDF mode ===
+     Important for mobile browsers: some iOS share/print flows capture the current
+     rendered page before applying @media print. Therefore this class changes the
+     visible dashboard to a light report before window.print() is opened. */
+  body.pdf-mode {
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+  body.pdf-mode header,
+  body.pdf-mode .hero,
+  body.pdf-mode #searchSection,
+  body.pdf-mode #portfolioSection,
+  body.pdf-mode .action-toolbar,
+  body.pdf-mode .action-note,
+  body.pdf-mode .floating-search-btn {
+    display: none !important;
+  }
+  body.pdf-mode .dashboard,
+  body.pdf-mode .details {
+    display: block !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+  }
+  body.pdf-mode .dashboard::before,
+  body.pdf-mode .dashboard::after {
+    display: none !important;
+  }
+  body.pdf-mode .dashboard h2,
+  body.pdf-mode .details h2,
+  body.pdf-mode .perf-title,
+  body.pdf-mode .total,
+  body.pdf-mode .metric-value {
+    color: #0f172a !important;
+  }
+  body.pdf-mode .dashboard .subtitle,
+  body.pdf-mode .perf-note,
+  body.pdf-mode .total-label,
+  body.pdf-mode .metric-label {
+    color: #475569 !important;
+  }
+  body.pdf-mode .metric-card,
+  body.pdf-mode .source-mix,
+  body.pdf-mode .source-mix-item,
+  body.pdf-mode .table-wrap {
+    background: #f8fafc !important;
+    border-color: #dbe3ee !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  body.pdf-mode .metric-bar {
+    background: #e2e8f0 !important;
+  }
+  body.pdf-mode th {
+    background: #f8fafc !important;
+    color: #475569 !important;
+  }
+  body.pdf-mode td,
+  body.pdf-mode footer,
+  body.pdf-mode .developer-credit,
+  body.pdf-mode .data-update-meta {
+    color: #0f172a !important;
+  }
+
 </style>
 </head>
 <body>
@@ -2127,11 +2194,22 @@ function saveAsPDF() {
     return;
   }
   renderDashboard();
+
+  // Mobile Safari and some in-app browsers generate the PDF from the currently
+  // rendered page before fully applying @media print. Force a visible light
+  // report mode first, then open the print dialog.
   document.body.classList.add('pdf-mode');
-  window.setTimeout(() => window.print(), 120);
+  const dashboard = document.getElementById('dashboard');
+  if (dashboard) dashboard.scrollIntoView({ behavior: 'auto', block: 'start' });
+
+  window.setTimeout(() => {
+    window.print();
+    // Fallback: if afterprint does not fire on mobile, restore the screen later.
+    window.setTimeout(() => document.body.classList.remove('pdf-mode'), 3500);
+  }, 650);
 }
 window.addEventListener('afterprint', () => {
-  document.body.classList.remove('pdf-mode');
+  window.setTimeout(() => document.body.classList.remove('pdf-mode'), 250);
 });
 async function shareWhatsApp() {
   if (!hasReportData()) {
