@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.32</title>
+<title>דשבורד חשיפות חיסכון | v3.27</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -28,11 +28,11 @@
     --line-soft: #eef2f7;
     --line-faint: #f4f6fa;
 
-    /* === Accent (Blue — modern & professional) === */
-    --accent: #2563eb;
-    --accent-dark: #1d4ed8;
-    --accent-soft: #eff6ff;
-    --accent-soft-2: #dbeafe;
+    /* === Accent (teal — financial trust) === */
+    --accent: #0d9488;
+    --accent-dark: #0f766e;
+    --accent-soft: #ecfdf5;
+    --accent-soft-2: #d1fae5;
 
     /* === Status === */
     --success: #059669;
@@ -151,7 +151,7 @@
     right: -120px;
     width: 380px;
     height: 380px;
-    background: radial-gradient(circle, rgba(37, 99, 235, 0.08), transparent 70%);
+    background: radial-gradient(circle, rgba(13, 148, 136, 0.08), transparent 70%);
     pointer-events: none;
   }
   .hero .container { position: relative; z-index: 1; }
@@ -168,7 +168,7 @@
   .hero h1 em {
     color: var(--accent);
     font-style: normal;
-    background: linear-gradient(120deg, var(--accent) 0%, #60a5fa 100%);
+    background: linear-gradient(120deg, var(--accent) 0%, #14b8a6 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -211,7 +211,7 @@
     margin-top: 22px;
     font-size: 13px;
     line-height: 1.65;
-    color: #1e3a8a;
+    color: #064e3b;
     max-width: 940px;
     position: relative;
   }
@@ -350,7 +350,7 @@
   .search-input::placeholder { color: var(--ink-faint); font-weight: 400; }
   .search-input:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15), var(--shadow-sm);
+    box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15), var(--shadow-sm);
   }
   .search-help {
     margin: 12px 4px 0;
@@ -466,7 +466,7 @@
     font-size: 10px;
     font-weight: 800;
     padding: 3px 9px;
-    color: #1e40af;
+    color: #065f46;
     background: var(--accent-soft-2);
     border-radius: var(--r-pill);
     white-space: nowrap;
@@ -509,7 +509,7 @@
   .select-btn:disabled {
     cursor: default;
     background: var(--accent-soft-2);
-    color: #1e40af;
+    color: #065f46;
     box-shadow: none;
     transform: none;
   }
@@ -654,7 +654,7 @@
   .fund-card.bituach { border-right-color: var(--bituach-tag); }
   .fund-card.focused {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15), var(--shadow-md);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15), var(--shadow-md);
   }
   .fund-name {
     font-weight: 800;
@@ -744,7 +744,7 @@
   }
   .fee-input:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
   }
 
   .balance-input {
@@ -765,7 +765,7 @@
   }
   .balance-input:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
   }
   .currency {
     color: var(--ink-mid);
@@ -1391,7 +1391,7 @@
     .fund-card.focused {
       border-color: var(--accent);
       border-top-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15), var(--shadow-md);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15), var(--shadow-md);
     }
     .fund-name { font-size: 14.5px; line-height: 1.4; margin-bottom: 6px; }
     .fund-meta { font-size: 12px; line-height: 1.5; }
@@ -1694,449 +1694,33 @@
 
   /* v3.26: hide section number badge next to search title */
   .section-title .num { display: none !important; }
-
-
-  /* === v3.32 Home screen redesign: search-first layout === */
-  .home-screen {
-    padding: 38px 0 34px;
-    background:
-      radial-gradient(circle at 88% 8%, rgba(37, 99, 235, 0.08), transparent 28%),
-      linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
-    border-bottom: 1px solid var(--line-soft);
-  }
-  .home-title-block {
-    text-align: center;
-    max-width: 820px;
-    margin: 0 auto 24px;
-  }
-  .home-title-block h1 {
-    margin: 0 0 8px;
-    font-size: clamp(32px, 4.7vw, 52px);
-    line-height: 1.08;
-    letter-spacing: -0.035em;
-    font-weight: 900;
-    color: var(--ink);
-  }
-  .home-title-block p {
-    margin: 0 auto;
-    max-width: 620px;
-    color: var(--ink-soft);
-    font-size: 16px;
-    line-height: 1.55;
-  }
-  .home-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-areas:
-      "search search search"
-      "dash info source";
-    gap: 14px;
-    align-items: stretch;
-  }
-  .home-card {
-    background: rgba(255, 255, 255, 0.94);
-    border: 1px solid var(--line);
-    border-radius: var(--r-xl);
-    box-shadow: var(--shadow-sm);
-    padding: 18px 20px;
-    position: relative;
-    overflow: hidden;
-  }
-  .home-card::before {
-    content: '';
-    position: absolute;
-    inset-inline-start: 0;
-    top: 18px;
-    bottom: 18px;
-    width: 4px;
-    background: var(--accent);
-    border-radius: 0 4px 4px 0;
-    opacity: 0.85;
-  }
-  .home-card-search {
-    grid-area: search;
-    padding: 22px 24px;
-  }
-  .home-card-info { grid-area: info; }
-  .home-card-source { grid-area: source; }
-  .home-card-dashboard { grid-area: dash; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); }
-  .home-card-head { margin-bottom: 12px; }
-  .home-card-kicker {
-    display: inline-flex;
-    align-items: center;
-    color: var(--accent-dark);
-    background: var(--accent-soft);
-    border: 1px solid var(--accent-soft-2);
-    border-radius: var(--r-pill);
-    font-size: 10.5px;
-    font-weight: 900;
-    padding: 3px 9px;
-    margin-bottom: 7px;
-  }
-  .home-card h2 {
-    margin: 0;
-    font-size: 21px;
-    line-height: 1.2;
-    font-weight: 900;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-  .home-card p {
-    margin: 0;
-    color: var(--ink-mid);
-    font-size: 13.5px;
-    line-height: 1.65;
-  }
-  .home-card-search .home-card-head {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 14px;
-  }
-  .home-card-search h2 { font-size: 25px; }
-  .home-filters {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    justify-content: flex-start;
-    margin: 0 0 14px !important;
-    gap: 8px !important;
-  }
-  .home-filters .filter-btn {
-    min-height: 36px !important;
-    padding: 8px 18px !important;
-    font-size: 13px !important;
-    border-radius: var(--r-pill) !important;
-    box-shadow: var(--shadow-xs);
-    width: auto !important;
-  }
-  .home-card-search .search-help {
-    background: var(--bg-soft);
-    border: 1px solid var(--line-soft);
-    border-radius: var(--r-sm);
-    padding: 9px 12px;
-    margin: 10px 0 0;
-    font-size: 12.5px;
-  }
-  .home-dashboard-btn {
-    width: 100%;
-    margin-top: 14px;
-    border: 0;
-    background: var(--ink);
-    color: #fff;
-    font: inherit;
-    font-size: 14px;
-    font-weight: 900;
-    padding: 12px 16px;
-    border-radius: var(--r-pill);
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.18s ease;
-  }
-  .home-dashboard-btn:hover {
-    background: var(--accent);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-  }
-
-  @media (max-width: 760px) {
-    .home-screen {
-      padding: 20px 0 22px;
-      background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
-    }
-    .home-title-block {
-      text-align: right;
-      margin-bottom: 14px;
-    }
-    .home-title-block h1 {
-      font-size: 28px;
-      line-height: 1.13;
-      margin-bottom: 6px;
-    }
-    .home-title-block p {
-      font-size: 13.5px;
-      line-height: 1.45;
-      margin: 0;
-    }
-    .home-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-areas:
-        "search"
-        "dash"
-        "info"
-        "source";
-      gap: 10px;
-    }
-    .home-card {
-      border-radius: var(--r-lg);
-      padding: 14px;
-      box-shadow: var(--shadow-sm);
-    }
-    .home-card::before { top: 14px; bottom: 14px; }
-    .home-card-search { padding: 15px; }
-    .home-card-search .home-card-head {
-      display: block;
-      margin-bottom: 10px;
-    }
-    .home-card h2 { font-size: 18px; }
-    .home-card-search h2 { font-size: 20px; }
-    .home-card p { font-size: 12.5px; line-height: 1.55; }
-    .home-card-kicker { font-size: 10px; padding: 3px 9px; margin-bottom: 6px; }
-    .home-filters {
-      display: flex !important;
-      flex-wrap: nowrap !important;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      gap: 7px !important;
-      padding: 1px 0 7px;
-      margin: 0 0 8px !important;
-      scrollbar-width: none;
-    }
-    .home-filters::-webkit-scrollbar { display: none; }
-    .home-filters .filter-btn {
-      flex: 0 0 auto !important;
-      min-height: 34px !important;
-      padding: 7px 15px !important;
-      font-size: 12px !important;
-      border-radius: var(--r-pill) !important;
-      width: auto !important;
-      box-shadow: var(--shadow-xs) !important;
-    }
-    .home-card-search .search-input {
-      padding: 13px 44px 13px 13px;
-      font-size: 15px;
-      border-radius: var(--r-md);
-    }
-    .home-card-search .search-help {
-      font-size: 11.2px;
-      line-height: 1.45;
-      padding: 8px 10px;
-      margin-top: 8px;
-    }
-    .home-dashboard-btn { padding: 12px 14px; margin-top: 12px; }
-  }
-
-  /* === Small mobile === */
-  @media (max-width: 420px) {
-    .container { padding: 0 16px; }
-    .filters { grid-template-columns: 1fr; padding: 0; margin: 0 0 14px; gap: 7px; }
-    .tagline {
-      max-width: 158px;
-      font-size: 8px;
-    }
-    .logo { font-size: 20px; }
-    .hero h1 { font-size: 25px; }
-    .meta { grid-template-columns: 1fr; }
-    .metric-value { font-size: 26px; }
-    .metric-value .pct { font-size: 12px; }
-    .metric-label { font-size: 9px; }
-    .total { font-size: 36px; }
-    .fund-mini-exp { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .section-title { font-size: 20px; }
-    .dashboard h2 { font-size: 22px; }
-  }
-
-  /* === Reduced motion === */
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-    }
-    html { scroll-behavior: auto; }
-  }
-
-
-
-  /* === PDF / Print light report override ===
-     The on-screen dashboard can stay dark, but the printed PDF must be bright,
-     clean and economical for A4. */
-  @media print {
-    body.pdf-mode .dashboard,
-    .dashboard {
-      background: #ffffff !important;
-      color: #0f172a !important;
-      box-shadow: none !important;
-    }
-    body.pdf-mode .dashboard *,
-    .dashboard * {
-      text-shadow: none !important;
-    }
-    body.pdf-mode .dashboard h2,
-    body.pdf-mode .perf-title,
-    .dashboard h2,
-    .perf-title {
-      color: #0f172a !important;
-    }
-    body.pdf-mode .dashboard .subtitle,
-    body.pdf-mode .action-note,
-    body.pdf-mode .perf-note,
-    .dashboard .subtitle,
-    .action-note,
-    .perf-note {
-      color: #475569 !important;
-    }
-    body.pdf-mode .total,
-    body.pdf-mode .metric-value,
-    .total,
-    .metric-value {
-      color: #0f172a !important;
-    }
-    body.pdf-mode .total-label,
-    body.pdf-mode .metric-label,
-    .total-label,
-    .metric-label {
-      color: #64748b !important;
-    }
-    body.pdf-mode .metric-card,
-    .metric-card {
-      background: #f8fafc !important;
-      border: 1px solid #dbe3ee !important;
-      color: #0f172a !important;
-      box-shadow: none !important;
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
-    }
-    body.pdf-mode .source-mix-item,
-    .source-mix-item {
-      background: #f8fafc !important;
-      border: 1px solid #dbe3ee !important;
-      color: #0f172a !important;
-      box-shadow: none !important;
-    }
-    body.pdf-mode .metric-bar,
-    .metric-bar {
-      background: #e2e8f0 !important;
-    }
-    body.pdf-mode .action-toolbar,
-    body.pdf-mode .action-note,
-    .action-toolbar,
-    .action-note {
-      display: none !important;
-    }
-  }
-
-
-  /* === Forced light PDF mode ===
-     Important for mobile browsers: some iOS share/print flows capture the current
-     rendered page before applying @media print. Therefore this class changes the
-     visible dashboard to a light report before window.print() is opened. */
-  body.pdf-mode {
-    background: #ffffff !important;
-    color: #0f172a !important;
-  }
-  body.pdf-mode header,
-  body.pdf-mode .hero,
-  body.pdf-mode #searchSection,
-  body.pdf-mode #portfolioSection,
-  body.pdf-mode .action-toolbar,
-  body.pdf-mode .action-note,
-  body.pdf-mode .floating-search-btn {
-    display: none !important;
-  }
-  body.pdf-mode .dashboard,
-  body.pdf-mode .details {
-    display: block !important;
-    background: #ffffff !important;
-    color: #0f172a !important;
-    box-shadow: none !important;
-  }
-  body.pdf-mode .dashboard::before,
-  body.pdf-mode .dashboard::after {
-    display: none !important;
-  }
-  body.pdf-mode .dashboard h2,
-  body.pdf-mode .details h2,
-  body.pdf-mode .perf-title,
-  body.pdf-mode .total,
-  body.pdf-mode .metric-value {
-    color: #0f172a !important;
-  }
-  body.pdf-mode .dashboard .subtitle,
-  body.pdf-mode .perf-note,
-  body.pdf-mode .total-label,
-  body.pdf-mode .metric-label {
-    color: #475569 !important;
-  }
-  body.pdf-mode .metric-card,
-  body.pdf-mode .source-mix,
-  body.pdf-mode .source-mix-item,
-  body.pdf-mode .table-wrap {
-    background: #f8fafc !important;
-    border-color: #dbe3ee !important;
-    color: #0f172a !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-  body.pdf-mode .metric-bar {
-    background: #e2e8f0 !important;
-  }
-  body.pdf-mode th {
-    background: #f8fafc !important;
-    color: #475569 !important;
-  }
-  body.pdf-mode td,
-  body.pdf-mode footer,
-  body.pdf-mode .developer-credit,
-  body.pdf-mode .data-update-meta {
-    color: #0f172a !important;
-  }
-
-
 </style>
 </head>
 <body>
-<section class="home-screen" id="searchSection">
+<section class="hero">
   <div class="container">
-    <div class="home-title-block">
-      <h1>הקופות והקרנות שלך במקום אחד</h1>
-      <p>בדוק מה החשיפה שלך למניות, לחו״ל ולמט״ח - בלי הרשמה ובלי פרטים אישיים.</p>
+    <h1>הקופות והקרנות שלך במקום אחד-  ומה <em>החשיפה</em> שלך למניות ולמט״ח</h1>
+    <p>מוסיפים את היתרה של כל קופה ורואים בשנייה איך ההשקעה שלך מחולקת - מה החשיפה למניות, מה החשיפה למט״ח, ומה התמונה הכוללת. בלי הרשמה ובלי פרטים אישיים.</p>
+    <div class="note">
+      הסכומים שאתה מזין נשמרים על המכשיר שלך בלבד ולא נשלחים לאף מקום. הכלי הזה רק ממחיש לך איך הכסף שלך מושקע — הוא לא ייעוץ פיננסי או פנסיוני, ואינו ממליץ לעשות שום פעולה.
     </div>
+  </div>
+</section>
 
-    <div class="home-grid">
-      <div class="home-card home-card-search">
-        <div class="home-card-head">
-          <span class="home-card-kicker">חיפוש</span>
-                  </div>
-        <div class="filters home-filters" id="filters">
-          <button class="filter-btn active" data-filter="all" data-label="הכל">הכל</button>
-          <button class="filter-btn" data-filter="gemelnet" data-label="גמל / השתלמות / גמל להשקעה">גמל</button>
-          <button class="filter-btn" data-filter="pensia" data-label="קרנות פנסיה">פנסיה</button>
-          <button class="filter-btn" data-filter="bituach" data-label="פוליסות חיסכון / ביטוחי מנהלים">ביטוח</button>
-        </div>
-        <div class="search-wrap">
-          <input type="text" class="search-input" id="searchInput" placeholder="שם החברה או המסלול - לדוגמה: מנורה, הראל, מיטב" autocomplete="off" />
-          <div class="search-help">חפש את החברה או המסלול, לחץ על "עדכן", הזן יתרה ודמי ניהול, והוסף לדשבורד.</div>
-          <div class="quick-editor" id="quickEditor"></div>
-          <div class="search-results" id="searchResults"></div>
-        </div>
-      </div>
-
-      <div class="home-card home-card-info">
-        <div class="home-card-head">
-          <span class="home-card-kicker">מה מקבלים?</span>
-          <h2>תמונה אחת ברורה</h2>
-        </div>
-        <p>באמצעות הכלי אפשר לראות מה החשיפה הכוללת שלך למניות, כמה מהחיסכון מושקע בחו״ל, ומה רמת החשיפה למט״ח - לפי הקופות והיתרות שהזנת.</p>
-      </div>
-
-      <div class="home-card home-card-source">
-        <div class="home-card-head">
-          <span class="home-card-kicker">מידע</span>
-          <h2>נתונים ופרטיות</h2>
-        </div>
-        <p>הסכומים נשמרים רק במכשיר שלך. הנתונים מבוססים על מאגרי גמל נט, פנסיה נט וביטוח נט דרך data.gov.il.</p>
-      </div>
-
-      <div class="home-card home-card-dashboard">
-        <div class="home-card-head">
-          <span class="home-card-kicker">תוצאה</span>
-          <h2>דשבורד</h2>
-        </div>
-        <p>לאחר עדכון קופה אחת לפחות, אפשר לעבור לדשבורד ולראות את התמונה הכוללת.</p>
-        <button type="button" class="home-dashboard-btn" onclick="goToDashboard()">עבור לדשבורד</button>
-      </div>
+<section class="section" id="searchSection">
+  <div class="container">
+    <h2 class="section-title">מצא את הקופות שלך</h2>
+    <div class="filters" id="filters">
+      <button class="filter-btn active" data-filter="all" data-label="הכל">הכל</button>
+      <button class="filter-btn" data-filter="gemelnet" data-label="גמל / השתלמות / גמל להשקעה">גמל / השתלמות / גמל להשקעה</button>
+      <button class="filter-btn" data-filter="pensia" data-label="קרנות פנסיה">קרנות פנסיה</button>
+      <button class="filter-btn" data-filter="bituach" data-label="פוליסות חיסכון / ביטוחי מנהלים">פוליסות חיסכון / ביטוחי מנהלים</button>
+    </div>
+    <div class="search-wrap">
+      <input type="text" class="search-input" id="searchInput" placeholder="שם החברה או המסלול — לדוגמה: מנורה, הראל, מיטב, אלטשולר" autocomplete="off" />
+      <div class="search-help">כתוב את שם החברה שמנהלת לך את הקופה - אפשר למצוא אותו על הדוח השנתי שאתה מקבל בדואר או במייל. אחרי שמצאת, לוחצים על "עדכן", מזינים יתרה ודמי ניהול ולוחצים על "עדכן בדשבורד".</div>
+      <div class="quick-editor" id="quickEditor"></div>
+      <div class="search-results" id="searchResults"></div>
     </div>
   </div>
 </section>
