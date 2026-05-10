@@ -1710,7 +1710,7 @@
   }
   .info-cube {
     background: #eff6ff;
-    border: 1px solid #bfdbfe;
+    border: 2px solid #bfdbfe;
     border-radius: 14px;
     padding: 18px 12px;
     display: flex;
@@ -1721,16 +1721,71 @@
     min-height: 120px;
     text-align: center;
     box-shadow: 0 1px 2px rgba(37, 99, 235, 0.05);
+    /* v3.29: make interactive */
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    width: 100%;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .info-cube:active {
+    transform: scale(0.98);
+  }
+  .info-cube:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 2px;
+  }
+  .info-cube[aria-expanded="true"] {
+    background: #dbeafe;
+    border-color: #2563eb;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.18);
+  }
+  @media (hover: hover) {
+    .info-cube:hover {
+      background: #dbeafe;
+      border-color: #60a5fa;
+    }
   }
   .info-cube-icon {
     font-size: 28px;
     line-height: 1;
+    pointer-events: none;
   }
   .info-cube-text {
     font-size: 13.5px;
     font-weight: 700;
     color: #1e3a8a;
     line-height: 1.45;
+    pointer-events: none;
+  }
+  /* v3.29: tooltip panel below the cubes */
+  .info-cube-tooltip {
+    margin-top: 14px;
+    padding: 18px 20px;
+    background: #1e3a8a;
+    color: #ffffff;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.7;
+    text-align: right;
+    box-shadow: 0 10px 30px rgba(30, 58, 138, 0.22);
+    animation: cubeTipIn 0.22s ease;
+  }
+  .info-cube-tooltip[hidden] {
+    display: none;
+  }
+  .info-cube-tooltip strong {
+    color: #fff;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 15.5px;
+  }
+  @keyframes cubeTipIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 </style>
 </head>
@@ -1739,23 +1794,24 @@
   <div class="container">
     <h1>הקופות והקרנות שלך במקום אחד-  ומה <em>החשיפה</em> שלך למניות ולמט״ח</h1>
     <div class="info-cubes">
-      <div class="info-cube">
+      <button type="button" class="info-cube" data-tip="exposure" aria-expanded="false" aria-controls="cubeTooltip">
         <div class="info-cube-icon">📊</div>
         <div class="info-cube-text">רואים בקליק את החשיפה למניות ולמט״ח</div>
-      </div>
-      <div class="info-cube">
+      </button>
+      <button type="button" class="info-cube" data-tip="privacy" aria-expanded="false" aria-controls="cubeTooltip">
         <div class="info-cube-icon">🔒</div>
         <div class="info-cube-text">בלי הרשמה – הכל נשמר רק אצלך</div>
-      </div>
-      <div class="info-cube">
+      </button>
+      <button type="button" class="info-cube" data-tip="workflow" aria-expanded="false" aria-controls="cubeTooltip">
         <div class="info-cube-icon">💡</div>
         <div class="info-cube-text">חפש ⬅ עדכן יתרה ⬅ עדכן בדשבורד</div>
-      </div>
-      <div class="info-cube">
+      </button>
+      <button type="button" class="info-cube" data-tip="disclaimer" aria-expanded="false" aria-controls="cubeTooltip">
         <div class="info-cube-icon">ℹ️</div>
         <div class="info-cube-text">להמחשה בלבד – אינו ייעוץ פיננסי</div>
-      </div>
+      </button>
     </div>
+    <div class="info-cube-tooltip" id="cubeTooltip" role="region" aria-live="polite" hidden></div>
   </div>
 </section>
 
@@ -2650,6 +2706,62 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     document.getElementById('loadingState').textContent = 'שגיאה בטעינת הנתונים: ' + error.message;
     console.error(error);
   }
+})();
+</script>
+<script>
+/* v3.29: info cube tooltips - works on hover (desktop) and tap (mobile) */
+(function() {
+  const cubes = document.querySelectorAll('.info-cube');
+  const tooltip = document.getElementById('cubeTooltip');
+  if (!cubes.length || !tooltip) return;
+
+  const tips = {
+    exposure: '<strong>חשיפה למניות ולמט״ח</strong>חשיפה למניות = החלק מההשקעה שלך המושקע במניות (חשוף לתנודות שוק, פוטנציאל תשואה וסיכון גבוהים יותר). חשיפה למט״ח = החלק מההשקעה הצמוד למטבעות זרים (בעיקר דולר). שני המדדים האלה מאפשרים לך להבין במבט אחד את רמת הסיכון בחיסכון שלך.',
+    privacy: '<strong>הכל נשמר רק אצלך</strong>היתרות ודמי הניהול שאתה מזין נשמרים אך ורק על המכשיר שלך (Local Storage של הדפדפן). שום מידע אישי לא נשלח לאף שרת, ולא ניתן לזהות אותך. אם תמחק את נתוני הדפדפן או תיכנס ממכשיר אחר – הנתונים לא יהיו זמינים.',
+    workflow: '<strong>איך עובדים עם הכלי</strong>1. חפש את שם החברה שמנהלת את הקופה שלך (אפשר למצוא בדוח השנתי שמגיע בדואר/מייל). 2. לחץ "עדכן" על הקופה הרצויה. 3. הזן יתרה ודמי ניהול בפועל. 4. לחץ "עדכן בדשבורד" כדי לראות את החשיפה הכוללת של כל החסכונות יחד.',
+    disclaimer: '<strong>למה זה לא ייעוץ?</strong>הדשבורד מציג חשיפות וביצועים מתוך נתונים ציבוריים של רשות שוק ההון בלבד. הוא אינו מהווה ייעוץ פיננסי או פנסיוני, אינו מציג המלצה לפעולה כלשהי, ואינו תחליף לייעוץ אישי על ידי בעל רישיון.'
+  };
+
+  let activeCube = null;
+
+  function closeTooltip() {
+    cubes.forEach(c => c.setAttribute('aria-expanded', 'false'));
+    tooltip.hidden = true;
+    activeCube = null;
+  }
+
+  function openTooltip(cube) {
+    const id = cube.dataset.tip;
+    if (!tips[id]) return;
+    cubes.forEach(c => c.setAttribute('aria-expanded', 'false'));
+    cube.setAttribute('aria-expanded', 'true');
+    tooltip.innerHTML = tips[id];
+    tooltip.hidden = false;
+    activeCube = cube;
+  }
+
+  cubes.forEach(cube => {
+    cube.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (activeCube === cube) {
+        closeTooltip();
+      } else {
+        openTooltip(cube);
+      }
+    });
+  });
+
+  // click outside closes tooltip
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.info-cube') && !e.target.closest('.info-cube-tooltip')) {
+      if (activeCube) closeTooltip();
+    }
+  });
+
+  // ESC key closes tooltip
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && activeCube) closeTooltip();
+  });
 })();
 </script>
 </body>
