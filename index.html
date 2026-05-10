@@ -1554,6 +1554,76 @@
     html { scroll-behavior: auto; }
   }
 
+
+
+  /* === PDF / Print light report override ===
+     The on-screen dashboard can stay dark, but the printed PDF must be bright,
+     clean and economical for A4. */
+  @media print {
+    body.pdf-mode .dashboard,
+    .dashboard {
+      background: #ffffff !important;
+      color: #0f172a !important;
+      box-shadow: none !important;
+    }
+    body.pdf-mode .dashboard *,
+    .dashboard * {
+      text-shadow: none !important;
+    }
+    body.pdf-mode .dashboard h2,
+    body.pdf-mode .perf-title,
+    .dashboard h2,
+    .perf-title {
+      color: #0f172a !important;
+    }
+    body.pdf-mode .dashboard .subtitle,
+    body.pdf-mode .action-note,
+    body.pdf-mode .perf-note,
+    .dashboard .subtitle,
+    .action-note,
+    .perf-note {
+      color: #475569 !important;
+    }
+    body.pdf-mode .total,
+    body.pdf-mode .metric-value,
+    .total,
+    .metric-value {
+      color: #0f172a !important;
+    }
+    body.pdf-mode .total-label,
+    body.pdf-mode .metric-label,
+    .total-label,
+    .metric-label {
+      color: #64748b !important;
+    }
+    body.pdf-mode .metric-card,
+    .metric-card {
+      background: #f8fafc !important;
+      border: 1px solid #dbe3ee !important;
+      color: #0f172a !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    body.pdf-mode .source-mix-item,
+    .source-mix-item {
+      background: #f8fafc !important;
+      border: 1px solid #dbe3ee !important;
+      color: #0f172a !important;
+      box-shadow: none !important;
+    }
+    body.pdf-mode .metric-bar,
+    .metric-bar {
+      background: #e2e8f0 !important;
+    }
+    body.pdf-mode .action-toolbar,
+    body.pdf-mode .action-note,
+    .action-toolbar,
+    .action-note {
+      display: none !important;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -2057,8 +2127,12 @@ function saveAsPDF() {
     return;
   }
   renderDashboard();
+  document.body.classList.add('pdf-mode');
   window.setTimeout(() => window.print(), 120);
 }
+window.addEventListener('afterprint', () => {
+  document.body.classList.remove('pdf-mode');
+});
 async function shareWhatsApp() {
   if (!hasReportData()) {
     alert('כדי לשלוח לווטסאפ צריך להוסיף לפחות מוצר אחד ולהזין יתרה.');
