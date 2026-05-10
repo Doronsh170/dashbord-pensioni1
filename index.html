@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<title>דשבורד חשיפות חיסכון | דורון שרייבמן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg-body: #f8fafc;
+    --bg-card: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --primary: #2563eb;
+    --primary-light: #eff6ff;
+    --accent: #c2410c;
+    --border: #e2e8f0;
+    --radius: 12px;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Heebo', sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    margin: 0; padding: 0;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 1000px; margin: 0 auto; padding: 1.5rem 1rem; }
+
+  header { text-align: center; margin-bottom: 2rem; }
+  h1 { font-size: 1.8rem; font-weight: 900; margin: 0 0 0.5rem 0; color: var(--text-main); }
+  
+  .meta-badge {
+    display: inline-block;
+    background: white;
+    padding: 0.4rem 1rem;
+    border-radius: 99px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+
+  /* Search UI */
+  .search-card {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .search-box { position: relative; }
+  #searchInput {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  #searchInput:focus { outline: none; border-color: var(--primary); }
+
+  #searchResults {
+    display: none;
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 50;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+  }
+
+  .res-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.8rem 1rem; border-bottom: 1px solid var(--border);
+  }
+  .res-item:hover { background: var(--primary-light); }
+  .add-btn {
+    background: var(--primary); color: white; border: none;
+    padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 700; cursor: pointer;
+  }
+
+  .filter-bar { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+  .filter-pill {
+    background: white; border: 1px solid var(--border); padding: 0.3rem 0.8rem;
+    border-radius: 99px; font-size: 0.85rem; cursor: pointer;
+  }
+  .filter-pill.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+  /* Selected Funds */
+  .fund-card {
+    background: white; border-radius: var(--radius); margin-bottom: 1rem;
+    border: 1px solid var(--border); overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .fund-header {
+    background: #f1f5f9; padding: 1rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .fund-title { font-weight: 800; font-size: 1.1rem; }
+  .fund-body { padding: 1.25rem; }
+
+  .grid-inputs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    background: #f8fafc; padding: 1rem; border-radius: 8px; margin-bottom: 1.25rem;
+  }
+  .grid-inputs label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); }
+  .grid-inputs input { width: 100%; padding: 0.6rem; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 1rem; }
+
+  .exposure-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; text-align: center; }
+  .exp-label { font-size: 0.75rem; color: var(--text-muted); display: block; }
+  .exp-val { font-weight: 800; font-size: 1rem; display: block; direction: ltr; }
+
+  /* Summary Section */
+  .summary-card {
+    background: white; border-radius: var(--radius); padding: 1.5rem;
+    border: 1px solid var(--border); box-shadow: var(--shadow);
+    margin-top: 2rem; position: relative;
+  }
+  .summary-card::before { content: ''; position: absolute; top:0; left:0; right:0; height:4px; background: var(--primary); }
+
+  .bar-container { margin-bottom: 1rem; }
+  .bar-meta { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.3rem; font-weight: 700; }
+  .bar-bg { background: #e2e8f0; height: 10px; border-radius: 10px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 10px; transition: width 0.6s ease; }
+
+  .summary-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+  .metric-box { background: #f1f5f9; padding: 1rem; border-radius: 10px; text-align: center; }
+  .metric-label { font-size: 0.8rem; color: var(--text-muted); display: block; }
+  .metric-val { font-size: 1.4rem; font-weight: 900; color: var(--primary); }
+
+  /* Footer */
+  footer { margin-top: 4rem; text-align: center; color: var(--text-muted); padding-bottom: 2rem; }
+  .disclosure { font-size: 0.75rem; max-width: 800px; margin: 0 auto 1.5rem; line-height: 1.6; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+  .credit { font-weight: 800; font-size: 0.9rem; color: var(--text-main); }
+
+  #loader { text-align: center; padding: 4rem; font-weight: 700; color: var(--text-muted); }
+  .tag { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; color: white; font-weight: 800; margin-right: 5px; }
+  .tag-gemel { background: #1e40af; }
+  .tag-pensia { background: #15803d; }
+  .tag-bituach { background: #7c3aed; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>דשבורד חשיפות חיסכון</h1>
+    <div id="dataAge" class="meta-badge">טוען נתונים...</div>
+  </header>
+
+  <div id="loader">מתחבר למאגר הממשלתי...</div>
+
+  <div id="app" style="display:none;">
+    <!-- Search Section -->
+    <div class="search-card">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="חפשו שם קופה, חברה מנהלת או מספר מוצר..." autocomplete="off">
+        <div id="searchResults"></div>
+      </div>
+      <div class="filter-bar" id="filters">
+        <button class="filter-pill active" data-filter="all">הכל</button>
+        <button class="filter-pill" data-filter="gemelnet">גמל והשתלמות</button>
+        <button class="filter-pill" data-filter="pensia">פנסיה</button>
+        <button class="filter-pill" data-filter="bituach">ביטוח</button>
+      </div>
+    </div>
+
+    <!-- Funds List -->
+    <div id="selectedContainer"></div>
+
+    <!-- Summary Section -->
+    <div id="summarySection" class="summary-card" style="display:none;">
+      <h2 style="margin-top:0; font-size:1.4rem;">סיכום תיק משוקלל</h2>
+      
+      <div class="bar-container">
+        <div class="bar-meta"><span>מניות</span><span id="sumStockVal">0%</span></div>
+        <div class="bar-bg"><div id="barStock" class="bar-fill" style="width:0%; background:#2563eb;"></div></div>
+      </div>
+      
+      <div class="bar-container">
+        <div class="bar-meta"><span>מט"ח</span><span id="sumFxVal">0%</span></div>
+        <div class="bar-bg"><div id="barFx" class="bar-fill" style="width:0%; background:#7c3aed;"></div></div>
+      </div>
+
+      <div class="bar-container">
+        <div class="bar-meta"><span>חו"ל</span><span id="sumForeignVal">0%</span></div>
+        <div class="bar-bg"><div id="barForeign" class="bar-fill" style="width:0%; background:#15803d;"></div></div>
+      </div>
+
+      <div class="summary-metrics">
+        <div class="metric-box">
+          <span class="metric-label">דמי ניהול ממוצעים</span>
+          <span id="avgFee" class="metric-val">0.00%</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-label">תשואה משוקללת YTD</span>
+          <span id="avgYield" class="metric-val" style="color:var(--text-main);">0.00%</span>
+        </div>
+      </div>
+      
+      <div style="text-align:center; margin-top:1.5rem;">
+        <span style="font-size:0.9rem; color:var(--text-muted);">סך הון מנותח: </span>
+        <span id="totalBalance" style="font-weight:900; font-size:1.1rem;">₪0</span>
+      </div>
+    </div>
+
+    <footer>
+      <div class="disclosure">
+        גילוי נאות: הנתונים המוצגים מעודכנים ישירות מהמאגר הממשלתי הרשמי (מערכות גמל-נט, פנסיה-נט וביטוח-נט של רשות שוק ההון). המחשבון משמש כלי עזר לניתוח חשיפות ציבוריות בלבד ואינו מהווה ייעוץ פנסיוני, ייעוץ השקעות או תחליף לבחינה מקצועית של התיק האישי.
+      </div>
+      <div class="credit">פותח ע"י דורון שרייבמן</div>
+    </footer>
+  </div>
+</div>
+
+<script>
+let RAW_DATA = [];
+let SELECTED = [];
+let currentFilter = 'all';
+
+function format(n, d=2) {
+  if (n === null || isNaN(n)) return '-';
+  return Number(n).toLocaleString('he-IL', { minimumFractionDigits: d, maximumFractionDigits: d });
+}
+
+async function init() {
+  try {
+    const res = await fetch('./funds_unified.json');
+    const json = await res.json();
+    RAW_DATA = json.funds || [];
+    document.getElementById('dataAge').textContent = 'מעודכן לנתוני חודש: ' + (json.meta?.dataset_max_period || '2026');
+    document.getElementById('loader').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    
+    // Load existing state
+    const saved = localStorage.getItem('user_portfolio');
+    if (saved) SELECTED = JSON.parse(saved);
+    renderList();
+  } catch(e) {
+    document.getElementById('loader').textContent = 'שגיאה בחיבור למאגר.';
+  }
+}
+
+function handleSearch(q) {
+  const resultsBox = document.getElementById('searchResults');
+  if (!q.trim()) { resultsBox.style.display = 'none'; return; }
+  
+  let filtered = RAW_DATA.filter(f => 
+    f.fund_name.includes(q) || f.fund_id.includes(q) || f.managing_corp.includes(q)
+  );
+  if (currentFilter !== 'all') filtered = filtered.filter(f => f.source === currentFilter);
+  
+  filtered = filtered.slice(0, 15);
+  if (!filtered.length) {
+    resultsBox.innerHTML = '<div style="padding:1rem; font-size:0.9rem;">לא נמצאו תוצאות</div>';
+  } else {
+    resultsBox.innerHTML = filtered.map(f => `
+      <div class="res-item">
+        <div style="flex:1;">
+          <div style="font-weight:700; font-size:0.95rem;">${f.fund_name}</div>
+          <div style="font-size:0.75rem; color:var(--text-muted);">
+            <span class="tag tag-${f.source}">${f.source_label}</span> ${f.managing_corp} | ${f.fund_id}
+          </div>
+        </div>
+        <button class="add-btn" onclick="addFund('${f.uid}')">הוסף</button>
+      </div>
+    `).join('');
+  }
+  resultsBox.style.display = 'block';
+}
+
+function addFund(uid) {
+  if (SELECTED.find(s => s.uid === uid)) return;
+  const f = RAW_DATA.find(x => x.uid === uid);
+  SELECTED.push({ ...f, balance: 0, fee: null });
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchResults').style.display = 'none';
+  save();
+  renderList();
+}
+
+function removeFund(uid) {
+  SELECTED = SELECTED.filter(s => s.uid !== uid);
+  save();
+  renderList();
+}
+
+function updateInput(uid, field, val) {
+  const item = SELECTED.find(s => s.uid === uid);
+  if (item) {
+    item[field] = val === "" ? (field === 'fee' ? null : 0) : Number(val);
+    save();
+    calculate();
+  }
+}
+
+function renderList() {
+  const container = document.getElementById('selectedContainer');
+  if (!SELECTED.length) {
+    container.innerHTML = '<div style="text-align:center; padding:3rem; background:white; border-radius:12px; border:2px dashed #e2e8f0; color:#94a3b8;">התיק ריק. הוסיפו מוצרים מהחיפוש למעלה.</div>';
+    document.getElementById('summarySection').style.display = 'none';
+    return;
+  }
+  
+  container.innerHTML = SELECTED.map(s => `
+    <div class="fund-card">
+      <div class="fund-header">
+        <div>
+          <div class="fund-title">${s.fund_name}</div>
+          <div style="font-size:0.75rem; color:var(--text-muted);">${s.managing_corp} | מס' ${s.fund_id}</div>
+        </div>
+        <button onclick="removeFund('${s.uid}')" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:#cbd5e1;">&times;</button>
+      </div>
+      <div class="fund-body">
+        <div class="grid-inputs">
+          <div><label>יתרה נוכחית (₪)</label><input type="number" value="${s.balance || ''}" oninput="updateInput('${s.uid}','balance',this.value)" placeholder="0"></div>
+          <div><label>דמי ניהול צבירה (%)</label><input type="number" step="0.01" value="${s.fee !== null ? s.fee : ''}" oninput="updateInput('${s.uid}','fee',this.value)" placeholder="%"></div>
+        </div>
+        <div class="exposure-row">
+          <div><span class="exp-label">מניות</span><span class="exp-val">${format(s.stock_pct)}%</span></div>
+          <div><span class="exp-label">מט"ח</span><span class="exp-val">${format(s.fx_pct)}%</span></div>
+          <div><span class="exp-label">חו"ל</span><span class="exp-val">${format(s.foreign_pct)}%</span></div>
+          <div><span class="exp-label">YTD</span><span class="exp-val">${format(s.ytd_yield)}%</span></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('summarySection').style.display = 'block';
+  calculate();
+}
+
+function calculate() {
+  let totalB = 0, weightedStock = 0, weightedFx = 0, weightedForeign = 0, weightedYield = 0, totalFeeB = 0, weightedFee = 0;
+  
+  SELECTED.forEach(s => {
+    const b = s.balance || 0;
+    totalB += b;
+    weightedStock += (s.stock_pct || 0) * b;
+    weightedFx += (s.fx_pct || 0) * b;
+    weightedForeign += (s.foreign_pct || 0) * b;
+    weightedYield += (s.ytd_yield || 0) * b;
+    if (s.fee !== null && b > 0) {
+      weightedFee += s.fee * b;
+      totalFeeB += b;
+    }
+  });
+
+  document.getElementById('totalBalance').textContent = '₪' + format(totalB, 0);
+  
+  if (totalB > 0) {
+    const pStock = (weightedStock / totalB);
+    const pFx = (weightedFx / totalB);
+    const pForeign = (weightedForeign / totalB);
+    
+    document.getElementById('sumStockVal').textContent = format(pStock) + '%';
+    document.getElementById('barStock').style.width = Math.min(pStock, 100) + '%';
+    
+    document.getElementById('sumFxVal').textContent = format(pFx) + '%';
+    document.getElementById('barFx').style.width = Math.min(pFx, 100) + '%';
+
+    document.getElementById('sumForeignVal').textContent = format(pForeign) + '%';
+    document.getElementById('barForeign').style.width = Math.min(pForeign, 100) + '%';
+    
+    document.getElementById('avgYield').textContent = format(weightedYield / totalB) + '%';
+    document.getElementById('avgFee').textContent = totalFeeB > 0 ? format(weightedFee / totalFeeB) + '%' : 'חסר נתון';
+  }
+}
+
+function save() { localStorage.setItem('user_portfolio', JSON.stringify(SELECTED)); }
+
+document.getElementById('searchInput').addEventListener('input', e => handleSearch(e.target.value));
+document.querySelectorAll('.filter-pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    handleSearch(document.getElementById('searchInput').value);
+  });
+});
+
+init();
+</script>
+</body>
+</html>
