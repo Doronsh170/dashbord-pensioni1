@@ -1694,15 +1694,67 @@
 
   /* v3.26: hide section number badge next to search title */
   .section-title .num { display: none !important; }
+
+  /* v3.28: 4 blue info cubes replacing hero prose */
+  .info-cubes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 22px;
+  }
+  @media (max-width: 720px) {
+    .info-cubes {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+  }
+  .info-cube {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    padding: 18px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 120px;
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(37, 99, 235, 0.05);
+  }
+  .info-cube-icon {
+    font-size: 28px;
+    line-height: 1;
+  }
+  .info-cube-text {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #1e3a8a;
+    line-height: 1.45;
+  }
 </style>
 </head>
 <body>
 <section class="hero">
   <div class="container">
     <h1>הקופות והקרנות שלך במקום אחד-  ומה <em>החשיפה</em> שלך למניות ולמט״ח</h1>
-    <p>מוסיפים את היתרה של כל קופה ורואים בשנייה איך ההשקעה שלך מחולקת - מה החשיפה למניות, מה החשיפה למט״ח, ומה התמונה הכוללת. בלי הרשמה ובלי פרטים אישיים.</p>
-    <div class="note">
-      הסכומים שאתה מזין נשמרים על המכשיר שלך בלבד ולא נשלחים לאף מקום. הכלי הזה רק ממחיש לך איך הכסף שלך מושקע — הוא לא ייעוץ פיננסי או פנסיוני, ואינו ממליץ לעשות שום פעולה.
+    <div class="info-cubes">
+      <div class="info-cube">
+        <div class="info-cube-icon">📊</div>
+        <div class="info-cube-text">רואים בקליק את החשיפה למניות ולמט״ח</div>
+      </div>
+      <div class="info-cube">
+        <div class="info-cube-icon">🔒</div>
+        <div class="info-cube-text">בלי הרשמה – הכל נשמר רק אצלך</div>
+      </div>
+      <div class="info-cube">
+        <div class="info-cube-icon">💡</div>
+        <div class="info-cube-text">חפש ⬅ עדכן יתרה ⬅ עדכן בדשבורד</div>
+      </div>
+      <div class="info-cube">
+        <div class="info-cube-icon">ℹ️</div>
+        <div class="info-cube-text">להמחשה בלבד – אינו ייעוץ פיננסי</div>
+      </div>
     </div>
   </div>
 </section>
@@ -1718,7 +1770,6 @@
     </div>
     <div class="search-wrap">
       <input type="text" class="search-input" id="searchInput" placeholder="שם החברה או המסלול — לדוגמה: מנורה, הראל, מיטב, אלטשולר" autocomplete="off" />
-      <div class="search-help">כתוב את שם החברה שמנהלת לך את הקופה - אפשר למצוא אותו על הדוח השנתי שאתה מקבל בדואר או במייל. אחרי שמצאת, לוחצים על "עדכן", מזינים יתרה ודמי ניהול ולוחצים על "עדכן בדשבורד".</div>
       <div class="quick-editor" id="quickEditor"></div>
       <div class="search-results" id="searchResults"></div>
     </div>
