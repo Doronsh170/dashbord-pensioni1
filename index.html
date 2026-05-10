@@ -254,58 +254,124 @@
 
   /* === Filter pills === */
   .filters {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 18px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
   }
   .filter-btn {
-    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 16px 18px;
+    min-height: 92px;
     font: inherit;
-    font-size: 12.5px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 800;
     background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--r-pill);
-    color: var(--ink-soft);
+    border: 1.5px solid var(--line);
+    border-radius: var(--r-md);
+    color: var(--ink);
     cursor: pointer;
-    transition: all 0.18s ease;
+    transition: all 0.2s ease;
     box-shadow: var(--shadow-xs);
-    line-height: 1.3;
+    line-height: 1.35;
+    text-align: right;
+    position: relative;
     -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+  }
+  .filter-btn::before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+    flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease;
+  }
+  .filter-btn[data-filter="gemelnet"]::before { background: var(--gemel-tag); box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12); }
+  .filter-btn[data-filter="pensia"]::before { background: var(--pensia-tag); box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12); }
+  .filter-btn[data-filter="bituach"]::before { background: var(--bituach-tag); box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.12); }
+  .filter-btn[data-filter="all"]::before {
+    background: linear-gradient(135deg, var(--gemel-tag) 0%, var(--pensia-tag) 50%, var(--bituach-tag) 100%);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.14);
   }
   .filter-btn:hover:not(.active) {
-    color: var(--ink);
     border-color: var(--ink-faint);
-    background: var(--card-tint);
+    background: var(--card);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
   }
+  .filter-btn:hover:not(.active)::before { transform: scale(1.1); }
   .filter-btn.active {
     background: var(--ink);
     color: #fff;
     border-color: var(--ink);
-    font-weight: 700;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
   }
+  .filter-btn.active::before {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.18);
+    transform: scale(1.15);
+  }
+  .filter-btn:active { transform: translateY(0) scale(0.985); }
   .filter-count {
-    display: inline-block;
-    margin-right: 6px;
-    padding: 1px 8px;
-    border-radius: var(--r-pill);
-    background: rgba(15, 23, 42, 0.06);
-    font-size: 10.5px;
-    font-weight: 800;
-    line-height: 1.55;
+    display: block;
+    margin-right: 0;
+    margin-top: -2px;
+    padding: 0;
+    background: transparent;
+    color: var(--ink-muted);
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 1.3;
+    font-variant-numeric: tabular-nums;
   }
   .filter-btn.active .filter-count {
-    background: rgba(255, 255, 255, 0.22);
-    color: rgba(255, 255, 255, 0.95);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.65);
   }
 
   /* === Search === */
   .search-wrap { position: relative; max-width: none; }
+  .search-wrap::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 22px;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--ink-faint);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
+    transition: border-color 0.18s ease;
+  }
+  .search-wrap::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    margin-top: 6px;
+    transform: rotate(45deg);
+    width: 8px;
+    height: 2px;
+    background: var(--ink-faint);
+    border-radius: 1px;
+    pointer-events: none;
+    z-index: 2;
+    transition: background-color 0.18s ease;
+  }
+  .search-wrap:focus-within::before { border-color: var(--accent); }
+  .search-wrap:focus-within::after { background: var(--accent); }
   .search-input {
     width: 100%;
-    padding: 16px 22px;
+    padding: 18px 52px 18px 22px;
     font: inherit;
     font-size: 16px;
     font-weight: 500;
@@ -805,31 +871,48 @@
 
   /* === Action toolbar === */
   .action-toolbar {
-    display: flex;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
     flex-wrap: wrap;
-    margin: 8px 0 24px;
+    margin: 10px 0 24px;
+    max-width: 600px;
   }
   .action-btn {
-    border: 1px solid rgba(255, 255, 255, 0.20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
     background: rgba(255, 255, 255, 0.06);
     color: #fff;
     font: inherit;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
-    padding: 11px 18px;
+    padding: 16px 18px;
     cursor: pointer;
-    border-radius: var(--r-sm);
-    transition: all 0.18s ease;
+    border-radius: var(--r-md);
+    transition: all 0.2s ease;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     -webkit-tap-highlight-color: transparent;
+    text-align: center;
+    line-height: 1.3;
   }
+  .action-btn::before {
+    font-size: 20px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .action-btn[onclick*="saveAsPDF"]::before { content: "📄"; }
+  .action-btn[onclick*="shareWhatsApp"]::before { content: "💬"; }
   .action-btn:hover {
-    border-color: rgba(255, 255, 255, 0.40);
-    background: rgba(255, 255, 255, 0.14);
-    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.16);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.20);
   }
+  .action-btn:active { transform: translateY(0) scale(0.985); }
   .action-note {
     color: rgba(255, 255, 255, 0.55);
     font-size: 11.5px;
@@ -1084,33 +1167,39 @@
       padding: 4px 9px;
     }
 
-    /* Filters: horizontal scroll */
+    /* Filters: 2x2 card grid */
     .filters {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 8px;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      padding: 4px 18px 12px;
-      margin: 0 -18px 14px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      overflow: visible;
+      padding: 0;
+      margin: 0 0 18px;
     }
-    .filters::-webkit-scrollbar { display: none; }
     .filter-btn {
-      flex: 0 0 auto;
-      padding: 11px 16px;
-      font-size: 12.5px;
-      box-shadow: var(--shadow-xs);
+      flex: initial;
+      padding: 14px 14px;
+      min-height: 84px;
+      font-size: 13px;
+      box-shadow: var(--shadow-sm);
+      border-radius: var(--r-md);
+    }
+    .filter-btn::before {
+      width: 12px;
+      height: 12px;
     }
     .filter-btn.active { box-shadow: var(--shadow-md); }
+    .filter-count { font-size: 11.5px; }
 
     /* Search */
     .search-input {
-      padding: 15px 17px;
+      padding: 16px 48px 16px 17px;
       font-size: 16px;
-      border-radius: var(--r-sm);
+      border-radius: var(--r-md);
       box-shadow: var(--shadow-sm);
     }
+    .search-wrap::before { right: 18px; width: 15px; height: 15px; }
+    .search-wrap::after { right: 11px; }
     .search-help {
       background: rgba(255, 255, 255, 0.7);
       border: 1px solid var(--line-soft);
@@ -1234,10 +1323,17 @@
     .action-toolbar {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 8px;
-      margin: 10px 0 16px;
+      gap: 10px;
+      margin: 10px 0 18px;
+      max-width: none;
     }
-    .action-btn { width: 100%; padding: 13px 14px; font-size: 14px; }
+    .action-btn {
+      width: 100%;
+      padding: 16px 16px;
+      font-size: 14.5px;
+      gap: 12px;
+    }
+    .action-btn::before { font-size: 22px; }
     .action-note { font-size: 11px; line-height: 1.55; margin: 0 0 22px; }
     .total-row {
       grid-template-columns: 1fr;
@@ -1301,7 +1397,7 @@
   /* === Small mobile === */
   @media (max-width: 420px) {
     .container { padding: 0 16px; }
-    .filters { padding: 4px 16px 12px; margin: 0 -16px 14px; }
+    .filters { padding: 0; margin: 0 0 16px; gap: 8px; }
     .tagline {
       max-width: 158px;
       font-size: 8px;
@@ -1339,8 +1435,8 @@
 
 <section class="hero">
   <div class="container">
-    <h1>הקופות והקרנות שלך — כיצד ההשקעה מנוהלת ומה <em>החשיפה</em> שלך למניות ולמט״ח</h1>
-    <p>מוסיפים את היתרה של כל קופה ורואים בשנייה איך ההשקעה שלך מנוהלת — מה משקל המניות, מה החשיפה למט״ח, ומה התמונה הכוללת. בלי הרשמה ובלי פרטים אישיים.</p>
+    <h1>הקופות והקרנות שלך במקום אחד-  ומה <em>החשיפה</em> שלך למניות ולמט״ח</h1>
+    <p>מוסיפים את היתרה של כל קופה ורואים בשנייה איך ההשקעה שלך מחולקת - מה החשיפה למניות, מה החשיפה למט״ח, ומה התמונה הכוללת. בלי הרשמה ובלי פרטים אישיים.</p>
     <div class="meta" id="datasetMeta"></div>
     <div class="note">
       הסכומים שאתה מזין נשמרים על המכשיר שלך בלבד ולא נשלחים לאף מקום. הכלי הזה רק ממחיש לך איך הכסף שלך מושקע — הוא לא ייעוץ פיננסי או פנסיוני, ואינו ממליץ לעשות שום פעולה.
@@ -1359,7 +1455,7 @@
     </div>
     <div class="search-wrap">
       <input type="text" class="search-input" id="searchInput" placeholder="שם החברה או המסלול — לדוגמה: מנורה, הראל, מיטב, אלטשולר" autocomplete="off" />
-      <div class="search-help">כתוב את שם החברה שמנהלת לך את הקופה — אפשר למצוא אותו על הדוח השנתי שאתה מקבל בדואר. אחרי שמצאת, לוחצים על "בחר" ומזינים את היתרה.</div>
+      <div class="search-help">כתוב את שם החברה שמנהלת לך את הקופה - אפשר למצוא אותו על הדוח השנתי שאתה מקבל בדואר או במייל. אחרי שמצאת, לוחצים על "בחר" ומזינים את היתרה.</div>
       <div class="search-results" id="searchResults"></div>
     </div>
   </div>
@@ -1649,7 +1745,7 @@ function renderFunds() {
     wrap.innerHTML = `
       <div class="empty">
         <div class="arrow">↟</div>
-        <div>הוסף לפחות קופה אחת כדי לראות איפה הכסף שלך מושקע</div>
+        <div>הוסף לפחות קופה אחת כדי לראות כיצד הכסף שלך מושקע</div>
       </div>
     `;
     document.getElementById('dashboard').style.display = 'none';
