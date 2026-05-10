@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | POC v3.14</title>
+<title>דשבורד חשיפות חיסכון</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -622,9 +622,49 @@
 
   .balance-input-wrap {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    align-items: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
   }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field-label {
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+  .inline-input {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .fee-input {
+    width: 102px;
+    padding: 11px 12px;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    border: 1.5px solid var(--line);
+    background: var(--card);
+    text-align: left;
+    direction: ltr;
+    font-variant-numeric: tabular-nums;
+    outline: none;
+    border-radius: var(--r-sm);
+    transition: all 0.18s ease;
+    color: var(--ink);
+  }
+  .fee-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+  }
+
   .balance-input {
     width: 142px;
     padding: 11px 14px;
@@ -1283,13 +1323,16 @@
     .balance-input-wrap {
       width: 100%;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto auto;
-      gap: 8px;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-items: end;
     }
-    .balance-input {
+    .field-group { width: 100%; }
+    .inline-input { width: 100%; }
+    .balance-input, .fee-input {
       width: 100%;
-      padding: 13px 14px;
-      font-size: 17px;
+      padding: 13px 12px;
+      font-size: 16px;
       border-radius: var(--r-sm);
     }
     .currency { align-self: center; }
@@ -1426,13 +1469,6 @@
 </style>
 </head>
 <body>
-<header>
-  <div class="container">
-    <div class="logo">חשיפות<span class="accent">.</span></div>
-    <div class="tagline">POC v3.14 | תשואה 3 שנים מצטברת | PDF בעמוד אחד | Gemelnet | Pensionnet | Bituachnet</div>
-  </div>
-</header>
-
 <section class="hero">
   <div class="container">
     <h1>הקופות והקרנות שלך במקום אחד-  ומה <em>החשיפה</em> שלך למניות ולמט״ח</h1>
@@ -1447,12 +1483,6 @@
 <section class="section" id="searchSection">
   <div class="container">
     <h2 class="section-title"><span class="num">01</span>מצא את הקופות שלך</h2>
-    <div class="filters" id="filters">
-      <button class="filter-btn active" data-filter="all" data-label="הכל">הכל</button>
-      <button class="filter-btn" data-filter="gemelnet" data-label="גמל / השתלמות / גמל להשקעה">גמל / השתלמות / גמל להשקעה</button>
-      <button class="filter-btn" data-filter="pensia" data-label="קרנות פנסיה">קרנות פנסיה</button>
-      <button class="filter-btn" data-filter="bituach" data-label="פוליסות חיסכון / ביטוחי מנהלים">פוליסות חיסכון / ביטוחי מנהלים</button>
-    </div>
     <div class="search-wrap">
       <input type="text" class="search-input" id="searchInput" placeholder="שם החברה או המסלול — לדוגמה: מנורה, הראל, מיטב, אלטשולר" autocomplete="off" />
       <div class="search-help">כתוב את שם החברה שמנהלת לך את הקופה - אפשר למצוא אותו על הדוח השנתי שאתה מקבל בדואר או במייל. אחרי שמצאת, לוחצים על "בחר" ומזינים את היתרה.</div>
@@ -1526,8 +1556,8 @@
           <div class="metric-value"><span id="perf3y">-</span><span class="pct">%</span></div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">דמי ניהול מצבירה</div>
-          <div class="metric-value"><span id="feeSavings">-</span><span class="pct">%</span></div>
+          <div class="metric-label">דמי ניהול אישיים</div>
+          <div class="metric-value"><span id="feeSavings">לא הוזן</span><span class="pct" id="feeSavingsPct" style="display:none">%</span></div>
         </div>
       </div>
     </div>
@@ -1550,7 +1580,7 @@
             <th class="num">חודשי</th>
             <th class="num">YTD</th>
             <th class="num">3Y מצטבר</th>
-            <th class="num">דמי ניהול</th>
+            <th class="num">דמי ניהול שהוזנו</th>
           </tr>
         </thead>
         <tbody id="detailsRows"></tbody>
@@ -1561,7 +1591,7 @@
 
 <footer>
   <div class="container">
-    <strong>הבהרה מקצועית:</strong> הדשבורד מציג חשיפות וביצועים מתוך נתונים ציבוריים של המסלולים בלבד. הוא אינו מושך יתרות אישיות ממסלקה פנסיונית, אינו מחליף ייעוץ פנסיוני או פיננסי, ואינו מציג המלצה. "חשיפה לחו״ל" אינה שקולה בהכרח ל"מניות חו״ל", משום שבקבצים היא כוללת גם חשיפות זרות שאינן מנייתיות. נתוני התשואה הם נתוני מסלול ציבוריים: חודשית, מתחילת שנה ו-3 שנים מצטבר.
+    <strong>הבהרה מקצועית:</strong> הדשבורד מציג חשיפות וביצועים מתוך נתונים ציבוריים של המסלולים בלבד. הוא אינו מושך יתרות אישיות ממסלקה פנסיונית, אינו מחליף ייעוץ פנסיוני או פיננסי, ואינו מציג המלצה. "חשיפה לחו״ל" אינה שקולה בהכרח ל"מניות חו״ל", משום שבקבצים היא כוללת גם חשיפות זרות שאינן מנייתיות. נתוני התשואה הם נתוני מסלול ציבוריים: חודשית, מתחילת שנה ו-3 שנים מצטבר. דמי הניהול בדשבורד מבוססים רק על הנתון שהוזן ידנית עבור כל מוצר, ולא על דמי הניהול הממוצעים במאגר.
     <div class="developer-credit">פותח ע"י דורון שרייבמן</div>
   </div>
 </footer>
@@ -1577,6 +1607,7 @@ let userFunds = [];
 let LAST_FOCUSED_UID = null;
 let QUICK_RETURN_VISIBLE = false;
 const balanceInputTimers = {};
+const feeInputTimers = {};
 const STORAGE_KEY = 'pension_dashboard_funds_v3';
 
 const SOURCE_LABEL = {
@@ -1711,8 +1742,21 @@ function searchFunds(query, limit = Infinity, filterOverride = activeFilter, all
   return scored.slice(0, Number.isFinite(limit) ? limit : scored.length).map(x => withRuntimeFlags(x.rec));
 }
 
+function normalizeUserFee(value) {
+  if (value === '' || value === null || value === undefined) return null;
+  const num = Number(value);
+  return Number.isFinite(num) && num >= 0 ? num : null;
+}
+function fmtUserFee(value) {
+  return Number.isFinite(value) ? value.toFixed(2) + '%' : 'לא הוזן';
+}
 function saveState() {
-  const minimal = userFunds.map(item => ({ uid: item.fund.uid, balance: item.balance || 0, updated_at: item.updated_at || new Date().toISOString() }));
+  const minimal = userFunds.map(item => ({
+    uid: item.fund.uid,
+    balance: item.balance || 0,
+    management_fee: Number.isFinite(item.managementFee) ? item.managementFee : null,
+    updated_at: item.updated_at || new Date().toISOString()
+  }));
   localStorage.setItem(STORAGE_KEY, JSON.stringify(minimal));
 }
 function loadState() {
@@ -1721,7 +1765,12 @@ function loadState() {
     userFunds = [];
     for (const item of saved) {
       const rec = DATA.find(r => r.uid === item.uid);
-      if (rec) userFunds.push({ fund: withRuntimeFlags(rec), balance: Number(item.balance) || 0, updated_at: item.updated_at });
+      if (rec) userFunds.push({
+        fund: withRuntimeFlags(rec),
+        balance: Number(item.balance) || 0,
+        managementFee: normalizeUserFee(item.management_fee),
+        updated_at: item.updated_at
+      });
     }
   } catch (e) {
     userFunds = [];
@@ -1773,8 +1822,20 @@ function renderFunds() {
           <div class="mini-exp"><span class="label">3Y מצטבר</span><span class="val ${metricClass(f.yield_trailing_3yrs)}">${fmtPct(f.yield_trailing_3yrs, 1)}</span></div>
         </div>
         <div class="balance-input-wrap">
-          <input type="number" class="balance-input" data-uid="${escapeHtml(f.uid)}" value="${item.balance || ''}" placeholder="0" min="0" inputmode="numeric" oninput="handleBalanceInput(${idx}, this.value)" onchange="handleBalanceInput(${idx}, this.value, true)" />
-          <span class="currency">₪</span>
+          <label class="field-group">
+            <span class="field-label">יתרה</span>
+            <span class="inline-input">
+              <input type="number" class="balance-input" data-uid="${escapeHtml(f.uid)}" value="${item.balance || ''}" placeholder="0" min="0" inputmode="numeric" oninput="handleBalanceInput(${idx}, this.value)" onchange="handleBalanceInput(${idx}, this.value, true)" />
+              <span class="currency">₪</span>
+            </span>
+          </label>
+          <label class="field-group">
+            <span class="field-label">דמי ניהול מצבירה</span>
+            <span class="inline-input">
+              <input type="number" class="fee-input" data-uid="${escapeHtml(f.uid)}" value="${Number.isFinite(item.managementFee) ? item.managementFee : ''}" placeholder="לא הוזן" min="0" step="0.01" inputmode="decimal" oninput="handleFeeInput(${idx}, this.value)" onchange="handleFeeInput(${idx}, this.value, true)" />
+              <span class="currency">%</span>
+            </span>
+          </label>
           <button type="button" class="return-search-btn" data-return-idx="${idx}" style="display:${Number(item.balance) > 0 ? 'inline-block' : 'none'}" onclick="returnToSearch()">חזור לחיפוש</button>
           <button class="remove-btn" onclick="removeFund(${idx})" title="הסרה">✕</button>
         </div>
@@ -1798,6 +1859,30 @@ function weightedMetric(key, totalBalance) {
   }
   return covered > 0 ? sum / covered : null;
 }
+function weightedUserManagementFee(totalBalance) {
+  let sum = 0;
+  let covered = 0;
+  for (const item of userFunds) {
+    const balance = Number(item.balance) || 0;
+    if (balance <= 0) continue;
+    if (!Number.isFinite(item.managementFee)) return null;
+    covered += balance;
+    sum += balance * item.managementFee;
+  }
+  return covered > 0 ? sum / covered : null;
+}
+function setFeeMetric(value) {
+  const el = document.getElementById('feeSavings');
+  const pct = document.getElementById('feeSavingsPct');
+  if (Number.isFinite(value)) {
+    el.textContent = value.toFixed(2);
+    if (pct) pct.style.display = '';
+  } else {
+    el.textContent = 'לא הוזן';
+    if (pct) pct.style.display = 'none';
+  }
+  el.className = '';
+}
 function setMetric(id, value, digits = 1) {
   const el = document.getElementById(id);
   el.textContent = Number.isFinite(value) ? value.toFixed(digits) : '-';
@@ -1819,7 +1904,7 @@ function renderDashboard() {
   const perfMonth = weightedMetric('monthly_yield', totalBalance);
   const perfYtd = weightedMetric('ytd_yield', totalBalance);
   const perf3y = weightedMetric('yield_trailing_3yrs', totalBalance);
-  const feeSavings = weightedMetric('avg_annual_management_fee', totalBalance);
+  const feeSavings = weightedUserManagementFee(totalBalance);
 
   document.getElementById('totalBalance').textContent = fmtCurrency(totalBalance);
   setMetric('aggStock', aggStock, 1);
@@ -1829,7 +1914,7 @@ function renderDashboard() {
   setMetric('perfMonth', perfMonth, 2);
   setMetric('perfYtd', perfYtd, 2);
   setMetric('perf3y', perf3y, 2);
-  setMetric('feeSavings', feeSavings, 2);
+  setFeeMetric(feeSavings);
 
   const barPairs = [
     ['aggStockBar', aggStock],
@@ -1869,7 +1954,7 @@ function renderDashboard() {
           <td class="num ${metricClass(f.monthly_yield)}">${fmtPct(f.monthly_yield, 2)}</td>
           <td class="num ${metricClass(f.ytd_yield)}">${fmtPct(f.ytd_yield, 2)}</td>
           <td class="num ${metricClass(f.yield_trailing_3yrs)}">${fmtPct(f.yield_trailing_3yrs, 2)}</td>
-          <td class="num">${fmtPct(f.avg_annual_management_fee, 2)}</td>
+          <td class="num">${fmtUserFee(item.managementFee)}</td>
         </tr>
       `;
     }).join('');
@@ -1893,7 +1978,7 @@ function buildShareText() {
   const aggFx = weightedMetric('fx_pct', totalBalance);
   const aggLiquid = weightedMetric('liquid_pct', totalBalance);
   const perfYtd = weightedMetric('ytd_yield', totalBalance);
-  const feeSavings = weightedMetric('avg_annual_management_fee', totalBalance);
+  const feeSavings = weightedUserManagementFee(totalBalance);
   const lines = [
     'דשבורד חשיפות חיסכון',
     `יתרה כוללת שהוזנה: ${fmtCurrency(totalBalance)}`,
@@ -1903,7 +1988,7 @@ function buildShareText() {
     `נכסים סחירים: ${fmtPct(aggLiquid, 1)}`,
     `תשואה מתחילת שנה לפי מסלולים, משוקללת: ${fmtPct(perfYtd, 2)}`,
     `תשואה 3 שנים מצטברת לפי מסלולים, משוקללת: ${fmtPct(weightedMetric('yield_trailing_3yrs', totalBalance), 2)}`,
-    `דמי ניהול מצבירה, משוקלל: ${fmtPct(feeSavings, 2)}`,
+    `דמי ניהול אישיים משוקללים: ${Number.isFinite(feeSavings) ? fmtPct(feeSavings, 2) : 'לא הוזן'}`,
     '',
     'פירוט מוצרים:'
   ];
@@ -1913,7 +1998,7 @@ function buildShareText() {
     if (balance <= 0) continue;
     const f = item.fund;
     const weight = totalBalance > 0 ? balance / totalBalance * 100 : 0;
-    lines.push(`- ${SOURCE_LABEL[f.source]} | ${f.fund_name} | ${fmtCurrency(balance)} | משקל ${weight.toFixed(1)}% | מניות ${fmtPct(f.stock_pct, 1)} | חו״ל ${fmtPct(f.foreign_pct, 1)} | מט״ח ${fmtPct(f.fx_pct, 1)}`);
+    lines.push(`- ${SOURCE_LABEL[f.source]} | ${f.fund_name} | ${fmtCurrency(balance)} | משקל ${weight.toFixed(1)}% | מניות ${fmtPct(f.stock_pct, 1)} | חו״ל ${fmtPct(f.foreign_pct, 1)} | מט״ח ${fmtPct(f.fx_pct, 1)} | דמי ניהול ${fmtUserFee(item.managementFee)}`);
   }
   lines.push('');
   lines.push('הבהרה: הנתונים מבוססים על נתונים ציבוריים ויתרות שהוזנו ידנית. זה אינו ייעוץ או המלצה.');
@@ -1988,7 +2073,7 @@ function addFund(fund) {
   updateFloatingSearchButton();
   const exists = userFunds.some(item => item.fund.uid === fund.uid);
   if (!exists) {
-    userFunds.push({ fund, balance: 0, updated_at: new Date().toISOString() });
+    userFunds.push({ fund, balance: 0, managementFee: null, updated_at: new Date().toISOString() });
     saveState();
   }
   const currentQuery = document.getElementById('searchInput').value;
@@ -1997,6 +2082,7 @@ function addFund(fund) {
 }
 function removeFund(idx) {
   if (balanceInputTimers[idx]) clearTimeout(balanceInputTimers[idx]);
+  if (feeInputTimers[idx]) clearTimeout(feeInputTimers[idx]);
   if (userFunds[idx] && userFunds[idx].fund.uid === LAST_FOCUSED_UID) LAST_FOCUSED_UID = null;
   userFunds.splice(idx, 1);
   saveState();
@@ -2020,9 +2106,24 @@ function updateBalance(idx, value) {
   updateFloatingSearchButton();
   renderDashboard();
 }
+function handleFeeInput(idx, value, immediate = false) {
+  if (feeInputTimers[idx]) clearTimeout(feeInputTimers[idx]);
+  const run = () => updateManagementFee(idx, value);
+  if (immediate) run();
+  else feeInputTimers[idx] = setTimeout(run, 500);
+}
+function updateManagementFee(idx, value) {
+  if (!userFunds[idx]) return;
+  userFunds[idx].managementFee = normalizeUserFee(value);
+  userFunds[idx].updated_at = new Date().toISOString();
+  saveState();
+  renderDashboard();
+}
 window.removeFund = removeFund;
 window.updateBalance = updateBalance;
+window.updateManagementFee = updateManagementFee;
 window.handleBalanceInput = handleBalanceInput;
+window.handleFeeInput = handleFeeInput;
 
 function buildResultSummary(query, results) {
   const q = (query || '').trim();
@@ -2031,21 +2132,19 @@ function buildResultSummary(query, results) {
     acc[r.source] = (acc[r.source] || 0) + 1;
     return acc;
   }, { total: 0 });
-  const filterLabel = activeFilter === 'all' ? 'כל סוגי המוצרים' : SOURCE_LABEL[activeFilter];
   const countPills = ['gemelnet', 'pensia', 'bituach']
     .filter(src => counts[src])
     .map(src => `<span class="result-count-pill">${SOURCE_LABEL[src]}: ${counts[src]}</span>`)
     .join('');
   const title = q
     ? `נמצאו ${counts.total} מוצרים עבור החיפוש: "${escapeHtml(q)}"`
-    : `מציג ${counts.total} מוצרים לפי הסינון הנוכחי`;
+    : `מציג ${counts.total} מוצרים`;
   return `
     <div class="result-item result-summary">
       <div class="result-name">${title}</div>
       <div class="result-meta">
-        <span>סינון פעיל: ${escapeHtml(filterLabel)}</span>
-        <span>לחיצה על “בחר” מוסיפה את המוצר ומעבירה להזנת סכום</span>
-        <span>כל התוצאות מוצגות בעמוד, לא רק 75</span>
+        <span>לחיצה על “בחר” מוסיפה את המוצר ומעבירה להזנת סכום ודמי ניהול</span>
+        <span>כל התוצאות מוצגות בעמוד</span>
       </div>
       <div class="result-counts">${countPills}</div>
     </div>
@@ -2067,7 +2166,7 @@ function showResults(query) {
   const wrap = document.getElementById('searchResults');
   if (!results.length) {
     wrap.innerHTML = query.trim()
-      ? '<div class="result-item result-summary"><div class="result-name">לא נמצאו תוצאות</div><div class="result-meta"><span>נסה לחפש רק את שם החברה, לדוגמה: מיטב / מנורה / הראל, או מספר קופה. ודא שהסינון הוא "הכל" אם אתה רוצה לראות גם גמל, גם פנסיה וגם ביטוח.</span></div></div>'
+      ? '<div class="result-item result-summary"><div class="result-name">לא נמצאו תוצאות</div><div class="result-meta"><span>נסה לחפש רק את שם החברה, לדוגמה: מיטב / מנורה / הראל, או מספר קופה.</span></div></div>'
       : '';
     wrap.classList.toggle('active', Boolean(query.trim()));
     return;
