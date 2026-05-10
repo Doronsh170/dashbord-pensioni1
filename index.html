@@ -2015,7 +2015,7 @@ function buildShareText() {
     `חשיפה למט״ח: ${fmtPct(aggFx, 1)}`,
     `נכסים סחירים: ${fmtPct(aggLiquid, 1)}`,
     `תשואה מתחילת שנה לפי מסלולים, משוקללת: ${fmtPct(perfYtd, 2)}`,
-    `לשוניות קומפקטיות ועדכון מהיר לפי מסלולים, משוקללת: ${fmtPct(weightedMetric('yield_trailing_3yrs', totalBalance), 2)}`,
+    `תשואה 3 שנים מצטברת לפי מסלולים, משוקללת: ${fmtPct(weightedMetric('yield_trailing_3yrs', totalBalance), 2)}`,
     `דמי ניהול אישיים משוקללים: ${Number.isFinite(feeSavings) ? fmtPct(feeSavings, 2) : 'לא הוזן'}`,
     '',
     'פירוט מוצרים:'
@@ -2151,15 +2151,29 @@ function removeCurrentQuickFund() {
 }
 function prepareAnotherFund() {
   CURRENT_EDIT_FUND = null;
+
   const editor = document.getElementById('quickEditor');
   if (editor) {
     editor.classList.remove('active');
     editor.innerHTML = '';
   }
+
+  const results = document.getElementById('searchResults');
+  if (results) {
+    results.classList.remove('active');
+    results.innerHTML = '';
+  }
+
   const input = document.getElementById('searchInput');
   if (input) {
-    input.focus({ preventScroll: false });
-    showResults(input.value || '');
+    input.value = '';
+    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    window.setTimeout(() => {
+      input.focus({ preventScroll: true });
+    }, 350);
+  } else {
+    const searchSection = document.getElementById('searchSection');
+    if (searchSection) searchSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 window.prepareAnotherFund = prepareAnotherFund;
