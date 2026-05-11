@@ -1967,6 +1967,37 @@
     margin: 4px 0 12px;
     font-weight: 500;
   }
+
+  .manual-search-toggle {
+    display: block;
+    margin: 8px auto 18px;
+    padding: 10px 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--card);
+    color: var(--ink-soft);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: var(--shadow-xs);
+    transition: all 0.18s ease;
+  }
+  .manual-search-toggle:hover {
+    border-color: var(--accent-soft-2);
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+  }
+  .manual-search-toggle[aria-expanded="true"] {
+    background: var(--accent-soft);
+    border-color: var(--accent-soft-2);
+    color: var(--accent-dark);
+  }
+  .manual-search-controls[hidden] { display: none !important; }
+  .manual-search-controls {
+    margin-top: 8px;
+    padding-top: 4px;
+  }
   @media (max-width: 600px) {
     .hero-sub { font-size: 14px; margin-bottom: 20px; }
     .step-indicator { gap: 6px; margin-bottom: 18px; }
@@ -2044,18 +2075,23 @@
       <button type="button" class="company-btn" data-query="אלטשולר">אלטשולר שחם</button>
     </div>
 
-    <p class="search-also">או חפש ידנית לפי שם חברה, מסלול או מספר קופה:</p>
-    <div class="filters" id="filters">
-      <button class="filter-btn active" data-filter="all" data-label="הכל">הכל</button>
-      <button class="filter-btn" data-filter="gemelnet" data-label="גמל / השתלמות / גמל להשקעה">גמל / השתלמות / גמל להשקעה</button>
-      <button class="filter-btn" data-filter="pensia" data-label="קרנות פנסיה">קרנות פנסיה</button>
-      <button class="filter-btn" data-filter="bituach" data-label="פוליסות חיסכון / ביטוחי מנהלים">פוליסות חיסכון / ביטוחי מנהלים</button>
+    <button type="button" class="manual-search-toggle" id="manualSearchToggle" aria-expanded="false" aria-controls="manualSearchControls">
+      לא מצאת את הקופה? חיפוש ידני
+    </button>
+    <div class="manual-search-controls" id="manualSearchControls" hidden>
+      <p class="search-also">חיפוש ידני לפי שם חברה, מסלול או מספר קופה:</p>
+      <div class="filters" id="filters">
+        <button class="filter-btn active" data-filter="all" data-label="הכל">הכל</button>
+        <button class="filter-btn" data-filter="gemelnet" data-label="גמל / השתלמות / גמל להשקעה">גמל / השתלמות / גמל להשקעה</button>
+        <button class="filter-btn" data-filter="pensia" data-label="קרנות פנסיה">קרנות פנסיה</button>
+        <button class="filter-btn" data-filter="bituach" data-label="פוליסות חיסכון / ביטוחי מנהלים">פוליסות חיסכון / ביטוחי מנהלים</button>
+      </div>
+      <div class="search-wrap">
+        <input type="text" class="search-input" id="searchInput" placeholder="שם החברה או המסלול — לדוגמה: מנורה, הראל, מיטב, אלטשולר" autocomplete="off" />
+      </div>
     </div>
-    <div class="search-wrap">
-      <input type="text" class="search-input" id="searchInput" placeholder="שם החברה או המסלול — לדוגמה: מנורה, הראל, מיטב, אלטשולר" autocomplete="off" />
-      <div class="quick-editor" id="quickEditor"></div>
-      <div class="search-results" id="searchResults"></div>
-    </div>
+    <div class="quick-editor" id="quickEditor"></div>
+    <div class="search-results" id="searchResults"></div>
   </div>
 </section>
 
@@ -3498,6 +3534,28 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
+
+const manualSearchToggle = document.getElementById('manualSearchToggle');
+const manualSearchControls = document.getElementById('manualSearchControls');
+if (manualSearchToggle && manualSearchControls) {
+  manualSearchToggle.addEventListener('click', () => {
+    const willOpen = manualSearchControls.hasAttribute('hidden');
+    if (willOpen) {
+      manualSearchControls.removeAttribute('hidden');
+      manualSearchToggle.setAttribute('aria-expanded', 'true');
+      manualSearchToggle.textContent = 'סגור חיפוש ידני';
+      const input = document.getElementById('searchInput');
+      if (input) {
+        setTimeout(() => input.focus(), 80);
+      }
+    } else {
+      manualSearchControls.setAttribute('hidden', '');
+      manualSearchToggle.setAttribute('aria-expanded', 'false');
+      manualSearchToggle.textContent = 'לא מצאת את הקופה? חיפוש ידני';
+    }
+  });
+}
+
 // v3.48: זרימה פשוטה יותר — בחירת סוג מוצר, אחר כך יצרן, ואז קופה
 let selectedCompanyQuery = '';
 let selectedProductFilter = 'all';
@@ -3557,14 +3615,14 @@ document.querySelectorAll('.company-btn').forEach(btn => {
     if (input) input.value = query;
 
     showResults(query);
-    const wrap = document.querySelector('.search-wrap');
-    if (wrap && wrap.scrollIntoView) {
-      wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const resultsWrap = document.getElementById('searchResults');
+    if (resultsWrap && resultsWrap.scrollIntoView) {
+      resultsWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
 });
 
-// חיפוש ידני נשאר זמין תמיד, גם בלי בחירת סוג מוצר או יצרן.
+// חיפוש ידני מוסתר כברירת מחדל ונפתח רק בלחיצה, כדי לא להעמיס על המשתמש.
 
 
 (async function init() {
