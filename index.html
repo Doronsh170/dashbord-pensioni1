@@ -1974,14 +1974,11 @@
             <input type="number" id="projFee" step="0.01" min="0" value="0.7" />
             <span class="proj-input-hint">נטען אוטומטית אם הזנת בכרטיסי הקופות</span>
           </label>
-          <div class="proj-input">
-            <span class="proj-input-label">אופק זמן</span>
-            <div class="proj-years" role="group" aria-label="אופק זמן">
-              <button type="button" class="proj-year-btn" data-years="10">10 שנים</button>
-              <button type="button" class="proj-year-btn active" data-years="20">20 שנים</button>
-              <button type="button" class="proj-year-btn" data-years="30">30 שנים</button>
-            </div>
-          </div>
+          <label class="proj-input">
+            <span class="proj-input-label">אופק זמן (שנים)</span>
+            <input type="number" id="projYears" inputmode="numeric" min="1" max="30" step="1" value="20" />
+            <span class="proj-input-hint">בחר 1–30 שנים, בהתאם לטווח הנתונים ההיסטוריים (1995–2024)</span>
+          </label>
         </div>
 
         <div class="proj-action-row">
@@ -2303,7 +2300,7 @@
   const initialInput  = $('projInitial');
   const monthlyInput  = $('projMonthly');
   const feeInput      = $('projFee');
-  const yearBtns      = document.querySelectorAll('.proj-year-btn');
+  const yearsInput   = $('projYears');
   const runBtn        = $('projRunBtn');
   const results       = $('projResults');
   const finalEl       = $('projFinal');
@@ -2375,14 +2372,16 @@
     el.addEventListener('input', () => { el.dataset.userEdited = '1'; });
   });
 
-  // === בחירת אופק זמן ===
-  let selectedYears = 20;
-  yearBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      yearBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      selectedYears = parseInt(btn.dataset.years, 10);
-    });
+  // === בחירת אופק זמן (1–30 שנים) ===
+  function getSelectedYears() {
+    const n = parseInt(yearsInput.value, 10);
+    if (!Number.isFinite(n) || n < 1) return 1;
+    if (n > 30) return 30;
+    return n;
+  }
+  yearsInput.addEventListener('blur', () => {
+    const clamped = getSelectedYears();
+    if (String(clamped) !== yearsInput.value) yearsInput.value = String(clamped);
   });
 
   // === קיפול/פתיחה של הכרטיס ===
@@ -2461,7 +2460,7 @@
     const initial = parseFloat(initialInput.value) || 0;
     const monthly = parseFloat(monthlyInput.value) || 0;
     const feePct  = parseFloat(feeInput.value) || 0;
-    const years   = selectedYears;
+    const years   = getSelectedYears();
     const track   = pickRiskTrack(state.stockPct);
 
     const sim = simulate({ initial, monthly, years, feePct, yields: RAW_YIELDS[track] });
