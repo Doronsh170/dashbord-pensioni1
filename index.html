@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.40</title>
+<title>דשבורד חשיפות חיסכון | v3.45</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -1789,6 +1789,11 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
+  /* === v3.44: center main hero title and subtitle === */
+  .hero .container { text-align: center; }
+  .hero h1 { margin-left: auto; margin-right: auto; text-align: center; }
+  .hero-sub { text-align: center; margin-left: auto; margin-right: auto; }
+
   /* === v3.40 simplified entry: hero sub, step indicator, company grid === */
   .hero-sub {
     font-size: 16px;
@@ -1960,6 +1965,30 @@
     .product-type-grid { grid-template-columns: 1fr; gap: 8px; }
     .product-type-btn { padding: 14px 10px; font-size: 13px; }
   }
+
+
+  /* === v3.45: force desktop/mobile hero centering after simplified entry styles === */
+  .hero .container {
+    text-align: center !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero h1 {
+    width: 100%;
+    max-width: 820px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+  }
+  .hero-sub {
+    width: 100%;
+    max-width: 640px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+  }
+
 </style>
 </head>
 <body>
@@ -1974,24 +2003,12 @@
       <span class="step-sep">←</span>
       <span class="step-pill">3. ראה הרכב</span>
     </div>
-    <div class="trust-badges">
-      <button type="button" class="info-cube" data-tip="privacy" aria-expanded="false" aria-controls="cubeTooltip">
-        <span class="info-cube-icon">🔒</span>
-        <span class="info-cube-text">הכל מקומי, בלי הרשמה</span>
-      </button>
-      <button type="button" class="info-cube" data-tip="source" aria-expanded="false" aria-controls="cubeTooltip">
-        <span class="info-cube-icon">🗂️</span>
-        <span class="info-cube-text">מקור: גמל נט · פנסיה נט · ביטוח נט</span>
-      </button>
-    </div>
     <div class="info-cube-tooltip" id="cubeTooltip" role="region" aria-live="polite" hidden></div>
   </div>
 </section>
 
 <section class="section" id="searchSection">
   <div class="container">
-    <h2 class="section-title">מצא את הקופות שלך</h2>
-
     <p class="company-grid-label">באיזה גוף יש לך חיסכון?</p>
     <div class="company-grid" id="companyGrid">
       <button type="button" class="company-btn" data-query="מנורה">מנורה מבטחים</button>
@@ -3249,6 +3266,7 @@ function removeCurrentQuickFund() {
 }
 function prepareAnotherFund() {
   CURRENT_EDIT_FUND = null;
+  selectedCompanyQuery = '';
 
   const editor = document.getElementById('quickEditor');
   if (editor) {
@@ -3262,16 +3280,22 @@ function prepareAnotherFund() {
     results.innerHTML = '';
   }
 
+  const productPanel = document.getElementById('productTypePanel');
+  if (productPanel) productPanel.classList.remove('active');
+
+  document.querySelectorAll('.company-btn').forEach(btn => btn.classList.remove('is-selected'));
+  document.querySelectorAll('.product-type-btn').forEach(btn => btn.classList.remove('active'));
+  setActiveProductFilter('all');
+
   const input = document.getElementById('searchInput');
-  if (input) {
-    input.value = '';
-    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    window.setTimeout(() => {
-      input.focus({ preventScroll: true });
-    }, 350);
-  } else {
-    const searchSection = document.getElementById('searchSection');
-    if (searchSection) searchSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (input) input.value = '';
+
+  const hero = document.querySelector('.hero');
+  const companyGrid = document.getElementById('companyGrid');
+  const target = hero || companyGrid || document.getElementById('searchSection');
+
+  if (target && target.scrollIntoView) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 window.prepareAnotherFund = prepareAnotherFund;
