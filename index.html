@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.39</title>
+<title>דשבורד חשיפות חיסכון | v3.40</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -1890,6 +1890,59 @@
     background: var(--accent-soft);
     color: var(--accent-dark);
   }
+  .product-type-panel {
+    display: none;
+    margin: -12px 0 26px;
+    padding: 18px;
+    background: var(--card);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  .product-type-panel.active { display: block; }
+  .product-type-title {
+    margin: 0 0 6px;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--ink);
+  }
+  .product-type-subtitle {
+    margin: 0 0 14px;
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+  .product-type-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .product-type-btn {
+    padding: 17px 12px;
+    background: var(--bg-soft);
+    border: 1.5px solid var(--line);
+    border-radius: var(--r-md);
+    color: var(--ink);
+    cursor: pointer;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.35;
+    transition: all 0.18s ease;
+    text-align: center;
+  }
+  .product-type-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+  .product-type-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: var(--shadow-sm);
+  }
   .search-also {
     font-size: 13px;
     color: var(--ink-muted);
@@ -1903,6 +1956,9 @@
     .step-sep { font-size: 12px; }
     .company-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
     .company-btn { padding: 16px 8px; font-size: 14px; }
+    .product-type-panel { padding: 14px; margin: -10px 0 20px; }
+    .product-type-grid { grid-template-columns: 1fr; gap: 8px; }
+    .product-type-btn { padding: 14px 10px; font-size: 13px; }
   }
 </style>
 </head>
@@ -1946,6 +2002,16 @@
       <button type="button" class="company-btn" data-query="מיטב">מיטב</button>
       <button type="button" class="company-btn" data-query="מור">מור</button>
       <button type="button" class="company-btn" data-query="אלטשולר">אלטשולר שחם</button>
+    </div>
+
+    <div class="product-type-panel" id="productTypePanel" aria-live="polite">
+      <p class="product-type-title" id="productTypeTitle">איזה סוג חיסכון תרצה לראות?</p>
+      <p class="product-type-subtitle">אחרי בחירת הגוף, בחר את סוג המוצר כדי לצמצם את התוצאות הרלוונטיות.</p>
+      <div class="product-type-grid" id="productTypeGrid">
+        <button type="button" class="product-type-btn" data-filter="pensia">פנסיה</button>
+        <button type="button" class="product-type-btn" data-filter="bituach">ביטוח מנהלים או פוליסות חיסכון</button>
+        <button type="button" class="product-type-btn" data-filter="gemelnet">גמל, השתלמות וגמל להשקעה</button>
+      </div>
     </div>
 
     <p class="search-also">או חפש לפי שם החברה / מסלול / סוג מוצר:</p>
@@ -2661,7 +2727,7 @@ const STORAGE_KEY = 'pension_dashboard_funds_v3';
 const SOURCE_LABEL = {
   gemelnet: 'גמל',
   pensia: 'פנסיה',
-  bituach: 'ביטוח',
+  bituach: 'ביטוח מנהלים',
 };
 const SOURCE_DOT_COLOR = {
   gemelnet: '#60a5fa',
@@ -3389,31 +3455,63 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
-// v3.40: company grid — לחיצה על שם חברה ממלאת את החיפוש ופותחת תוצאות
+// v3.40: company grid — בחירת גוף ואז בחירת סוג מוצר לפני הצגת תוצאות
+let selectedCompanyQuery = '';
+
+function setActiveProductFilter(filter) {
+  activeFilter = filter || 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  const matchingFilterBtn = document.querySelector(`.filter-btn[data-filter="${activeFilter}"]`);
+  if (matchingFilterBtn) matchingFilterBtn.classList.add('active');
+  document.querySelectorAll('.product-type-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === activeFilter));
+}
+
 document.querySelectorAll('.company-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const query = btn.dataset.query || '';
+    selectedCompanyQuery = query;
     document.querySelectorAll('.company-btn').forEach(b => b.classList.remove('is-selected'));
     btn.classList.add('is-selected');
-    // איפוס פילטר סוג מוצר ל'הכל' כדי שלא יחסום תוצאות מהחברה הנבחרת
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    const allFilterBtn = document.querySelector('.filter-btn[data-filter="all"]');
-    if (allFilterBtn) allFilterBtn.classList.add('active');
-    activeFilter = 'all';
+    setActiveProductFilter('all');
+    const input = document.getElementById('searchInput');
+    if (input) input.value = query;
+
+    const productPanel = document.getElementById('productTypePanel');
+    const productTitle = document.getElementById('productTypeTitle');
+    if (productTitle) productTitle.textContent = `בחר סוג מוצר עבור ${query}`;
+    if (productPanel) productPanel.classList.add('active');
+
+    const resultsWrap = document.getElementById('searchResults');
+    if (resultsWrap) {
+      resultsWrap.innerHTML = '';
+      resultsWrap.classList.remove('active');
+    }
+
+    if (productPanel && productPanel.scrollIntoView) {
+      productPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+});
+
+document.querySelectorAll('.product-type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const query = selectedCompanyQuery || document.getElementById('searchInput').value.trim();
+    if (!query) return;
+    setActiveProductFilter(btn.dataset.filter);
     const input = document.getElementById('searchInput');
     if (input) {
       input.value = query;
       input.focus();
     }
     showResults(query);
-    // גלילה רכה לתוצאות
     const wrap = document.querySelector('.search-wrap');
     if (wrap && wrap.scrollIntoView) {
       wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
 });
-// התוצאות נשארות פתוחות כדי שהמשתמש יוכל לעבור על כל מוצרי החברה.
+
+// חיפוש ידני נשאר זמין תמיד, גם בלי בחירת יצרן.
 
 
 (async function init() {
