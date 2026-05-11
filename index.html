@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.27</title>
+<title>דשבורד חשיפות חיסכון | v3.36</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -979,11 +979,11 @@
   /* === Action toolbar === */
   .action-toolbar {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 12px;
     flex-wrap: wrap;
     margin: 10px 0 24px;
-    max-width: 600px;
+    max-width: 860px;
   }
   .action-btn {
     display: flex;
@@ -1013,6 +1013,7 @@
   }
   .action-btn[onclick*="saveAsPDF"]::before { content: "📄"; }
   .action-btn[onclick*="shareWhatsApp"]::before { content: "💬"; }
+  .action-btn[onclick*="openProjection"]::before { content: "📈"; }
   .action-btn[onclick*="resetAllData"]::before { content: "↺"; }
   .action-btn:hover {
     border-color: rgba(255, 255, 255, 0.45);
@@ -1846,6 +1847,7 @@
     <div class="action-toolbar" aria-label="פעולות דוח">
       <button type="button" class="action-btn" onclick="saveAsPDF()">שמירה / הדפסה ל-PDF</button>
       <button type="button" class="action-btn" onclick="shareWhatsApp()">שליחה לווטסאפ</button>
+      <button type="button" class="action-btn" onclick="openProjection()">סימולציה על בסיס תשואות עבר</button>
       <button type="button" class="action-btn" onclick="resetAllData()">איפוס הכל</button>
     </div>
     <div class="action-note">שמירה ל-PDF נפתחת דרך חלון ההדפסה של הדפדפן. בשל מגבלות דפדפן, שליחה לווטסאפ שולחת סיכום טקסטואלי וקישור, לא מצרפת PDF אוטומטית.</div>
@@ -1940,21 +1942,22 @@
     <button type="button" class="proj-toggle" id="projToggle" aria-expanded="false" aria-controls="projBody">
       <span class="proj-toggle-icon" aria-hidden="true">📊</span>
       <span class="proj-toggle-text">
-        <span class="proj-toggle-title">30 שנה לאחור — תרגיל היסטורי</span>
-        <span class="proj-toggle-sub">איך התפתח לאורך הזמן מסלול בעל פרופיל סיכון דומה לתיק שלך</span>
+        <span class="proj-toggle-title">סימולציה על בסיס תשואות עבר</span>
+        <span class="proj-toggle-sub">על סמך תשואות עבר, כך הסכומים עשויים להיראות לאורך זמן</span>
       </span>
       <span class="proj-toggle-chevron" aria-hidden="true">▾</span>
     </button>
 
     <div class="proj-body" id="projBody" hidden>
       <p class="proj-intro">
-        השחזור מבוסס על תשואות אמת של 30 השנים האחרונות (1995–2024), עבור מסלולים בעלי פרופיל
+        הסימולציה מבוססת על תשואות עבר של 30 השנים האחרונות (1995–2024), עבור מסלולים בעלי פרופיל
         <strong id="projRiskLabel">—</strong>
         — בהתאם לחשיפה המנייתית בתיק שלך (<span id="projStockPct">—</span>%).
+        <br><small>סיווג הסיכון: עד 10% מניות = נמוך, מעל 10% ועד 70% = בינוני, מעל 70% = גבוה.</small>
       </p>
 
       <div class="proj-empty" id="projEmpty">
-        עדיין לא הוספת קופות לתיק. חזור למעלה, חפש קופה והזן יתרה — ואז נוכל להריץ את השחזור.
+        עדיין לא הוספת קופות לתיק. חזור למעלה, חפש קופה והזן יתרה — ואז נוכל להריץ סימולציה על בסיס תשואות עבר.
       </div>
 
       <div class="proj-form" id="projForm" hidden>
@@ -1982,14 +1985,14 @@
         </div>
 
         <div class="proj-action-row">
-          <button type="button" class="proj-run-btn" id="projRunBtn">הרצת השחזור</button>
+          <button type="button" class="proj-run-btn" id="projRunBtn">הרץ סימולציה</button>
         </div>
       </div>
 
       <div class="proj-results" id="projResults" hidden>
         <div class="proj-summary">
           <div class="proj-metric proj-metric-main">
-            <div class="proj-metric-label">יתרה משוחזרת בסוף התקופה</div>
+            <div class="proj-metric-label">סכום מחושב בסוף התקופה</div>
             <div class="proj-metric-value" id="projFinal">—</div>
           </div>
           <div class="proj-metric">
@@ -1997,7 +2000,7 @@
             <div class="proj-metric-value" id="projContrib">—</div>
           </div>
           <div class="proj-metric">
-            <div class="proj-metric-label">צבירה מתשואה </div>
+            <div class="proj-metric-label">צבירה מתשואה (נטו)</div>
             <div class="proj-metric-value" id="projInterest">—</div>
           </div>
           <div class="proj-metric proj-metric-warn">
@@ -2023,7 +2026,7 @@
         </details>
 
         <p class="proj-disclaimer">
-          <strong>גילוי נאות:</strong> שחזור היסטורי לצורכי המחשה בלבד. החישוב מציג כיצד התנהג מסלול בעל פרופיל סיכון דומה במהלך תקופה היסטורית קונקרטית (1995–2024). אינו מהווה תחזית, ייעוץ או המלצה. ביצועי עבר אינם מנבאים את העתיד.
+          <strong>גילוי נאות:</strong> הסימולציה מבוססת על נתוני עבר בלבד ומיועדת להמחשה וחינוך פיננסי. אין לראות בה תחזית, הבטחה לתשואה, ייעוץ השקעות, ייעוץ פנסיוני או המלצה. ביצועי עבר אינם מנבאים את העתיד.
         </p>
       </div>
     </div>
@@ -2286,7 +2289,7 @@
     high:   [35.83, 20.56, 30.78, 27.00, 17.98, -6.46, -10.11, -18.26, 25.56, 10.11, 4.63, 14.24, 5.95, -30.89, 22.23, 14.18, 3.49, 14.60, 28.03, 13.24, 1.37, 10.66, 19.73, -3.81, 29.05, 17.35, 25.18, -18.02, 23.84, 22.23]
   };
   const START_YEAR = 1995;
-  const RISK_LABELS = { low: 'סולידי', medium: 'מעורב', high: 'מנייתי' };
+  const RISK_LABELS = { low: 'סיכון נמוך', medium: 'סיכון בינוני', high: 'סיכון גבוה' };
 
   // === מיפוי DOM ===
   const $ = (id) => document.getElementById(id);
@@ -2322,8 +2325,8 @@
 
   // מיפוי חשיפה מנייתית → מסלול היסטורי
   function pickRiskTrack(stockPct) {
-    if (stockPct < 30) return 'low';
-    if (stockPct < 60) return 'medium';
+    if (stockPct <= 10) return 'low';
+    if (stockPct <= 70) return 'medium';
     return 'high';
   }
 
@@ -2467,6 +2470,17 @@
     renderResults(sim);
     results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
+
+  // פתיחה מהירה של אזור הסימולציה מתוך כפתור הדשבורד
+  window.openProjection = function() {
+    const state = readDashboardState();
+    if (!state.hasPortfolio) return;
+    section.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+    body.hidden = false;
+    refreshPrefill();
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   // === הצגה / הסתרה לפי מצב התיק ===
   function syncSectionVisibility() {
