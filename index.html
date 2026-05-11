@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.35</title>
+<title>דשבורד חשיפות חיסכון | v3.27</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -979,11 +979,11 @@
   /* === Action toolbar === */
   .action-toolbar {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     flex-wrap: wrap;
     margin: 10px 0 24px;
-    max-width: 880px;
+    max-width: 600px;
   }
   .action-btn {
     display: flex;
@@ -1013,7 +1013,6 @@
   }
   .action-btn[onclick*="saveAsPDF"]::before { content: "📄"; }
   .action-btn[onclick*="shareWhatsApp"]::before { content: "💬"; }
-  .action-btn[onclick*="openFutureSimulation"]::before { content: "📈"; }
   .action-btn[onclick*="resetAllData"]::before { content: "↺"; }
   .action-btn:hover {
     border-color: rgba(255, 255, 255, 0.45);
@@ -1788,188 +1787,6 @@
     from { opacity: 0; transform: translateY(-6px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-
-
-  /* === Future simulation === */
-  .future-sim {
-    margin-top: 34px;
-    padding-top: 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.10);
-  }
-  .future-sim-card {
-    background: rgba(255, 255, 255, 0.055);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: var(--r-md);
-    padding: 22px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-  .future-sim-title {
-    font-size: 20px;
-    font-weight: 900;
-    color: #fff;
-    margin: 0 0 8px;
-  }
-  .future-sim-text {
-    color: rgba(255, 255, 255, 0.66);
-    font-size: 13px;
-    line-height: 1.7;
-    margin: 0 0 18px;
-    max-width: 880px;
-  }
-  .sim-context-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 18px;
-  }
-  .sim-context-item {
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    background: rgba(255, 255, 255, 0.045);
-    border-radius: var(--r-sm);
-    padding: 12px 14px;
-  }
-  .sim-context-label {
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-  }
-  .sim-context-value {
-    color: #fff;
-    font-size: 15px;
-    font-weight: 900;
-    font-variant-numeric: tabular-nums;
-  }
-  .sim-form-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(160px, 1fr)) auto;
-    gap: 12px;
-    align-items: end;
-    margin-bottom: 12px;
-  }
-  .sim-field {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-  }
-  .sim-field label {
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 11px;
-    font-weight: 800;
-  }
-  .sim-field input {
-    width: 100%;
-    padding: 12px 13px;
-    border: 1px solid rgba(255,255,255,0.16);
-    background: rgba(255,255,255,0.92);
-    color: #0f172a;
-    border-radius: var(--r-sm);
-    font: inherit;
-    font-weight: 700;
-    text-align: left;
-    direction: ltr;
-    outline: none;
-  }
-  .sim-field input:focus {
-    border-color: #5eead4;
-    box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.18);
-  }
-  .sim-run-btn {
-    border: 0;
-    background: var(--accent);
-    color: #fff;
-    font: inherit;
-    font-weight: 900;
-    padding: 13px 18px;
-    border-radius: var(--r-sm);
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    white-space: nowrap;
-  }
-  .sim-run-btn:hover { background: var(--accent-dark); }
-  .sim-result {
-    margin-top: 16px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-  }
-  .sim-result-box {
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.055);
-    border-radius: var(--r-sm);
-    padding: 14px;
-  }
-  .sim-result-label {
-    color: rgba(255,255,255,0.58);
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    margin-bottom: 7px;
-  }
-  .sim-result-value {
-    color: #fff;
-    font-size: 22px;
-    font-weight: 900;
-    line-height: 1.1;
-    font-variant-numeric: tabular-nums;
-  }
-  .sim-disclaimer {
-    margin-top: 12px;
-    color: rgba(255,255,255,0.54);
-    font-size: 11.5px;
-    line-height: 1.6;
-  }
-  @media (max-width: 760px) {
-    .sim-context-grid, .sim-result { grid-template-columns: 1fr 1fr; }
-    .sim-form-grid { grid-template-columns: 1fr; }
-    .sim-run-btn { width: 100%; }
-    .future-sim-card { padding: 16px; }
-  }
-  @media (max-width: 420px) {
-    .sim-context-grid, .sim-result { grid-template-columns: 1fr; }
-  }
-  body.pdf-mode .future-sim-card,
-  body.pdf-mode .sim-context-item,
-  body.pdf-mode .sim-result-box {
-    background: #f8fafc !important;
-    border-color: #dbe3ee !important;
-    color: #0f172a !important;
-    box-shadow: none !important;
-  }
-  body.pdf-mode .future-sim-title,
-  body.pdf-mode .sim-context-value,
-  body.pdf-mode .sim-result-value {
-    color: #0f172a !important;
-  }
-  body.pdf-mode .future-sim-text,
-  body.pdf-mode .sim-context-label,
-  body.pdf-mode .sim-result-label,
-  body.pdf-mode .sim-disclaimer {
-    color: #475569 !important;
-  }
-  @media print {
-    .future-sim-card,
-    .sim-context-item,
-    .sim-result-box {
-      background: #f8fafc !important;
-      border: 1px solid #dbe3ee !important;
-      color: #0f172a !important;
-      box-shadow: none !important;
-    }
-    .future-sim-title,
-    .sim-context-value,
-    .sim-result-value { color: #0f172a !important; }
-    .future-sim-text,
-    .sim-context-label,
-    .sim-result-label,
-    .sim-disclaimer { color: #475569 !important; }
-    .sim-form-grid { display: none !important; }
-  }
-
 </style>
 </head>
 <body>
@@ -2029,7 +1846,6 @@
     <div class="action-toolbar" aria-label="פעולות דוח">
       <button type="button" class="action-btn" onclick="saveAsPDF()">שמירה / הדפסה ל-PDF</button>
       <button type="button" class="action-btn" onclick="shareWhatsApp()">שליחה לווטסאפ</button>
-      <button type="button" class="action-btn" onclick="openFutureSimulation()">סימולציה על בסיס תשואות עבר</button>
       <button type="button" class="action-btn" onclick="resetAllData()">איפוס הכל</button>
     </div>
     <div class="action-note">שמירה ל-PDF נפתחת דרך חלון ההדפסה של הדפדפן. בשל מגבלות דפדפן, שליחה לווטסאפ שולחת סיכום טקסטואלי וקישור, לא מצרפת PDF אוטומטית.</div>
@@ -2087,48 +1903,6 @@
         </div>
       </div>
     </div>
-
-    <section class="future-sim" id="futureSim" hidden>
-      <div class="future-sim-card">
-        <h3 class="future-sim-title">סימולציה על בסיס תשואות עבר</h3>
-        <p class="future-sim-text">בהתבסס על תשואות עבר של מסלולי סיכון שונים, ניתן להמחיש כיצד הסכום שהוזן עשוי להתפתח לאורך זמן. אין בכך תחזית, הבטחה, ייעוץ או המלצה.</p>
-        <div class="sim-context-grid">
-          <div class="sim-context-item">
-            <div class="sim-context-label">סכום התחלתי</div>
-            <div class="sim-context-value" id="simInitialAmount">-</div>
-          </div>
-          <div class="sim-context-item">
-            <div class="sim-context-label">חשיפה מנייתית</div>
-            <div class="sim-context-value" id="simStockExposure">-</div>
-          </div>
-          <div class="sim-context-item">
-            <div class="sim-context-label">רמת סיכון שנבחרה</div>
-            <div class="sim-context-value" id="simRiskLevel">-</div>
-          </div>
-          <div class="sim-context-item">
-            <div class="sim-context-label">דמי ניהול לחישוב</div>
-            <div class="sim-context-value" id="simFeeDisplay">-</div>
-          </div>
-        </div>
-        <div class="sim-form-grid">
-          <div class="sim-field">
-            <label for="simMonthlyDeposit">הפקדה חודשית</label>
-            <input type="number" id="simMonthlyDeposit" value="0" min="0" inputmode="numeric" />
-          </div>
-          <div class="sim-field">
-            <label for="simYears">מספר שנים</label>
-            <input type="number" id="simYears" value="30" min="1" max="60" inputmode="numeric" />
-          </div>
-          <div class="sim-field">
-            <label for="simManagementFee">דמי ניהול שנתיים %</label>
-            <input type="number" id="simManagementFee" placeholder="לדוגמה 0.70" min="0" step="0.01" inputmode="decimal" />
-          </div>
-          <button type="button" class="sim-run-btn" onclick="calculatePastBasedSimulation()">הרץ סימולציה</button>
-        </div>
-        <div class="sim-result" id="simResult" hidden></div>
-        <div class="sim-disclaimer">הסימולציה מבוססת על תשואות עבר בלבד. ביצועי עבר אינם ערובה לביצועים עתידיים, ואין לראות בתוצאה ייעוץ השקעות, ייעוץ פנסיוני, תחזית או המלצה.</div>
-      </div>
-    </section>
   </div>
 </section>
 
@@ -2156,6 +1930,567 @@
     </div>
   </div>
 </section>
+
+<!-- ====================================================================== -->
+<!-- כרטיס "תרגיל היסטורי" — drop-in לדשבורד                                -->
+<!-- הדבק את כל הבלוק הזה ב-index.html של הדשבורד, ממש לפני <footer>        -->
+<!-- ====================================================================== -->
+<section class="projection-section" id="projectionSection" hidden>
+  <div class="container">
+    <button type="button" class="proj-toggle" id="projToggle" aria-expanded="false" aria-controls="projBody">
+      <span class="proj-toggle-icon" aria-hidden="true">📊</span>
+      <span class="proj-toggle-text">
+        <span class="proj-toggle-title">30 שנה לאחור — תרגיל היסטורי</span>
+        <span class="proj-toggle-sub">איך התפתח לאורך הזמן מסלול בעל פרופיל סיכון דומה לתיק שלך</span>
+      </span>
+      <span class="proj-toggle-chevron" aria-hidden="true">▾</span>
+    </button>
+
+    <div class="proj-body" id="projBody" hidden>
+      <p class="proj-intro">
+        השחזור מבוסס על תשואות אמת של 30 השנים האחרונות (1995–2024), עבור מסלולים בעלי פרופיל
+        <strong id="projRiskLabel">—</strong>
+        — בהתאם לחשיפה המנייתית בתיק שלך (<span id="projStockPct">—</span>%).
+      </p>
+
+      <div class="proj-empty" id="projEmpty">
+        עדיין לא הוספת קופות לתיק. חזור למעלה, חפש קופה והזן יתרה — ואז נוכל להריץ את השחזור.
+      </div>
+
+      <div class="proj-form" id="projForm" hidden>
+        <div class="proj-input-grid">
+          <label class="proj-input">
+            <span class="proj-input-label">סכום התחלתי (₪)</span>
+            <input type="number" id="projInitial" inputmode="numeric" min="0" />
+            <span class="proj-input-hint">נטען מהיתרה הכוללת בדשבורד</span>
+          </label>
+          <label class="proj-input">
+            <span class="proj-input-label">הפקדה חודשית (₪)</span>
+            <input type="number" id="projMonthly" inputmode="numeric" min="0" value="0" />
+            <span class="proj-input-hint">לא חובה — השאר 0 לבדיקה של היתרה הקיימת בלבד</span>
+          </label>
+          <label class="proj-input">
+            <span class="proj-input-label">דמי ניהול שנתיים (%)</span>
+            <input type="number" id="projFee" step="0.01" min="0" value="0.7" />
+            <span class="proj-input-hint">נטען אוטומטית אם הזנת בכרטיסי הקופות</span>
+          </label>
+          <div class="proj-input">
+            <span class="proj-input-label">אופק זמן</span>
+            <div class="proj-years" role="group" aria-label="אופק זמן">
+              <button type="button" class="proj-year-btn" data-years="10">10 שנים</button>
+              <button type="button" class="proj-year-btn active" data-years="20">20 שנים</button>
+              <button type="button" class="proj-year-btn" data-years="30">30 שנים</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-action-row">
+          <button type="button" class="proj-run-btn" id="projRunBtn">הרצת השחזור</button>
+        </div>
+      </div>
+
+      <div class="proj-results" id="projResults" hidden>
+        <div class="proj-summary">
+          <div class="proj-metric proj-metric-main">
+            <div class="proj-metric-label">יתרה משוחזרת בסוף התקופה</div>
+            <div class="proj-metric-value" id="projFinal">—</div>
+          </div>
+          <div class="proj-metric">
+            <div class="proj-metric-label">סך הפקדות בתקופה</div>
+            <div class="proj-metric-value" id="projContrib">—</div>
+          </div>
+          <div class="proj-metric">
+            <div class="proj-metric-label">צבירה מתשואה (נטו)</div>
+            <div class="proj-metric-value" id="projInterest">—</div>
+          </div>
+          <div class="proj-metric proj-metric-warn">
+            <div class="proj-metric-label">השנה הגרועה בתקופה</div>
+            <div class="proj-metric-value" id="projWorstYear">—</div>
+          </div>
+        </div>
+
+        <details class="proj-yearly">
+          <summary>פירוט שנה-שנה</summary>
+          <div class="proj-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>שנה (היסטורית)</th>
+                  <th class="num">תשואה שנתית</th>
+                  <th class="num">יתרה בסוף השנה</th>
+                </tr>
+              </thead>
+              <tbody id="projYearlyBody"></tbody>
+            </table>
+          </div>
+        </details>
+
+        <p class="proj-disclaimer">
+          <strong>גילוי נאות:</strong> שחזור היסטורי לצורכי המחשה בלבד. החישוב מציג כיצד התנהג מסלול בעל פרופיל סיכון דומה במהלך תקופה היסטורית קונקרטית (1995–2024). אינו מהווה תחזית, ייעוץ או המלצה. ביצועי עבר אינם מנבאים את העתיד.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* === Historical Projection card === */
+  .projection-section {
+    padding: 8px 0 56px;
+    background: var(--bg);
+  }
+  .projection-section .container { padding: 0 28px; }
+
+  .proj-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 18px 22px;
+    text-align: right;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .2s, border-color .2s;
+    font: inherit;
+    color: inherit;
+  }
+  .proj-toggle:hover { box-shadow: var(--shadow-md); border-color: var(--accent); }
+  .proj-toggle[aria-expanded="true"] {
+    border-color: var(--accent);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .proj-toggle-icon { font-size: 22px; line-height: 1; flex-shrink: 0; }
+  .proj-toggle-text { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+  .proj-toggle-title { font-size: 17px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+  .proj-toggle-sub { font-size: 13px; color: var(--ink-muted); font-weight: 400; line-height: 1.4; }
+  .proj-toggle-chevron {
+    font-size: 18px;
+    color: var(--ink-muted);
+    transition: transform .25s;
+    flex-shrink: 0;
+  }
+  .proj-toggle[aria-expanded="true"] .proj-toggle-chevron { transform: rotate(180deg); }
+
+  .proj-body {
+    background: var(--card);
+    border: 1px solid var(--accent);
+    border-top: none;
+    border-bottom-left-radius: var(--r-md);
+    border-bottom-right-radius: var(--r-md);
+    padding: 22px;
+    box-shadow: var(--shadow-md);
+  }
+  .proj-intro {
+    margin: 0 0 18px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    background: var(--accent-soft);
+    padding: 12px 14px;
+    border-radius: var(--r-sm);
+    border-right: 3px solid var(--accent);
+  }
+  .proj-intro strong { color: var(--accent-dark); font-weight: 700; }
+
+  .proj-empty {
+    background: var(--bg-soft);
+    border: 1px dashed var(--line);
+    border-radius: var(--r-sm);
+    padding: 22px;
+    color: var(--ink-muted);
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .proj-input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .proj-input { display: flex; flex-direction: column; gap: 5px; }
+  .proj-input-label { font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+  .proj-input input[type="number"] {
+    font: inherit;
+    font-size: 15px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    padding: 10px 12px;
+    background: var(--card-tint);
+    color: var(--ink);
+    transition: border-color .15s, background .15s;
+    width: 100%;
+    box-sizing: border-box;
+    font-variant-numeric: tabular-nums;
+  }
+  .proj-input input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--card);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .proj-input-hint { font-size: 11.5px; color: var(--ink-faint); line-height: 1.4; }
+
+  .proj-years { display: flex; gap: 6px; flex-wrap: wrap; }
+  .proj-year-btn {
+    flex: 1 1 auto;
+    min-width: 70px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 10px;
+    border: 1px solid var(--line);
+    background: var(--card-tint);
+    color: var(--ink-soft);
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .proj-year-btn:hover { border-color: var(--accent); color: var(--accent-dark); }
+  .proj-year-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .proj-action-row { display: flex; justify-content: center; }
+  .proj-run-btn {
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--r-sm);
+    padding: 12px 32px;
+    cursor: pointer;
+    transition: background .15s, transform .1s, box-shadow .15s;
+    box-shadow: var(--shadow-sm);
+    letter-spacing: -0.01em;
+  }
+  .proj-run-btn:hover { background: var(--accent-dark); box-shadow: var(--shadow-md); }
+  .proj-run-btn:active { transform: translateY(1px); }
+
+  .proj-results { margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--line-soft); }
+  .proj-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .proj-metric {
+    background: var(--card-tint);
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    padding: 14px 16px;
+  }
+  .proj-metric-main {
+    background: var(--accent-soft);
+    border-color: var(--accent-soft-2);
+  }
+  .proj-metric-main .proj-metric-value { color: var(--accent-dark); }
+  .proj-metric-warn { background: #fff7ed; border-color: #fed7aa; }
+  .proj-metric-warn .proj-metric-value { color: var(--warning); }
+  .proj-metric-label {
+    font-size: 12px;
+    color: var(--ink-muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: 0.01em;
+  }
+  .proj-metric-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .proj-yearly { margin-top: 10px; }
+  .proj-yearly summary {
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-dark);
+    padding: 10px 0;
+    list-style: none;
+    user-select: none;
+  }
+  .proj-yearly summary::-webkit-details-marker { display: none; }
+  .proj-yearly summary::before {
+    content: '▸';
+    display: inline-block;
+    margin-left: 6px;
+    transition: transform .2s;
+  }
+  .proj-yearly[open] summary::before { transform: rotate(90deg); }
+  .proj-table-wrap {
+    margin-top: 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    overflow: hidden;
+  }
+  .proj-table-wrap table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .proj-table-wrap th, .proj-table-wrap td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--line-soft);
+    text-align: right;
+  }
+  .proj-table-wrap tbody tr:last-child td { border-bottom: none; }
+  .proj-table-wrap th {
+    background: var(--bg-soft);
+    font-weight: 700;
+    color: var(--ink-soft);
+    font-size: 12px;
+  }
+  .proj-table-wrap td.num { font-variant-numeric: tabular-nums; }
+  .proj-table-wrap tr.bad-year { background: var(--danger-soft); }
+  .proj-table-wrap tr.bad-year td { color: var(--danger); font-weight: 700; }
+  .proj-pos { color: var(--pos); font-weight: 600; }
+  .proj-neg { color: var(--neg); font-weight: 600; }
+
+  .proj-disclaimer {
+    margin-top: 18px;
+    padding: 12px 14px;
+    background: var(--bg-soft);
+    border-radius: var(--r-sm);
+    font-size: 12px;
+    color: var(--ink-muted);
+    line-height: 1.65;
+  }
+  .proj-disclaimer strong { color: var(--ink-soft); }
+
+  @media (max-width: 640px) {
+    .projection-section .container { padding: 0 20px; }
+    .proj-toggle { padding: 14px 16px; gap: 12px; }
+    .proj-toggle-title { font-size: 15px; }
+    .proj-toggle-sub { font-size: 12px; }
+    .proj-body { padding: 16px; }
+    .proj-metric-value { font-size: 18px; }
+    .proj-run-btn { width: 100%; }
+  }
+</style>
+
+<script>
+(function() {
+  'use strict';
+
+  // === נתוני תשואות היסטוריים (1995-2024) — זהים למחשבון הקיים ===
+  const RAW_YIELDS = {
+    low:    [22.66, 6.42, 13.62, 15.60, 0.18, 9.39, 1.67, 5.01, 6.11, 5.12, 3.33, 5.27, 8.12, -0.30, -0.37, 7.07, 10.05, 5.98, 0.61, 9.16, 1.05, 2.83, 6.99, -0.06, 13.25, 10.47, 3.05, -13.89, 8.60, 5.03],
+    medium: [30.82, 14.37, 23.60, 22.47, 9.89, 0.71, -4.99, -7.81, 17.20, 8.09, 4.06, 10.29, 6.78, -14.72, 11.58, 11.81, 6.85, 10.61, 15.11, 11.89, 1.21, 7.30, 14.10, -2.55, 22.29, 14.80, 15.54, -16.96, 17.26, 14.61],
+    high:   [35.83, 20.56, 30.78, 27.00, 17.98, -6.46, -10.11, -18.26, 25.56, 10.11, 4.63, 14.24, 5.95, -30.89, 22.23, 14.18, 3.49, 14.60, 28.03, 13.24, 1.37, 10.66, 19.73, -3.81, 29.05, 17.35, 25.18, -18.02, 23.84, 22.23]
+  };
+  const START_YEAR = 1995;
+  const RISK_LABELS = { low: 'סולידי', medium: 'מעורב', high: 'מנייתי' };
+
+  // === מיפוי DOM ===
+  const $ = (id) => document.getElementById(id);
+  const section       = $('projectionSection');
+  const toggle        = $('projToggle');
+  const body          = $('projBody');
+  const riskLabel     = $('projRiskLabel');
+  const stockPctEl    = $('projStockPct');
+  const empty         = $('projEmpty');
+  const form          = $('projForm');
+  const initialInput  = $('projInitial');
+  const monthlyInput  = $('projMonthly');
+  const feeInput      = $('projFee');
+  const yearBtns      = document.querySelectorAll('.proj-year-btn');
+  const runBtn        = $('projRunBtn');
+  const results       = $('projResults');
+  const finalEl       = $('projFinal');
+  const contribEl     = $('projContrib');
+  const interestEl    = $('projInterest');
+  const worstEl       = $('projWorstYear');
+  const yearlyBody    = $('projYearlyBody');
+
+  // === Helpers ===
+  const fmtILS = (n) => Math.round(n).toLocaleString('he-IL', {
+    style: 'currency', currency: 'ILS', maximumFractionDigits: 0
+  });
+  const parseNum = (txt) => {
+    if (!txt) return NaN;
+    const cleaned = String(txt).replace(/[^\d.\-]/g, '');
+    const n = parseFloat(cleaned);
+    return Number.isFinite(n) ? n : NaN;
+  };
+
+  // מיפוי חשיפה מנייתית → מסלול היסטורי
+  function pickRiskTrack(stockPct) {
+    if (stockPct < 30) return 'low';
+    if (stockPct < 60) return 'medium';
+    return 'high';
+  }
+
+  // קריאת מצב הדשבורד מתוך ה-DOM שכבר רונדר
+  function readDashboardState() {
+    const totalText = $('totalBalance') ? $('totalBalance').textContent : '';
+    const stockText = $('aggStock')     ? $('aggStock').textContent     : '';
+    const feeText   = $('feeSavings')   ? $('feeSavings').textContent   : '';
+    const total    = parseNum(totalText);
+    const stockPct = parseNum(stockText);
+    const fee      = parseNum(feeText);
+    return {
+      total:        Number.isFinite(total) && total > 0 ? total : 0,
+      stockPct:     Number.isFinite(stockPct) ? stockPct : 0,
+      fee:          Number.isFinite(fee) && fee > 0 ? fee : null,
+      hasPortfolio: Number.isFinite(total) && total > 0
+    };
+  }
+
+  // טעינה מחדש של ברירות מחדל מתוך הדשבורד (בלי לדרוס מה שהמשתמש ערך)
+  function refreshPrefill() {
+    const state = readDashboardState();
+    if (state.hasPortfolio) {
+      empty.hidden = true;
+      form.hidden = false;
+      const track = pickRiskTrack(state.stockPct);
+      riskLabel.textContent = RISK_LABELS[track];
+      stockPctEl.textContent = state.stockPct.toFixed(1);
+      if (!initialInput.dataset.userEdited) {
+        initialInput.value = Math.round(state.total);
+      }
+      if (state.fee !== null && !feeInput.dataset.userEdited) {
+        feeInput.value = state.fee.toFixed(2);
+      }
+    } else {
+      empty.hidden = false;
+      form.hidden = true;
+      results.hidden = true;
+      riskLabel.textContent = '—';
+      stockPctEl.textContent = '—';
+    }
+  }
+
+  // סימון שדות שהמשתמש ערך ידנית — כדי לא לדרוס בעדכון חוזר
+  [initialInput, feeInput].forEach(el => {
+    el.addEventListener('input', () => { el.dataset.userEdited = '1'; });
+  });
+
+  // === בחירת אופק זמן ===
+  let selectedYears = 20;
+  yearBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      yearBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedYears = parseInt(btn.dataset.years, 10);
+    });
+  });
+
+  // === קיפול/פתיחה של הכרטיס ===
+  toggle.addEventListener('click', () => {
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    body.hidden = expanded;
+    if (!expanded) refreshPrefill();
+  });
+
+  // === מנוע הסימולציה (זהה לוגית למחשבון של דורון) ===
+  function simulate({ initial, monthly, years, feePct, yields }) {
+    let amount = initial;
+    let contrib = initial;
+    const yearly = [];
+    let worstYield = Infinity;
+    let worstHistYear = null;
+    const feeMonthly = (feePct / 100) / 12;
+
+    for (let y = 0; y < years; y++) {
+      const idx = y % yields.length;
+      const annualYield = yields[idx] / 100;
+      const monthlyYield = annualYield / 12;
+
+      for (let m = 0; m < 12; m++) {
+        amount += monthly;
+        contrib += monthly;
+        amount += amount * monthlyYield;
+        amount -= amount * feeMonthly;
+      }
+
+      const histYear = START_YEAR + idx;
+      yearly.push({ n: y + 1, histYear, yieldPct: yields[idx], balance: amount });
+
+      if (yields[idx] < worstYield) {
+        worstYield = yields[idx];
+        worstHistYear = histYear;
+      }
+    }
+    return {
+      finalAmount: amount,
+      totalContrib: contrib,
+      totalInterest: amount - contrib,
+      yearly, worstYield, worstHistYear
+    };
+  }
+
+  // === רינדור התוצאות ===
+  function renderResults(sim) {
+    finalEl.textContent    = fmtILS(sim.finalAmount);
+    contribEl.textContent  = fmtILS(sim.totalContrib);
+    interestEl.textContent = fmtILS(sim.totalInterest);
+    interestEl.className   = 'proj-metric-value ' + (sim.totalInterest >= 0 ? 'proj-pos' : 'proj-neg');
+    worstEl.textContent    = `${sim.worstYield.toFixed(2)}% (${sim.worstHistYear})`;
+
+    yearlyBody.innerHTML = '';
+    sim.yearly.forEach(row => {
+      const tr = document.createElement('tr');
+      if (row.yieldPct < -5) tr.className = 'bad-year';
+      const yieldClass = row.yieldPct >= 0 ? 'proj-pos' : 'proj-neg';
+      tr.innerHTML = `
+        <td>שנה ${row.n} <span style="color:var(--ink-faint);font-size:11px">(${row.histYear})</span></td>
+        <td class="num ${yieldClass}">${row.yieldPct.toFixed(2)}%</td>
+        <td class="num">${fmtILS(row.balance)}</td>
+      `;
+      yearlyBody.appendChild(tr);
+    });
+    results.hidden = false;
+  }
+
+  // === כפתור ההרצה ===
+  runBtn.addEventListener('click', () => {
+    const state = readDashboardState();
+    if (!state.hasPortfolio) { refreshPrefill(); return; }
+
+    const initial = parseFloat(initialInput.value) || 0;
+    const monthly = parseFloat(monthlyInput.value) || 0;
+    const feePct  = parseFloat(feeInput.value) || 0;
+    const years   = selectedYears;
+    const track   = pickRiskTrack(state.stockPct);
+
+    const sim = simulate({ initial, monthly, years, feePct, yields: RAW_YIELDS[track] });
+    renderResults(sim);
+    results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+
+  // === הצגה / הסתרה לפי מצב התיק ===
+  function syncSectionVisibility() {
+    const state = readDashboardState();
+    section.hidden = !state.hasPortfolio;
+    if (state.hasPortfolio && toggle.getAttribute('aria-expanded') === 'true') {
+      refreshPrefill();
+    }
+  }
+  syncSectionVisibility();
+
+  // === מעקב אחרי שינויים בדשבורד ===
+  const observer = new MutationObserver(syncSectionVisibility);
+  ['totalBalance', 'aggStock', 'feeSavings'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el, { childList: true, characterData: true, subtree: true });
+  });
+})();
+</script>
+<!-- ====================================================================== -->
+<!-- סוף הכרטיס                                                              -->
+<!-- ====================================================================== -->
+
 
 <footer>
   <div class="container">
@@ -2482,118 +2817,8 @@ function renderDashboard() {
   document.getElementById('detailsRows').innerHTML = rows;
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('detailsSection').style.display = 'block';
-  const simPanel = document.getElementById('futureSim');
-  if (simPanel && !simPanel.hidden) updateFutureSimulationContext();
 }
 
-
-
-const SIM_RAW_YIELDS = {
-  low: [22.66, 6.42, 13.62, 15.60, 0.18, 9.39, 1.67, 5.01, 6.11, 5.12, 3.33, 5.27, 8.12, -0.30, -0.37, 7.07, 10.05, 5.98, 0.61, 9.16, 1.05, 2.83, 6.99, -0.06, 13.25, 10.47, 3.05, -13.89, 8.60, 5.03],
-  medium: [30.82, 14.37, 23.60, 22.47, 9.89, 0.71, -4.99, -7.81, 17.20, 8.09, 4.06, 10.29, 6.78, -14.72, 11.58, 11.81, 6.85, 10.61, 15.11, 11.89, 1.21, 7.30, 14.10, -2.55, 22.29, 14.80, 15.54, -16.96, 17.26, 14.61],
-  high: [35.83, 20.56, 30.78, 27.00, 17.98, -6.46, -10.11, -18.26, 25.56, 10.11, 4.63, 14.24, 5.95, -30.89, 22.23, 14.18, 3.49, 14.60, 28.03, 13.24, 1.37, 10.66, 19.73, -3.81, 29.05, 17.35, 25.18, -18.02, 23.84, 22.23]
-};
-const SIM_RISK_LABELS = {
-  low: 'סיכון נמוך',
-  medium: 'סיכון בינוני',
-  high: 'סיכון גבוה'
-};
-const SIM_RISK_EXPLAIN = {
-  low: 'עד 10% חשיפה למניות',
-  medium: 'מעל 10% ועד 70% חשיפה למניות',
-  high: 'מעל 70% חשיפה למניות'
-};
-function getRiskLevelByEquityExposure(stockPct) {
-  const stock = Number(stockPct) || 0;
-  if (stock <= 10) return 'low';
-  if (stock <= 70) return 'medium';
-  return 'high';
-}
-function calculateFutureScenario(initialAmount, monthlyDeposit, years, annualFeePct, riskKey) {
-  const yields = (SIM_RAW_YIELDS[riskKey] || SIM_RAW_YIELDS.medium).map(y => y / 100);
-  let currentAmount = Number(initialAmount) || 0;
-  let totalContributions = currentAmount;
-  let totalAnnualYield = 0;
-  for (let year = 1; year <= years; year++) {
-    const annualYield = yields[(year - 1) % yields.length];
-    totalAnnualYield += annualYield;
-    for (let month = 0; month < 12; month++) {
-      currentAmount += monthlyDeposit;
-      totalContributions += monthlyDeposit;
-      currentAmount += currentAmount * (annualYield / 12);
-      currentAmount -= currentAmount * ((annualFeePct / 100) / 12);
-    }
-  }
-  return {
-    finalAmount: currentAmount,
-    totalContributions,
-    totalGain: currentAmount - totalContributions,
-    averageYield: years > 0 ? totalAnnualYield / years * 100 : null
-  };
-}
-function updateFutureSimulationContext() {
-  const totalBalance = getTotalBalance();
-  const stockPct = weightedMetric('stock_pct', totalBalance);
-  const feeSavings = weightedUserManagementFee(totalBalance);
-  const riskKey = getRiskLevelByEquityExposure(stockPct);
-  const feeInput = document.getElementById('simManagementFee');
-  document.getElementById('simInitialAmount').textContent = fmtCurrency(totalBalance);
-  document.getElementById('simStockExposure').textContent = fmtPct(stockPct, 1);
-  document.getElementById('simRiskLevel').textContent = `${SIM_RISK_LABELS[riskKey]} (${SIM_RISK_EXPLAIN[riskKey]})`;
-  document.getElementById('simFeeDisplay').textContent = Number.isFinite(feeSavings) ? fmtPct(feeSavings, 2) : 'לא הוזן';
-  if (feeInput && !feeInput.value && Number.isFinite(feeSavings)) feeInput.value = feeSavings.toFixed(2);
-}
-function openFutureSimulation() {
-  if (!hasReportData()) {
-    alert('כדי להריץ סימולציה צריך להוסיף לפחות מוצר אחד ולהזין יתרה.');
-    return;
-  }
-  renderDashboard();
-  const panel = document.getElementById('futureSim');
-  if (!panel) return;
-  panel.hidden = false;
-  updateFutureSimulationContext();
-  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-function calculatePastBasedSimulation() {
-  if (!hasReportData()) {
-    alert('כדי להריץ סימולציה צריך להוסיף לפחות מוצר אחד ולהזין יתרה.');
-    return;
-  }
-  const totalBalance = getTotalBalance();
-  const stockPct = weightedMetric('stock_pct', totalBalance);
-  const riskKey = getRiskLevelByEquityExposure(stockPct);
-  const monthlyDeposit = Math.max(0, Number(document.getElementById('simMonthlyDeposit').value) || 0);
-  const years = Math.max(1, Math.min(60, Math.round(Number(document.getElementById('simYears').value) || 0)));
-  const feeRaw = document.getElementById('simManagementFee').value;
-  const fee = Number(feeRaw);
-  if (!Number.isFinite(fee) || fee < 0) {
-    alert('יש להזין דמי ניהול תקינים לצורך הסימולציה.');
-    document.getElementById('simManagementFee').focus();
-    return;
-  }
-  const result = calculateFutureScenario(totalBalance, monthlyDeposit, years, fee, riskKey);
-  const resultEl = document.getElementById('simResult');
-  resultEl.innerHTML = `
-    <div class="sim-result-box">
-      <div class="sim-result-label">רמת סיכון לפי חשיפה</div>
-      <div class="sim-result-value">${SIM_RISK_LABELS[riskKey]}</div>
-    </div>
-    <div class="sim-result-box">
-      <div class="sim-result-label">סכום בסוף התקופה</div>
-      <div class="sim-result-value">${fmtCurrency(result.finalAmount)}</div>
-    </div>
-    <div class="sim-result-box">
-      <div class="sim-result-label">סך הפקדות</div>
-      <div class="sim-result-value">${fmtCurrency(result.totalContributions)}</div>
-    </div>
-    <div class="sim-result-box">
-      <div class="sim-result-label">רווח / הפסד בסימולציה</div>
-      <div class="sim-result-value">${fmtCurrency(result.totalGain)}</div>
-    </div>
-  `;
-  resultEl.hidden = false;
-}
 
 
 function getTotalBalance() {
@@ -2719,8 +2944,6 @@ window.saveAsPDF = saveAsPDF;
 window.shareWhatsApp = shareWhatsApp;
 window.goToDashboard = goToDashboard;
 window.resetAllData = resetAllData;
-window.openFutureSimulation = openFutureSimulation;
-window.calculatePastBasedSimulation = calculatePastBasedSimulation;
 
 function findUserFundIndex(uid) {
   return userFunds.findIndex(item => item.fund && item.fund.uid === uid);
