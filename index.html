@@ -1788,28 +1788,144 @@
     from { opacity: 0; transform: translateY(-6px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+
+  /* === v3.40 simplified entry: hero sub, step indicator, company grid === */
+  .hero-sub {
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin: 12px 0 28px;
+    font-weight: 400;
+  }
+  .step-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .step-pill {
+    padding: 6px 14px;
+    background: var(--bg-soft);
+    color: var(--ink-muted);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .step-pill-active {
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    border-color: var(--accent-soft-2);
+  }
+  .step-sep {
+    color: var(--ink-faint);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .trust-badges {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .trust-badges .info-cube {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    font-size: 13px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .trust-badges .info-cube:hover {
+    background: var(--bg-soft);
+    border-color: var(--line);
+  }
+  .trust-badges .info-cube-icon {
+    font-size: 15px;
+  }
+  .trust-badges .info-cube-text {
+    font-weight: 500;
+  }
+  .company-grid-label {
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin: 4px 0 14px;
+    font-weight: 500;
+  }
+  .company-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .company-btn {
+    padding: 20px 10px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    font-family: inherit;
+    transition: transform 0.12s, border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  }
+  .company-btn:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-sm);
+    background: var(--card-tint);
+  }
+  .company-btn:active {
+    transform: scale(0.98);
+  }
+  .company-btn.is-selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+  }
+  .search-also {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin: 4px 0 12px;
+    font-weight: 500;
+  }
+  @media (max-width: 600px) {
+    .hero-sub { font-size: 14px; margin-bottom: 20px; }
+    .step-indicator { gap: 6px; margin-bottom: 18px; }
+    .step-pill { font-size: 12px; padding: 5px 10px; }
+    .step-sep { font-size: 12px; }
+    .company-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .company-btn { padding: 16px 8px; font-size: 14px; }
+  }
 </style>
 </head>
 <body>
 <section class="hero">
   <div class="container">
-    <h1>הקופות והקרנות שלך במקום אחד-  ומה <em>החשיפה</em> שלך למניות ולמט״ח</h1>
-    <div class="info-cubes">
-      <button type="button" class="info-cube" data-tip="exposure" aria-expanded="false" aria-controls="cubeTooltip">
-        <div class="info-cube-icon">📊</div>
-        <div class="info-cube-text">רואים בקליק את החשיפה למניות ולמט״ח</div>
-      </button>
+    <h1>תראה איך הכסף שלך מושקע</h1>
+    <p class="hero-sub">בלי הרשמה. הנתונים נשארים אצלך במכשיר.</p>
+    <div class="step-indicator" aria-label="שלבי השימוש">
+      <span class="step-pill step-pill-active">1. בחר חברה</span>
+      <span class="step-sep">←</span>
+      <span class="step-pill">2. בחר מסלול</span>
+      <span class="step-sep">←</span>
+      <span class="step-pill">3. ראה הרכב</span>
+    </div>
+    <div class="trust-badges">
       <button type="button" class="info-cube" data-tip="privacy" aria-expanded="false" aria-controls="cubeTooltip">
-        <div class="info-cube-icon">🔒</div>
-        <div class="info-cube-text">בלי הרשמה – הכל נשמר רק אצלך</div>
-      </button>
-      <button type="button" class="info-cube" data-tip="workflow" aria-expanded="false" aria-controls="cubeTooltip">
-        <div class="info-cube-icon">💡</div>
-        <div class="info-cube-text">חפש ⬅ עדכן יתרה ⬅ עדכן בדשבורד</div>
+        <span class="info-cube-icon">🔒</span>
+        <span class="info-cube-text">הכל מקומי, בלי הרשמה</span>
       </button>
       <button type="button" class="info-cube" data-tip="source" aria-expanded="false" aria-controls="cubeTooltip">
-        <div class="info-cube-icon">🗂️</div>
-        <div class="info-cube-text">מקור הנתונים: גמל נט, פנסיה נט וביטוח נט</div>
+        <span class="info-cube-icon">🗂️</span>
+        <span class="info-cube-text">מקור: גמל נט · פנסיה נט · ביטוח נט</span>
       </button>
     </div>
     <div class="info-cube-tooltip" id="cubeTooltip" role="region" aria-live="polite" hidden></div>
@@ -1819,6 +1935,20 @@
 <section class="section" id="searchSection">
   <div class="container">
     <h2 class="section-title">מצא את הקופות שלך</h2>
+
+    <p class="company-grid-label">באיזה גוף יש לך חיסכון?</p>
+    <div class="company-grid" id="companyGrid">
+      <button type="button" class="company-btn" data-query="מנורה">מנורה מבטחים</button>
+      <button type="button" class="company-btn" data-query="הראל">הראל</button>
+      <button type="button" class="company-btn" data-query="הפניקס">הפניקס</button>
+      <button type="button" class="company-btn" data-query="כלל">כלל</button>
+      <button type="button" class="company-btn" data-query="מגדל">מגדל</button>
+      <button type="button" class="company-btn" data-query="מיטב">מיטב</button>
+      <button type="button" class="company-btn" data-query="מור">מור</button>
+      <button type="button" class="company-btn" data-query="אלטשולר">אלטשולר שחם</button>
+    </div>
+
+    <p class="search-also">או חפש לפי שם החברה / מסלול / סוג מוצר:</p>
     <div class="filters" id="filters">
       <button class="filter-btn active" data-filter="all" data-label="הכל">הכל</button>
       <button class="filter-btn" data-filter="gemelnet" data-label="גמל / השתלמות / גמל להשקעה">גמל / השתלמות / גמל להשקעה</button>
@@ -3256,6 +3386,31 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.classList.add('active');
     activeFilter = btn.dataset.filter;
     showResults(document.getElementById('searchInput').value);
+  });
+});
+
+// v3.40: company grid — לחיצה על שם חברה ממלאת את החיפוש ופותחת תוצאות
+document.querySelectorAll('.company-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const query = btn.dataset.query || '';
+    document.querySelectorAll('.company-btn').forEach(b => b.classList.remove('is-selected'));
+    btn.classList.add('is-selected');
+    // איפוס פילטר סוג מוצר ל'הכל' כדי שלא יחסום תוצאות מהחברה הנבחרת
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    const allFilterBtn = document.querySelector('.filter-btn[data-filter="all"]');
+    if (allFilterBtn) allFilterBtn.classList.add('active');
+    activeFilter = 'all';
+    const input = document.getElementById('searchInput');
+    if (input) {
+      input.value = query;
+      input.focus();
+    }
+    showResults(query);
+    // גלילה רכה לתוצאות
+    const wrap = document.querySelector('.search-wrap');
+    if (wrap && wrap.scrollIntoView) {
+      wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   });
 });
 // התוצאות נשארות פתוחות כדי שהמשתמש יוכל לעבור על כל מוצרי החברה.
