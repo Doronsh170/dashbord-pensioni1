@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.27</title>
+<title>דשבורד חשיפות חיסכון | v3.35</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -979,11 +979,11 @@
   /* === Action toolbar === */
   .action-toolbar {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
     flex-wrap: wrap;
     margin: 10px 0 24px;
-    max-width: 600px;
+    max-width: 880px;
   }
   .action-btn {
     display: flex;
@@ -1013,6 +1013,7 @@
   }
   .action-btn[onclick*="saveAsPDF"]::before { content: "📄"; }
   .action-btn[onclick*="shareWhatsApp"]::before { content: "💬"; }
+  .action-btn[onclick*="openFutureSimulation"]::before { content: "📈"; }
   .action-btn[onclick*="resetAllData"]::before { content: "↺"; }
   .action-btn:hover {
     border-color: rgba(255, 255, 255, 0.45);
@@ -1787,6 +1788,188 @@
     from { opacity: 0; transform: translateY(-6px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+
+
+  /* === Future simulation === */
+  .future-sim {
+    margin-top: 34px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+  }
+  .future-sim-card {
+    background: rgba(255, 255, 255, 0.055);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--r-md);
+    padding: 22px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .future-sim-title {
+    font-size: 20px;
+    font-weight: 900;
+    color: #fff;
+    margin: 0 0 8px;
+  }
+  .future-sim-text {
+    color: rgba(255, 255, 255, 0.66);
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+    max-width: 880px;
+  }
+  .sim-context-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .sim-context-item {
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, 0.045);
+    border-radius: var(--r-sm);
+    padding: 12px 14px;
+  }
+  .sim-context-label {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .sim-context-value {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+  }
+  .sim-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(160px, 1fr)) auto;
+    gap: 12px;
+    align-items: end;
+    margin-bottom: 12px;
+  }
+  .sim-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .sim-field label {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 11px;
+    font-weight: 800;
+  }
+  .sim-field input {
+    width: 100%;
+    padding: 12px 13px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.92);
+    color: #0f172a;
+    border-radius: var(--r-sm);
+    font: inherit;
+    font-weight: 700;
+    text-align: left;
+    direction: ltr;
+    outline: none;
+  }
+  .sim-field input:focus {
+    border-color: #5eead4;
+    box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.18);
+  }
+  .sim-run-btn {
+    border: 0;
+    background: var(--accent);
+    color: #fff;
+    font: inherit;
+    font-weight: 900;
+    padding: 13px 18px;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+  }
+  .sim-run-btn:hover { background: var(--accent-dark); }
+  .sim-result {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .sim-result-box {
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.055);
+    border-radius: var(--r-sm);
+    padding: 14px;
+  }
+  .sim-result-label {
+    color: rgba(255,255,255,0.58);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  .sim-result-value {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .sim-disclaimer {
+    margin-top: 12px;
+    color: rgba(255,255,255,0.54);
+    font-size: 11.5px;
+    line-height: 1.6;
+  }
+  @media (max-width: 760px) {
+    .sim-context-grid, .sim-result { grid-template-columns: 1fr 1fr; }
+    .sim-form-grid { grid-template-columns: 1fr; }
+    .sim-run-btn { width: 100%; }
+    .future-sim-card { padding: 16px; }
+  }
+  @media (max-width: 420px) {
+    .sim-context-grid, .sim-result { grid-template-columns: 1fr; }
+  }
+  body.pdf-mode .future-sim-card,
+  body.pdf-mode .sim-context-item,
+  body.pdf-mode .sim-result-box {
+    background: #f8fafc !important;
+    border-color: #dbe3ee !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+  }
+  body.pdf-mode .future-sim-title,
+  body.pdf-mode .sim-context-value,
+  body.pdf-mode .sim-result-value {
+    color: #0f172a !important;
+  }
+  body.pdf-mode .future-sim-text,
+  body.pdf-mode .sim-context-label,
+  body.pdf-mode .sim-result-label,
+  body.pdf-mode .sim-disclaimer {
+    color: #475569 !important;
+  }
+  @media print {
+    .future-sim-card,
+    .sim-context-item,
+    .sim-result-box {
+      background: #f8fafc !important;
+      border: 1px solid #dbe3ee !important;
+      color: #0f172a !important;
+      box-shadow: none !important;
+    }
+    .future-sim-title,
+    .sim-context-value,
+    .sim-result-value { color: #0f172a !important; }
+    .future-sim-text,
+    .sim-context-label,
+    .sim-result-label,
+    .sim-disclaimer { color: #475569 !important; }
+    .sim-form-grid { display: none !important; }
+  }
+
 </style>
 </head>
 <body>
@@ -1846,6 +2029,7 @@
     <div class="action-toolbar" aria-label="פעולות דוח">
       <button type="button" class="action-btn" onclick="saveAsPDF()">שמירה / הדפסה ל-PDF</button>
       <button type="button" class="action-btn" onclick="shareWhatsApp()">שליחה לווטסאפ</button>
+      <button type="button" class="action-btn" onclick="openFutureSimulation()">סימולציה על בסיס תשואות עבר</button>
       <button type="button" class="action-btn" onclick="resetAllData()">איפוס הכל</button>
     </div>
     <div class="action-note">שמירה ל-PDF נפתחת דרך חלון ההדפסה של הדפדפן. בשל מגבלות דפדפן, שליחה לווטסאפ שולחת סיכום טקסטואלי וקישור, לא מצרפת PDF אוטומטית.</div>
@@ -1903,6 +2087,48 @@
         </div>
       </div>
     </div>
+
+    <section class="future-sim" id="futureSim" hidden>
+      <div class="future-sim-card">
+        <h3 class="future-sim-title">סימולציה על בסיס תשואות עבר</h3>
+        <p class="future-sim-text">בהתבסס על תשואות עבר של מסלולי סיכון שונים, ניתן להמחיש כיצד הסכום שהוזן עשוי להתפתח לאורך זמן. אין בכך תחזית, הבטחה, ייעוץ או המלצה.</p>
+        <div class="sim-context-grid">
+          <div class="sim-context-item">
+            <div class="sim-context-label">סכום התחלתי</div>
+            <div class="sim-context-value" id="simInitialAmount">-</div>
+          </div>
+          <div class="sim-context-item">
+            <div class="sim-context-label">חשיפה מנייתית</div>
+            <div class="sim-context-value" id="simStockExposure">-</div>
+          </div>
+          <div class="sim-context-item">
+            <div class="sim-context-label">רמת סיכון שנבחרה</div>
+            <div class="sim-context-value" id="simRiskLevel">-</div>
+          </div>
+          <div class="sim-context-item">
+            <div class="sim-context-label">דמי ניהול לחישוב</div>
+            <div class="sim-context-value" id="simFeeDisplay">-</div>
+          </div>
+        </div>
+        <div class="sim-form-grid">
+          <div class="sim-field">
+            <label for="simMonthlyDeposit">הפקדה חודשית</label>
+            <input type="number" id="simMonthlyDeposit" value="0" min="0" inputmode="numeric" />
+          </div>
+          <div class="sim-field">
+            <label for="simYears">מספר שנים</label>
+            <input type="number" id="simYears" value="30" min="1" max="60" inputmode="numeric" />
+          </div>
+          <div class="sim-field">
+            <label for="simManagementFee">דמי ניהול שנתיים %</label>
+            <input type="number" id="simManagementFee" placeholder="לדוגמה 0.70" min="0" step="0.01" inputmode="decimal" />
+          </div>
+          <button type="button" class="sim-run-btn" onclick="calculatePastBasedSimulation()">הרץ סימולציה</button>
+        </div>
+        <div class="sim-result" id="simResult" hidden></div>
+        <div class="sim-disclaimer">הסימולציה מבוססת על תשואות עבר בלבד. ביצועי עבר אינם ערובה לביצועים עתידיים, ואין לראות בתוצאה ייעוץ השקעות, ייעוץ פנסיוני, תחזית או המלצה.</div>
+      </div>
+    </section>
   </div>
 </section>
 
@@ -2256,8 +2482,118 @@ function renderDashboard() {
   document.getElementById('detailsRows').innerHTML = rows;
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('detailsSection').style.display = 'block';
+  const simPanel = document.getElementById('futureSim');
+  if (simPanel && !simPanel.hidden) updateFutureSimulationContext();
 }
 
+
+
+const SIM_RAW_YIELDS = {
+  low: [22.66, 6.42, 13.62, 15.60, 0.18, 9.39, 1.67, 5.01, 6.11, 5.12, 3.33, 5.27, 8.12, -0.30, -0.37, 7.07, 10.05, 5.98, 0.61, 9.16, 1.05, 2.83, 6.99, -0.06, 13.25, 10.47, 3.05, -13.89, 8.60, 5.03],
+  medium: [30.82, 14.37, 23.60, 22.47, 9.89, 0.71, -4.99, -7.81, 17.20, 8.09, 4.06, 10.29, 6.78, -14.72, 11.58, 11.81, 6.85, 10.61, 15.11, 11.89, 1.21, 7.30, 14.10, -2.55, 22.29, 14.80, 15.54, -16.96, 17.26, 14.61],
+  high: [35.83, 20.56, 30.78, 27.00, 17.98, -6.46, -10.11, -18.26, 25.56, 10.11, 4.63, 14.24, 5.95, -30.89, 22.23, 14.18, 3.49, 14.60, 28.03, 13.24, 1.37, 10.66, 19.73, -3.81, 29.05, 17.35, 25.18, -18.02, 23.84, 22.23]
+};
+const SIM_RISK_LABELS = {
+  low: 'סיכון נמוך',
+  medium: 'סיכון בינוני',
+  high: 'סיכון גבוה'
+};
+const SIM_RISK_EXPLAIN = {
+  low: 'עד 10% חשיפה למניות',
+  medium: 'מעל 10% ועד 70% חשיפה למניות',
+  high: 'מעל 70% חשיפה למניות'
+};
+function getRiskLevelByEquityExposure(stockPct) {
+  const stock = Number(stockPct) || 0;
+  if (stock <= 10) return 'low';
+  if (stock <= 70) return 'medium';
+  return 'high';
+}
+function calculateFutureScenario(initialAmount, monthlyDeposit, years, annualFeePct, riskKey) {
+  const yields = (SIM_RAW_YIELDS[riskKey] || SIM_RAW_YIELDS.medium).map(y => y / 100);
+  let currentAmount = Number(initialAmount) || 0;
+  let totalContributions = currentAmount;
+  let totalAnnualYield = 0;
+  for (let year = 1; year <= years; year++) {
+    const annualYield = yields[(year - 1) % yields.length];
+    totalAnnualYield += annualYield;
+    for (let month = 0; month < 12; month++) {
+      currentAmount += monthlyDeposit;
+      totalContributions += monthlyDeposit;
+      currentAmount += currentAmount * (annualYield / 12);
+      currentAmount -= currentAmount * ((annualFeePct / 100) / 12);
+    }
+  }
+  return {
+    finalAmount: currentAmount,
+    totalContributions,
+    totalGain: currentAmount - totalContributions,
+    averageYield: years > 0 ? totalAnnualYield / years * 100 : null
+  };
+}
+function updateFutureSimulationContext() {
+  const totalBalance = getTotalBalance();
+  const stockPct = weightedMetric('stock_pct', totalBalance);
+  const feeSavings = weightedUserManagementFee(totalBalance);
+  const riskKey = getRiskLevelByEquityExposure(stockPct);
+  const feeInput = document.getElementById('simManagementFee');
+  document.getElementById('simInitialAmount').textContent = fmtCurrency(totalBalance);
+  document.getElementById('simStockExposure').textContent = fmtPct(stockPct, 1);
+  document.getElementById('simRiskLevel').textContent = `${SIM_RISK_LABELS[riskKey]} (${SIM_RISK_EXPLAIN[riskKey]})`;
+  document.getElementById('simFeeDisplay').textContent = Number.isFinite(feeSavings) ? fmtPct(feeSavings, 2) : 'לא הוזן';
+  if (feeInput && !feeInput.value && Number.isFinite(feeSavings)) feeInput.value = feeSavings.toFixed(2);
+}
+function openFutureSimulation() {
+  if (!hasReportData()) {
+    alert('כדי להריץ סימולציה צריך להוסיף לפחות מוצר אחד ולהזין יתרה.');
+    return;
+  }
+  renderDashboard();
+  const panel = document.getElementById('futureSim');
+  if (!panel) return;
+  panel.hidden = false;
+  updateFutureSimulationContext();
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function calculatePastBasedSimulation() {
+  if (!hasReportData()) {
+    alert('כדי להריץ סימולציה צריך להוסיף לפחות מוצר אחד ולהזין יתרה.');
+    return;
+  }
+  const totalBalance = getTotalBalance();
+  const stockPct = weightedMetric('stock_pct', totalBalance);
+  const riskKey = getRiskLevelByEquityExposure(stockPct);
+  const monthlyDeposit = Math.max(0, Number(document.getElementById('simMonthlyDeposit').value) || 0);
+  const years = Math.max(1, Math.min(60, Math.round(Number(document.getElementById('simYears').value) || 0)));
+  const feeRaw = document.getElementById('simManagementFee').value;
+  const fee = Number(feeRaw);
+  if (!Number.isFinite(fee) || fee < 0) {
+    alert('יש להזין דמי ניהול תקינים לצורך הסימולציה.');
+    document.getElementById('simManagementFee').focus();
+    return;
+  }
+  const result = calculateFutureScenario(totalBalance, monthlyDeposit, years, fee, riskKey);
+  const resultEl = document.getElementById('simResult');
+  resultEl.innerHTML = `
+    <div class="sim-result-box">
+      <div class="sim-result-label">רמת סיכון לפי חשיפה</div>
+      <div class="sim-result-value">${SIM_RISK_LABELS[riskKey]}</div>
+    </div>
+    <div class="sim-result-box">
+      <div class="sim-result-label">סכום בסוף התקופה</div>
+      <div class="sim-result-value">${fmtCurrency(result.finalAmount)}</div>
+    </div>
+    <div class="sim-result-box">
+      <div class="sim-result-label">סך הפקדות</div>
+      <div class="sim-result-value">${fmtCurrency(result.totalContributions)}</div>
+    </div>
+    <div class="sim-result-box">
+      <div class="sim-result-label">רווח / הפסד בסימולציה</div>
+      <div class="sim-result-value">${fmtCurrency(result.totalGain)}</div>
+    </div>
+  `;
+  resultEl.hidden = false;
+}
 
 
 function getTotalBalance() {
@@ -2383,6 +2719,8 @@ window.saveAsPDF = saveAsPDF;
 window.shareWhatsApp = shareWhatsApp;
 window.goToDashboard = goToDashboard;
 window.resetAllData = resetAllData;
+window.openFutureSimulation = openFutureSimulation;
+window.calculatePastBasedSimulation = calculatePastBasedSimulation;
 
 function findUserFundIndex(uid) {
   return userFunds.findIndex(item => item.fund && item.fund.uid === uid);
