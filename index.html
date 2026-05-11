@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.36</title>
+<title>דשבורד חשיפות חיסכון | v3.39</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -3336,5 +3336,172 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 })();
 </script>
+
+
+<!-- v3.39: Light dashboard theme override -->
+<style id="v3-39-dashboard-light">
+  /* דשבורד בהיר ותואם לשאר האתר */
+  .dashboard {
+    background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%) !important;
+    color: var(--ink) !important;
+    padding: 56px 0 52px;
+    border-top: 1px solid var(--line-soft);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .dashboard .container { position: relative; z-index: 1; }
+  .dashboard h2 {
+    color: var(--ink) !important;
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+  .dashboard .subtitle {
+    color: var(--ink-mid) !important;
+    font-size: 13.5px;
+    margin-bottom: 24px;
+  }
+  .dashboard .action-toolbar {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    max-width: none;
+    margin: 12px 0 18px;
+  }
+  .dashboard .action-btn {
+    background: #ffffff !important;
+    color: var(--ink) !important;
+    border: 1px solid var(--line) !important;
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .dashboard .action-btn:hover {
+    background: var(--accent-soft) !important;
+    border-color: var(--accent-soft-2) !important;
+    color: var(--accent-dark) !important;
+    box-shadow: var(--shadow-md);
+  }
+  .dashboard .action-note {
+    color: var(--ink-muted) !important;
+    margin: 0 0 28px;
+  }
+  .dashboard .total-row {
+    background: #ffffff;
+    border: 1px solid var(--line-soft) !important;
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+  .dashboard .total {
+    color: var(--ink) !important;
+  }
+  .dashboard .total-label {
+    color: var(--ink-muted) !important;
+  }
+  .dashboard .source-mix {
+    color: var(--ink-soft) !important;
+  }
+  .dashboard .source-mix-item {
+    background: var(--card-tint) !important;
+    border: 1px solid var(--line-soft) !important;
+    color: var(--ink-soft) !important;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .dashboard .dot {
+    box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.06);
+  }
+  .dashboard .metric-grid {
+    gap: 16px;
+    margin-top: 22px;
+  }
+  .dashboard .metric-card {
+    background: #ffffff !important;
+    border: 1px solid var(--line-soft) !important;
+    color: var(--ink) !important;
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .dashboard .metric-card:hover {
+    background: #ffffff !important;
+    border-color: var(--line) !important;
+    box-shadow: var(--shadow-md);
+  }
+  .dashboard .metric-label {
+    color: var(--ink-muted) !important;
+  }
+  .dashboard .metric-value {
+    color: var(--ink) !important;
+  }
+  .dashboard .metric-value .pct {
+    color: var(--ink-muted) !important;
+  }
+  .dashboard .metric-bar {
+    background: #e2e8f0 !important;
+  }
+  .dashboard .perf-wrap {
+    border-top: 1px solid var(--line) !important;
+    margin-top: 34px;
+    padding-top: 28px;
+  }
+  .dashboard .perf-title {
+    color: var(--ink) !important;
+  }
+  .dashboard .perf-note {
+    color: var(--ink-muted) !important;
+  }
+  .dashboard .positive { color: var(--pos) !important; }
+  .dashboard .negative { color: var(--neg) !important; }
+
+  @media (max-width: 760px) {
+    .dashboard {
+      background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%) !important;
+      padding: 32px 0 36px;
+    }
+    .dashboard .action-toolbar {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin: 10px 0 18px;
+    }
+    .dashboard .total-row {
+      padding: 18px;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .dashboard .source-mix {
+      background: transparent !important;
+      border: 0 !important;
+      padding: 0 !important;
+      gap: 7px;
+    }
+    .dashboard .source-mix-item {
+      padding: 8px 10px;
+      border-radius: var(--r-sm);
+      background: #ffffff !important;
+    }
+    .dashboard .metric-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+  }
+
+  @media print {
+    .dashboard {
+      background: #ffffff !important;
+      color: #111111 !important;
+      border: 0 !important;
+    }
+    .dashboard .total-row,
+    .dashboard .metric-card,
+    .dashboard .source-mix-item {
+      background: #ffffff !important;
+      box-shadow: none !important;
+    }
+  }
+</style>
+
 </body>
 </html>
