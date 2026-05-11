@@ -2011,6 +2011,75 @@
   }
 
 
+
+
+  /* === v3.50: focused search inside company results === */
+  .inside-results-search {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-right: 4px solid var(--accent);
+    border-radius: var(--r-md);
+    padding: 16px 18px;
+    margin: 0 0 14px;
+    box-shadow: var(--shadow-sm);
+  }
+  .inside-results-title {
+    margin: 0 0 6px;
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1.35;
+  }
+  .inside-results-subtitle {
+    margin: 0 0 12px;
+    color: var(--ink-muted);
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+  .inside-results-input {
+    width: 100%;
+    padding: 14px 16px;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1.5px solid var(--line);
+    border-radius: var(--r-sm);
+    background: var(--card-tint);
+    color: var(--ink);
+    outline: none;
+    transition: all 0.18s ease;
+  }
+  .inside-results-input::placeholder { color: var(--ink-faint); font-weight: 400; }
+  .inside-results-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.12);
+    background: #fff;
+  }
+  .show-more-results-btn {
+    width: 100%;
+    margin: 8px 0 0;
+    padding: 13px 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    background: var(--card);
+    color: var(--ink-soft);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+  .show-more-results-btn:hover {
+    border-color: var(--accent-soft-2);
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+  }
+  @media (max-width: 600px) {
+    .inside-results-search { padding: 14px; border-right-width: 0; border-top: 4px solid var(--accent); }
+    .inside-results-title { font-size: 14px; }
+    .inside-results-input { font-size: 16px; padding: 13px 14px; }
+  }
+
   /* === v3.45: force desktop/mobile hero centering after simplified entry styles === */
   .hero .container {
     text-align: center !important;
@@ -3441,7 +3510,7 @@ window.updateManagementFee = updateManagementFee;
 window.handleBalanceInput = handleBalanceInput;
 window.handleFeeInput = handleFeeInput;
 
-function buildResultSummary(query, results) {
+function buildResultSummary(query, results, totalCount = results.length, visibleCount = results.length) {
   const q = (query || '').trim();
   const counts = results.reduce((acc, r) => {
     acc.total += 1;
@@ -3452,15 +3521,21 @@ function buildResultSummary(query, results) {
     .filter(src => counts[src])
     .map(src => `<span class="result-count-pill">${SOURCE_LABEL[src]}: ${counts[src]}</span>`)
     .join('');
-  const title = q
-    ? `נמצאו ${counts.total} מוצרים עבור החיפוש: "${escapeHtml(q)}"`
-    : `מציג ${counts.total} מוצרים`;
+  const isFocusedCompanySearch = selectedCompanyQuery && q === selectedCompanyQuery && selectedProductFilter !== 'all';
+  const title = isFocusedCompanySearch
+    ? `נמצאו ${totalCount} קופות/מסלולים של ${escapeHtml(q)}`
+    : q
+      ? `נמצאו ${totalCount} מוצרים עבור החיפוש: "${escapeHtml(q)}"`
+      : `מציג ${totalCount} מוצרים`;
+  const visibleNote = totalCount > visibleCount
+    ? `<span>מוצגות ${visibleCount} תוצאות ראשונות מתוך ${totalCount}. אפשר לצמצם באמצעות החיפוש הפנימי.</span>`
+    : `<span>כל התוצאות הרלוונטיות מוצגות בעמוד</span>`;
   return `
     <div class="result-item result-summary">
       <div class="result-name">${title}</div>
       <div class="result-meta">
         <span>לחיצה על “עדכן” פותחת אזור מהיר להזנת יתרה ודמי ניהול</span>
-        <span>כל התוצאות מוצגות בעמוד</span>
+        ${visibleNote}
       </div>
       <div class="result-counts">${countPills}</div>
     </div>
@@ -3474,19 +3549,64 @@ function updateFilterCounts(query) {
   });
 }
 
+function resultMatchesInternalSearch(rec, term) {
+  const q = normalizeText(term);
+  const qCompact = compactText(term);
+  if (!q && !qCompact) return true;
+  const searchable = [
+    rec.fund_name,
+    rec.fund_id,
+    rec.classification,
+    rec.specialization,
+    rec.sub_specialization,
+    rec.target_population,
+    rec.managing_corp,
+    rec.parent_company_name
+  ].join(' ');
+  const text = normalizeText(searchable);
+  const compact = compactText(searchable);
+  const parts = q.split(' ').filter(Boolean);
+  return text.includes(q) || (qCompact && compact.includes(qCompact)) || parts.every(p => text.includes(p) || compact.includes(compactText(p)));
+}
+
+function buildInsideResultsSearch(query, baseCount) {
+  if (!(selectedCompanyQuery && query === selectedCompanyQuery && selectedProductFilter !== 'all')) return '';
+  const productLabel = (document.querySelector(`.product-type-btn[data-filter="${selectedProductFilter}"]`) || {}).textContent || '';
+  return `
+    <div class="inside-results-search">
+      <p class="inside-results-title">חפש מסלול בתוך התוצאות של ${escapeHtml(selectedCompanyQuery)}</p>
+      <p class="inside-results-subtitle">נמצאו ${baseCount} קופות/מסלולים בתחום ${escapeHtml(productLabel.trim())}. אפשר לצמצם לפי מסלול, גיל, מדד או מספר קופה.</p>
+      <input type="text" class="inside-results-input" id="insideResultsInput" value="${escapeHtml(currentInsideResultsQuery)}" placeholder="לדוגמה: כללי, מניות, S&P 500, 50 עד 60, מספר קופה" autocomplete="off" />
+    </div>
+  `;
+}
+
 function showResults(query) {
   updateFilterCounts(query);
-  const results = searchFunds(query);
+  const baseResults = searchFunds(query);
   const wrap = document.getElementById('searchResults');
-  if (!results.length) {
+  const focusedCompanyMode = Boolean(selectedCompanyQuery && query === selectedCompanyQuery && selectedProductFilter !== 'all');
+  const filteredResults = focusedCompanyMode
+    ? baseResults.filter(r => resultMatchesInternalSearch(r, currentInsideResultsQuery))
+    : baseResults;
+  const visibleLimit = focusedCompanyMode ? resultVisibleLimit : Infinity;
+  const displayedResults = filteredResults.slice(0, Number.isFinite(visibleLimit) ? visibleLimit : filteredResults.length);
+  if (!baseResults.length) {
     wrap.innerHTML = query.trim()
-      ? '<div class="result-item result-summary"><div class="result-name">לא נמצאו תוצאות</div><div class="result-meta"><span>נסה לחפש רק את שם החברה, לדוגמה: מיטב / מנורה / הראל, או מספר קופה.</span></div></div>'
+      ? '<div class="result-item result-summary"><div class="result-name">לא נמצאו תוצאות</div><div class="result-meta"><span>נסה לבחור סוג מוצר אחר או להשתמש בחיפוש הידני.</span></div></div>'
       : '';
     wrap.classList.toggle('active', Boolean(query.trim()));
     return;
   }
-  const summary = buildResultSummary(query, results);
-  wrap.innerHTML = summary + results.map(r => {
+  const insideSearch = buildInsideResultsSearch(query, baseResults.length);
+  if (!filteredResults.length) {
+    wrap.innerHTML = insideSearch + '<div class="result-item result-summary"><div class="result-name">לא נמצאה קופה שמתאימה לחיפוש הפנימי</div><div class="result-meta"><span>נסה לחפש מילה קצרה יותר, לדוגמה: כללי / מניות / 50 / מספר קופה.</span></div></div>';
+    wrap.classList.add('active');
+    attachInsideResultsEvents(query);
+    return;
+  }
+  const summary = buildResultSummary(query, filteredResults, filteredResults.length, displayedResults.length);
+  const resultItems = displayedResults.map(r => {
     const stale = r.is_stale ? `<span class="stale-badge">${r.months_behind} ח׳ ישן</span>` : '';
     const micro = r.is_micro_fund ? `<span class="micro-badge">קטנה</span>` : '';
     const exposure = `מניות ${fmtPct(r.stock_pct, 0)} • חו״ל ${fmtPct(r.foreign_pct, 0)} • מט״ח ${fmtPct(r.fx_pct, 0)}`;
@@ -3511,13 +3631,41 @@ function showResults(query) {
       </div>
     `;
   }).join('');
+  const showMore = focusedCompanyMode && displayedResults.length < filteredResults.length
+    ? `<button type="button" class="show-more-results-btn" id="showMoreResultsBtn">הצג עוד ${Math.min(15, filteredResults.length - displayedResults.length)} תוצאות</button>`
+    : '';
+  wrap.innerHTML = insideSearch + summary + resultItems + showMore;
   wrap.classList.add('active');
   wrap.querySelectorAll('.select-btn[data-uid]').forEach(btn => {
     btn.addEventListener('click', (event) => {
       event.stopPropagation();
-      const found = results.find(x => x.uid === btn.dataset.uid);
+      const found = filteredResults.find(x => x.uid === btn.dataset.uid);
       if (found) addFund(found);
     });
+  });
+  attachInsideResultsEvents(query);
+  const showMoreBtn = document.getElementById('showMoreResultsBtn');
+  if (showMoreBtn) {
+    showMoreBtn.addEventListener('click', () => {
+      resultVisibleLimit += 15;
+      showResults(query);
+    });
+  }
+}
+
+function attachInsideResultsEvents(query) {
+  const insideInput = document.getElementById('insideResultsInput');
+  if (!insideInput) return;
+  insideInput.addEventListener('input', e => {
+    currentInsideResultsQuery = e.target.value;
+    resultVisibleLimit = 15;
+    showResults(query);
+    const nextInput = document.getElementById('insideResultsInput');
+    if (nextInput) {
+      nextInput.focus();
+      const len = nextInput.value.length;
+      try { nextInput.setSelectionRange(len, len); } catch (_) {}
+    }
   });
 }
 
@@ -3559,6 +3707,8 @@ if (manualSearchToggle && manualSearchControls) {
 // v3.48: זרימה פשוטה יותר — בחירת סוג מוצר, אחר כך יצרן, ואז קופה
 let selectedCompanyQuery = '';
 let selectedProductFilter = 'all';
+let currentInsideResultsQuery = '';
+let resultVisibleLimit = 15;
 
 function setActiveProductFilter(filter) {
   activeFilter = filter || 'all';
@@ -3570,6 +3720,8 @@ function setActiveProductFilter(filter) {
 }
 
 function resetSearchResultsOnly() {
+  currentInsideResultsQuery = '';
+  resultVisibleLimit = 15;
   const resultsWrap = document.getElementById('searchResults');
   if (resultsWrap) {
     resultsWrap.innerHTML = '';
@@ -3613,12 +3765,16 @@ document.querySelectorAll('.company-btn').forEach(btn => {
 
     const input = document.getElementById('searchInput');
     if (input) input.value = query;
+    currentInsideResultsQuery = '';
+    resultVisibleLimit = 15;
 
     showResults(query);
     const resultsWrap = document.getElementById('searchResults');
     if (resultsWrap && resultsWrap.scrollIntoView) {
       resultsWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+    const insideInput = document.getElementById('insideResultsInput');
+    if (insideInput) setTimeout(() => insideInput.focus(), 120);
   });
 });
 
