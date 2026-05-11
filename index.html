@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.45</title>
+<title>דשבורד חשיפות חיסכון | v3.48</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -1096,6 +1096,19 @@
     background: var(--card);
   }
   footer strong { color: var(--ink-soft); font-weight: 700; }
+  .footer-disclaimer-title {
+    display: block;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+  .footer-disclaimer-text {
+    text-align: center;
+    max-width: 980px;
+    margin: 0 auto;
+  }
   .data-update-meta {
     margin-top: 14px;
     font-size: 11.5px;
@@ -1997,11 +2010,11 @@
     <h1>תראה איך הכסף שלך מושקע</h1>
     <p class="hero-sub">בלי הרשמה. הנתונים נשארים אצלך במכשיר.</p>
     <div class="step-indicator" aria-label="שלבי השימוש">
-      <span class="step-pill step-pill-active">1. בחר חברה</span>
+      <span class="step-pill step-pill-active">1. בחר מוצר</span>
       <span class="step-sep">←</span>
-      <span class="step-pill">2. בחר מסלול</span>
+      <span class="step-pill">2. בחר חברה</span>
       <span class="step-sep">←</span>
-      <span class="step-pill">3. ראה הרכב</span>
+      <span class="step-pill">3. בחר קופה</span>
     </div>
     <div class="info-cube-tooltip" id="cubeTooltip" role="region" aria-live="polite" hidden></div>
   </div>
@@ -2009,8 +2022,18 @@
 
 <section class="section" id="searchSection">
   <div class="container">
-    <p class="company-grid-label">באיזה גוף יש לך חיסכון?</p>
-    <div class="company-grid" id="companyGrid">
+    <div class="product-type-panel active" id="productTypePanel" aria-live="polite">
+      <p class="product-type-title" id="productTypeTitle">איזה מוצר תרצה לבדוק?</p>
+      <p class="product-type-subtitle">בחר קודם את סוג החיסכון, ולאחר מכן את החברה שמנהלת אותו.</p>
+      <div class="product-type-grid" id="productTypeGrid">
+        <button type="button" class="product-type-btn" data-filter="pensia">פנסיה</button>
+        <button type="button" class="product-type-btn" data-filter="bituach">ביטוח מנהלים או פוליסות חיסכון</button>
+        <button type="button" class="product-type-btn" data-filter="gemelnet">גמל, השתלמות וגמל להשקעה</button>
+      </div>
+    </div>
+
+    <p class="company-grid-label" id="companyGridLabel" style="display:none;">באיזו חברה מנוהל המוצר?</p>
+    <div class="company-grid" id="companyGrid" style="display:none;">
       <button type="button" class="company-btn" data-query="מנורה">מנורה מבטחים</button>
       <button type="button" class="company-btn" data-query="הראל">הראל</button>
       <button type="button" class="company-btn" data-query="הפניקס">הפניקס</button>
@@ -2021,17 +2044,7 @@
       <button type="button" class="company-btn" data-query="אלטשולר">אלטשולר שחם</button>
     </div>
 
-    <div class="product-type-panel" id="productTypePanel" aria-live="polite">
-      <p class="product-type-title" id="productTypeTitle">איזה סוג חיסכון תרצה לראות?</p>
-      <p class="product-type-subtitle">אחרי בחירת הגוף, בחר את סוג המוצר כדי לצמצם את התוצאות הרלוונטיות.</p>
-      <div class="product-type-grid" id="productTypeGrid">
-        <button type="button" class="product-type-btn" data-filter="pensia">פנסיה</button>
-        <button type="button" class="product-type-btn" data-filter="bituach">ביטוח מנהלים או פוליסות חיסכון</button>
-        <button type="button" class="product-type-btn" data-filter="gemelnet">גמל, השתלמות וגמל להשקעה</button>
-      </div>
-    </div>
-
-    <p class="search-also">או חפש לפי שם החברה / מסלול / סוג מוצר:</p>
+    <p class="search-also">או חפש ידנית לפי שם חברה, מסלול או מספר קופה:</p>
     <div class="filters" id="filters">
       <button class="filter-btn active" data-filter="all" data-label="הכל">הכל</button>
       <button class="filter-btn" data-filter="gemelnet" data-label="גמל / השתלמות / גמל להשקעה">גמל / השתלמות / גמל להשקעה</button>
@@ -2720,7 +2733,8 @@
 
 <footer>
   <div class="container">
-    <strong>הבהרה מקצועית:</strong> הדשבורד מציג חשיפות וביצועים מתוך נתונים ציבוריים של המסלולים בלבד. הוא אינו מושך יתרות אישיות ממסלקה פנסיונית, אינו מחליף ייעוץ פנסיוני או פיננסי, ואינו מציג המלצה. "חשיפה לחו״ל" אינה שקולה בהכרח ל"מניות חו״ל", משום שבקבצים היא כוללת גם חשיפות זרות שאינן מנייתיות. נתוני התשואה הם נתוני מסלול ציבוריים: חודשית, מתחילת שנה ו-3 שנים מצטבר. דמי הניהול בדשבורד מבוססים רק על הנתון שהוזן ידנית עבור כל מוצר, ולא על דמי הניהול הממוצעים במאגר.
+    <strong class="footer-disclaimer-title">הבהרה מקצועית</strong>
+    <div class="footer-disclaimer-text">מקור הנתונים: קובצי המידע הציבוריים של רשות שוק ההון, הביטוח והחיסכון, מתוך מאגרי גמל נט, פנסיה נט וביטוח נט כפי שפורסמו ב-data.gov.il. הדשבורד מציג חשיפות וביצועים מתוך נתונים ציבוריים של המסלולים בלבד. הוא אינו מושך יתרות אישיות ממסלקה פנסיונית, אינו מחליף ייעוץ פנסיוני או פיננסי, ואינו מציג המלצה. "חשיפה לחו״ל" אינה שקולה בהכרח ל"מניות חו״ל", משום שבקבצים היא כוללת גם חשיפות זרות שאינן מנייתיות. נתוני התשואה הם נתוני מסלול ציבוריים: חודשית, מתחילת שנה ו-3 שנים מצטבר. דמי הניהול בדשבורד מבוססים רק על הנתון שהוזן ידנית עבור כל מוצר, ולא על דמי הניהול הממוצעים במאגר.</div>
     <div class="data-update-meta" id="dataUpdateMeta"></div>
     <div class="developer-credit">פותח ע"י דורון שרייבמן</div>
   </div>
@@ -3281,7 +3295,12 @@ function prepareAnotherFund() {
   }
 
   const productPanel = document.getElementById('productTypePanel');
-  if (productPanel) productPanel.classList.remove('active');
+  if (productPanel) productPanel.classList.add('active');
+
+  const companyLabel = document.getElementById('companyGridLabel');
+  const companyGrid = document.getElementById('companyGrid');
+  if (companyLabel) companyLabel.style.display = 'none';
+  if (companyGrid) companyGrid.style.display = 'none';
 
   document.querySelectorAll('.company-btn').forEach(btn => btn.classList.remove('is-selected'));
   document.querySelectorAll('.product-type-btn').forEach(btn => btn.classList.remove('active'));
@@ -3291,8 +3310,8 @@ function prepareAnotherFund() {
   if (input) input.value = '';
 
   const hero = document.querySelector('.hero');
-  const companyGrid = document.getElementById('companyGrid');
-  const target = hero || companyGrid || document.getElementById('searchSection');
+  const productPanelTarget = document.getElementById('productTypePanel');
+  const target = hero || productPanelTarget || document.getElementById('searchSection');
 
   if (target && target.scrollIntoView) {
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -3479,16 +3498,53 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
-// v3.40: company grid — בחירת גוף ואז בחירת סוג מוצר לפני הצגת תוצאות
+// v3.48: זרימה פשוטה יותר — בחירת סוג מוצר, אחר כך יצרן, ואז קופה
 let selectedCompanyQuery = '';
+let selectedProductFilter = 'all';
 
 function setActiveProductFilter(filter) {
   activeFilter = filter || 'all';
+  selectedProductFilter = activeFilter;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   const matchingFilterBtn = document.querySelector(`.filter-btn[data-filter="${activeFilter}"]`);
   if (matchingFilterBtn) matchingFilterBtn.classList.add('active');
   document.querySelectorAll('.product-type-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === activeFilter));
 }
+
+function resetSearchResultsOnly() {
+  const resultsWrap = document.getElementById('searchResults');
+  if (resultsWrap) {
+    resultsWrap.innerHTML = '';
+    resultsWrap.classList.remove('active');
+  }
+  const editor = document.getElementById('quickEditor');
+  if (editor) {
+    editor.classList.remove('active');
+    editor.innerHTML = '';
+  }
+}
+
+document.querySelectorAll('.product-type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const filter = btn.dataset.filter || 'all';
+    selectedCompanyQuery = '';
+    setActiveProductFilter(filter);
+    document.querySelectorAll('.company-btn').forEach(b => b.classList.remove('is-selected'));
+
+    const input = document.getElementById('searchInput');
+    if (input) input.value = '';
+    resetSearchResultsOnly();
+
+    const companyLabel = document.getElementById('companyGridLabel');
+    const companyGrid = document.getElementById('companyGrid');
+    if (companyLabel) companyLabel.style.display = '';
+    if (companyGrid) companyGrid.style.display = 'grid';
+
+    if (companyGrid && companyGrid.scrollIntoView) {
+      companyGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+});
 
 document.querySelectorAll('.company-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -3496,37 +3552,10 @@ document.querySelectorAll('.company-btn').forEach(btn => {
     selectedCompanyQuery = query;
     document.querySelectorAll('.company-btn').forEach(b => b.classList.remove('is-selected'));
     btn.classList.add('is-selected');
-    setActiveProductFilter('all');
+
     const input = document.getElementById('searchInput');
     if (input) input.value = query;
 
-    const productPanel = document.getElementById('productTypePanel');
-    const productTitle = document.getElementById('productTypeTitle');
-    if (productTitle) productTitle.textContent = `בחר סוג מוצר עבור ${query}`;
-    if (productPanel) productPanel.classList.add('active');
-
-    const resultsWrap = document.getElementById('searchResults');
-    if (resultsWrap) {
-      resultsWrap.innerHTML = '';
-      resultsWrap.classList.remove('active');
-    }
-
-    if (productPanel && productPanel.scrollIntoView) {
-      productPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  });
-});
-
-document.querySelectorAll('.product-type-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const query = selectedCompanyQuery || document.getElementById('searchInput').value.trim();
-    if (!query) return;
-    setActiveProductFilter(btn.dataset.filter);
-    const input = document.getElementById('searchInput');
-    if (input) {
-      input.value = query;
-      input.focus();
-    }
     showResults(query);
     const wrap = document.querySelector('.search-wrap');
     if (wrap && wrap.scrollIntoView) {
@@ -3535,7 +3564,7 @@ document.querySelectorAll('.product-type-btn').forEach(btn => {
   });
 });
 
-// חיפוש ידני נשאר זמין תמיד, גם בלי בחירת יצרן.
+// חיפוש ידני נשאר זמין תמיד, גם בלי בחירת סוג מוצר או יצרן.
 
 
 (async function init() {
