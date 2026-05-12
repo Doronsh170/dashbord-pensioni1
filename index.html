@@ -2362,10 +2362,10 @@
       <p class="product-type-subtitle">בחר את סוג החיסכון ואנחנו ננחה אותך משם.</p>
       <div class="product-type-grid" id="productTypeGrid">
         <button type="button" class="product-type-btn" data-filter="pensia">פנסיה</button>
-        <button type="button" class="product-type-btn" data-filter="bituach">ביטוח מנהלים או פוליסות חיסכון</button>
-        <button type="button" class="product-type-btn" data-filter="gemelnet">גמל, השתלמות וגמל להשקעה</button>
+        <button type="button" class="product-type-btn" data-filter="bituach">ביטוח מנהלים / פוליסות חיסכון</button>
+        <button type="button" class="product-type-btn" data-filter="gemelnet">גמל / השתלמות / גמל להשקעה</button>
         <button type="button" class="manual-search-toggle manual-search-card" id="manualSearchToggle" aria-expanded="false" aria-controls="manualSearchControls">
-          לא מצאת את הקופה? חיפוש ידני
+          חיפוש ידני
         </button>
       </div>
     </div>
@@ -3536,7 +3536,7 @@ function handleCompanySelection(btn) {
   const input = document.getElementById('searchInput');
   if (input) input.value = query;
   currentInsideResultsQuery = '';
-  resultVisibleLimit = 15;
+  resultVisibleLimit = 3;
 
   showResults(query);
   const resultsWrap = document.getElementById('searchResults');
@@ -4334,8 +4334,10 @@ function showResults(query) {
       </div>
     `;
   }).join('');
-  const showMore = focusedCompanyMode && displayedResults.length < orderedResults.length
-    ? `<button type="button" class="show-more-results-btn" id="showMoreResultsBtn">הצג עוד ${Math.min(15, orderedResults.length - displayedResults.length)} תוצאות</button>`
+  const canToggleMore = focusedCompanyMode && orderedResults.length > 3;
+  const expandedResults = canToggleMore && resultVisibleLimit !== 3 && displayedResults.length >= orderedResults.length;
+  const showMore = canToggleMore
+    ? `<button type="button" class="show-more-results-btn" id="showMoreResultsBtn">${expandedResults ? 'סגור תוצאות נוספות' : `הצג עוד ${orderedResults.length - 3} תוצאות`}</button>`
     : '';
   wrap.innerHTML = insideSearch + summary + resultItems + showMore;
   wrap.classList.add('active');
@@ -4350,8 +4352,12 @@ function showResults(query) {
   const showMoreBtn = document.getElementById('showMoreResultsBtn');
   if (showMoreBtn) {
     showMoreBtn.addEventListener('click', () => {
-      resultVisibleLimit += 15;
+      resultVisibleLimit = expandedResults ? 3 : Infinity;
       showResults(query);
+      const nextBtn = document.getElementById('showMoreResultsBtn');
+      if (nextBtn && nextBtn.scrollIntoView) {
+        nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     });
   }
 }
@@ -4361,7 +4367,7 @@ function attachInsideResultsEvents(query) {
   if (!insideInput) return;
   insideInput.addEventListener('input', e => {
     currentInsideResultsQuery = e.target.value;
-    resultVisibleLimit = 15;
+    resultVisibleLimit = 3;
     showResults(query);
     const nextInput = document.getElementById('insideResultsInput');
     if (nextInput) {
@@ -4405,7 +4411,7 @@ if (manualSearchToggle && manualSearchControls) {
     } else {
       manualSearchControls.setAttribute('hidden', '');
       manualSearchToggle.setAttribute('aria-expanded', 'false');
-      manualSearchToggle.textContent = 'לא מצאת את הקופה? חיפוש ידני';
+      manualSearchToggle.textContent = 'חיפוש ידני';
     }
   });
 }
@@ -4415,7 +4421,7 @@ let selectedCompanyQuery = '';
 let selectedProductFilter = 'all';
 let selectedSubProductType = '';
 let currentInsideResultsQuery = '';
-let resultVisibleLimit = 15;
+let resultVisibleLimit = 3;
 
 function setActiveProductFilter(filter) {
   activeFilter = filter || 'all';
@@ -4428,7 +4434,7 @@ function setActiveProductFilter(filter) {
 
 function resetSearchResultsOnly() {
   currentInsideResultsQuery = '';
-  resultVisibleLimit = 15;
+  resultVisibleLimit = 3;
   const resultsWrap = document.getElementById('searchResults');
   if (resultsWrap) {
     resultsWrap.innerHTML = '';
@@ -6769,6 +6775,100 @@ document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn
       right: 16px !important;
       border-radius: 13px !important;
       font-size: 20px !important;
+    }
+  }
+
+
+  /* v3.63: four identical product squares + collapsed/expanded result list */
+  #productTypePanel .product-type-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+    align-items: stretch !important;
+  }
+  #productTypePanel .product-type-btn,
+  #productTypePanel .manual-search-card {
+    aspect-ratio: 1 / 1 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 62px 12px 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    border-radius: 22px !important;
+    font-size: 14.5px !important;
+    font-weight: 900 !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0 !important;
+    box-shadow: 0 1px 2px rgba(15,23,42,0.04) !important;
+  }
+  #productTypePanel .manual-search-card {
+    border: 1px solid var(--line) !important;
+    background: var(--card) !important;
+    color: var(--ink) !important;
+  }
+  #productTypePanel .product-type-btn::before,
+  #productTypePanel .manual-search-card::before {
+    top: 16px !important;
+    right: 50% !important;
+    transform: translateX(50%) !important;
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 14px !important;
+  }
+  #productTypePanel .manual-search-card::before {
+    content: '?' !important;
+    background: var(--bg-soft) !important;
+    border: 1px solid var(--line) !important;
+    color: var(--ink-muted) !important;
+  }
+  #productTypePanel .manual-search-card[aria-expanded="true"]::before {
+    content: '×' !important;
+    background: var(--ink) !important;
+    border-color: var(--ink) !important;
+    color: #ffffff !important;
+  }
+  #productTypePanel .manual-search-card:hover,
+  #productTypePanel .manual-search-card[aria-expanded="true"] {
+    border-color: var(--accent) !important;
+    background: var(--card-tint) !important;
+    color: var(--ink) !important;
+  }
+  .show-more-results-btn {
+    min-width: 210px !important;
+  }
+  @media (max-width: 760px) {
+    #productTypePanel .product-type-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 10px !important;
+    }
+    #productTypePanel .product-type-btn,
+    #productTypePanel .manual-search-card {
+      min-height: 0 !important;
+      aspect-ratio: 1 / 1 !important;
+      padding: 58px 10px 12px !important;
+      font-size: 13px !important;
+      border-radius: 20px !important;
+      text-align: center !important;
+    }
+    #productTypePanel .product-type-btn::before,
+    #productTypePanel .manual-search-card::before {
+      top: 14px !important;
+      right: 50% !important;
+      transform: translateX(50%) !important;
+      width: 38px !important;
+      height: 38px !important;
+      border-radius: 13px !important;
+      font-size: 18px !important;
+    }
+  }
+  @media (max-width: 380px) {
+    #productTypePanel .product-type-btn,
+    #productTypePanel .manual-search-card {
+      font-size: 12px !important;
+      padding-top: 54px !important;
     }
   }
 </style>

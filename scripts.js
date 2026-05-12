@@ -993,7 +993,7 @@ if (manualSearchToggle && manualSearchControls) {
     } else {
       manualSearchControls.setAttribute('hidden', '');
       manualSearchToggle.setAttribute('aria-expanded', 'false');
-      manualSearchToggle.textContent = 'לא מצאת את הקופה? חיפוש ידני';
+      manualSearchToggle.textContent = 'חיפוש ידני';
     }
   });
 }
@@ -1003,7 +1003,7 @@ let selectedCompanyQuery = '';
 let selectedProductFilter = 'all';
 let selectedSubProductType = typeof selectedSubProductType !== 'undefined' ? selectedSubProductType : '';
 let currentInsideResultsQuery = typeof currentInsideResultsQuery !== 'undefined' ? currentInsideResultsQuery : '';
-let resultVisibleLimit = typeof resultVisibleLimit !== 'undefined' ? resultVisibleLimit : 15;
+let resultVisibleLimit = typeof resultVisibleLimit !== 'undefined' ? resultVisibleLimit : 3;
 
 function setActiveProductFilter(filter) {
   activeFilter = filter || 'all';
