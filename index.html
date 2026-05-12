@@ -2978,6 +2978,51 @@ function subProductLabel(subtype) {
   };
   return labels[subtype] || '';
 }
+
+
+function companyFieldsText(rec) {
+  return normalizeText([
+    rec.managing_corp,
+    rec.parent_company_name,
+    rec.controlling_corp
+  ].filter(Boolean).join(' '));
+}
+
+function textTokens(value) {
+  return normalizeText(value)
+    .replace(/[^֐-׿a-z0-9]+/gi, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+function companyAliasTokens(query) {
+  const q = normalizeText(query);
+  const map = {
+    'כלל': ['כלל'],
+    'מור': ['מור'],
+    'מנורה': ['מנורה'],
+    'מנורה מבטחים': ['מנורה'],
+    'הראל': ['הראל'],
+    'הפניקס': ['הפניקס', 'פניקס'],
+    'פניקס': ['הפניקס', 'פניקס'],
+    'מגדל': ['מגדל'],
+    'מיטב': ['מיטב'],
+    'אלטשולר': ['אלטשולר'],
+    'אלטשולר שחם': ['אלטשולר']
+  };
+  return map[q] || textTokens(q);
+}
+
+function recMatchesSelectedCompany(rec, query) {
+  const fieldsText = companyFieldsText(rec);
+  const tokens = new Set(textTokens(fieldsText));
+  const aliases = companyAliasTokens(query);
+  if (!aliases.length) return true;
+
+  // חשוב: סינון יצרן מתבצע רק לפי שדות החברה, ולא לפי שם הקופה/המסלול.
+  // כך "כלל" לא יתפוס מסלולים עם המילה "כללי", ו"מור" לא יתפוס "מורים".
+  return aliases.some(alias => tokens.has(alias));
+}
 function getSubProductOptions(filter) {
   if (filter === 'gemelnet') {
     return [
@@ -3005,6 +3050,9 @@ function searchFunds(query, limit = Infinity, filterOverride = activeFilter, all
   for (const rec of DATA) {
     if (filter !== 'all' && rec.source !== filter) continue;
     if (selectedSubProductType && !recMatchesSubProduct(rec, selectedSubProductType)) continue;
+
+    const isCompanyChoiceSearch = selectedCompanyQuery && q === normalizeText(selectedCompanyQuery) && filter !== 'all';
+    if (isCompanyChoiceSearch && !recMatchesSelectedCompany(rec, selectedCompanyQuery)) continue;
 
     // בגרסת הדשבורד מציגים רק מוצרים פעילים עם נכסים, כדי שלא ייכנסו חישובי חשיפה ריקים.
     if (!rec.is_active || (Number(rec.total_assets) || 0) <= 0) continue;
