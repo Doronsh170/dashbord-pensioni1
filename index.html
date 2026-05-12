@@ -2445,6 +2445,31 @@
   body.landing-started #searchSection { display: block !important; }
   /* v3.67: once the user starts the guided flow, hide the four landing cards to reduce visual load */
   body.landing-started .landing-actions { display: none !important; }
+
+  /* v3.68: return flow, bottom credit and projection layout */
+  body.landing-started .landing-credit { display: none !important; }
+  .flow-credit { display: none; text-align: center; color: #94a3b8; font-size: 12px; font-weight: 600; padding: 24px 0 34px; }
+  body.landing-started .flow-credit { display: block; }
+  .flow-top-actions { display: flex; justify-content: center; margin: 0 0 18px; }
+  .return-landing-btn { border: 1px solid var(--line); background: var(--card); color: var(--ink-mid); border-radius: var(--r-pill); padding: 10px 18px; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; box-shadow: var(--shadow-xs); }
+  .return-landing-btn:hover { border-color: var(--accent); color: var(--accent-dark); box-shadow: var(--shadow-sm); }
+  .proj-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px; cursor: pointer; text-align: right; font: inherit; }
+  .proj-toggle::after { content: 'פתח'; color: var(--accent-dark); font-weight: 900; font-size: 12px; }
+  .proj-toggle[aria-expanded="true"]::after { content: 'סגור'; }
+  .proj-body { margin-top: -2px; padding: 18px; border: 1px solid var(--line); }
+  .proj-form-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+  .proj-context { color: var(--ink-mid); font-size: 13px; margin: 6px 0 16px; }
+  .proj-results { margin-top: 20px; }
+  .proj-metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+  .proj-metric { padding: 16px; }
+  .proj-pos { color: var(--pos) !important; }
+  .proj-neg { color: var(--neg) !important; }
+  .bad-year { background: rgba(220,38,38,0.06); }
+  @media (max-width: 760px) {
+    .proj-form-grid, .proj-metric-grid { grid-template-columns: 1fr; }
+    .proj-toggle { align-items: flex-start; flex-direction: column; }
+  }
+
   footer { display: none !important; }
   .loading { display: none; }
   @media (max-width: 760px) {
@@ -2520,6 +2545,9 @@
 
 <section class="section landing-hidden" id="searchSection">
   <div class="container">
+    <div class="flow-top-actions">
+      <button type="button" class="return-landing-btn" id="returnLandingBtn">חזרה למסך הראשי</button>
+    </div>
     <div class="product-type-panel active" id="productTypePanel" aria-live="polite">
       <p class="product-type-title" id="productTypeTitle">מאיפה מתחילים?</p>
       <p class="product-type-subtitle">בחר את סוג החיסכון ואנחנו ננחה אותך משם.</p>
@@ -2574,6 +2602,7 @@
       <button type="button" class="action-btn" onclick="saveAsPDF()">שמירה / הדפסה ל-PDF</button>
       <button type="button" class="action-btn" onclick="shareWhatsApp()">שליחה לווטסאפ</button>
       <button type="button" class="action-btn" onclick="openProjection()">סימולציה על בסיס תשואות עבר</button>
+      <button type="button" class="action-btn" onclick="backToTop()">חזרה לראש העמוד</button>
       <button type="button" class="action-btn" onclick="resetAllData()">איפוס הכל</button>
     </div>
     <div class="action-note">שמירה ל-PDF נפתחת דרך חלון ההדפסה של הדפדפן. בשל מגבלות דפדפן, שליחה לווטסאפ שולחת סיכום טקסטואלי וקישור, לא מצרפת PDF אוטומטית.</div>
@@ -2634,6 +2663,75 @@
   </div>
 </section>
 
+<section class="projection-section" id="projectionSection" hidden>
+  <div class="container">
+    <button type="button" class="proj-toggle" id="projToggle" aria-expanded="false">
+      <span class="proj-toggle-title">סימולציה על בסיס תשואות עבר</span>
+      <span class="proj-toggle-sub">המחשה בלבד, לפי היתרה והחשיפה המנייתית בדשבורד</span>
+    </button>
+    <div class="proj-body" id="projBody" hidden>
+      <div class="proj-intro">
+        <strong>חשוב לדעת:</strong> הסימולציה מבוססת על נתוני עבר בלבד. אין בכך תחזית, הבטחה, ייעוץ או המלצה.
+      </div>
+      <div id="projEmpty" class="proj-disclaimer">יש להזין לפחות קופה אחת בדשבורד כדי להפעיל את הסימולציה.</div>
+      <div id="projForm" hidden>
+        <div class="proj-form-grid">
+          <label class="field-group">
+            <span class="field-label">סכום התחלתי</span>
+            <input class="balance-input" type="number" id="projInitial" min="0" step="1000" />
+          </label>
+          <label class="field-group">
+            <span class="field-label">הפקדה חודשית</span>
+            <input class="balance-input" type="number" id="projMonthly" value="0" min="0" step="100" />
+          </label>
+          <label class="field-group">
+            <span class="field-label">דמי ניהול שנתיים %</span>
+            <input class="fee-input" type="number" id="projFee" value="0" min="0" step="0.01" />
+          </label>
+          <label class="field-group">
+            <span class="field-label">מספר שנים</span>
+            <input class="fee-input" type="number" id="projYears" value="20" min="1" max="30" step="1" />
+          </label>
+        </div>
+        <div class="proj-context">
+          רמת סיכון נגזרת מהחשיפה למניות: <strong id="projRiskLabel">—</strong> | חשיפה למניות: <strong id="projStockPct">—</strong>%
+        </div>
+        <button type="button" class="proj-run-btn" id="projRunBtn">הרץ סימולציה</button>
+      </div>
+
+      <div id="projResults" class="proj-results" hidden>
+        <div class="proj-metric-grid">
+          <div class="proj-metric proj-metric-main">
+            <div class="metric-label">סכום בסוף התקופה</div>
+            <div class="proj-metric-value" id="projFinal">—</div>
+          </div>
+          <div class="proj-metric">
+            <div class="metric-label">סך הפקדות</div>
+            <div class="proj-metric-value" id="projContrib">—</div>
+          </div>
+          <div class="proj-metric">
+            <div class="metric-label">רווח / הפסד</div>
+            <div class="proj-metric-value" id="projInterest">—</div>
+          </div>
+          <div class="proj-metric">
+            <div class="metric-label">השנה החלשה במדגם</div>
+            <div class="proj-metric-value" id="projWorstYear">—</div>
+          </div>
+        </div>
+        <details class="proj-yearly">
+          <summary>פירוט שנתי</summary>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>שנה</th><th class="num">תשואה היסטורית</th><th class="num">סכום מצטבר</th></tr></thead>
+              <tbody id="projYearlyBody"></tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="details" id="detailsSection">
   <div class="container">
     <h2>פירוט לפי מוצר</h2>
@@ -2658,6 +2756,8 @@
     </div>
   </div>
 </section>
+
+<div class="flow-credit">פותח ע״י דורון שרייבמן</div>
 
 <!-- כרטיס תרגיל היסטורי - קוד הדשבורד הראשי -->
 
@@ -6235,6 +6335,83 @@ document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn
 </style>
 
 
+
+<script>
+/* v3.68: historical projection calculator restored */
+(function() {
+  'use strict';
+  const RAW_YIELDS = {
+    low:    [22.66, 6.42, 13.62, 15.60, 0.18, 9.39, 1.67, 5.01, 6.11, 5.12, 3.33, 5.27, 8.12, -0.30, -0.37, 7.07, 10.05, 5.98, 0.61, 9.16, 1.05, 2.83, 6.99, -0.06, 13.25, 10.47, 3.05, -13.89, 8.60, 5.03],
+    medium: [30.82, 14.37, 23.60, 22.47, 9.89, 0.71, -4.99, -7.81, 17.20, 8.09, 4.06, 10.29, 6.78, -14.72, 11.58, 11.81, 6.85, 10.61, 15.11, 11.89, 1.21, 7.30, 14.10, -2.55, 22.29, 14.80, 15.54, -16.96, 17.26, 14.61],
+    high:   [35.83, 20.56, 30.78, 27.00, 17.98, -6.46, -10.11, -18.26, 25.56, 10.11, 4.63, 14.24, 5.95, -30.89, 22.23, 14.18, 3.49, 14.60, 28.03, 13.24, 1.37, 10.66, 19.73, -3.81, 29.05, 17.35, 25.18, -18.02, 23.84, 22.23]
+  };
+  const START_YEAR = 1995;
+  const RISK_LABELS = { low: 'סיכון נמוך', medium: 'סיכון בינוני', high: 'סיכון גבוה' };
+  const $ = (id) => document.getElementById(id);
+  function fmtILS(n) { return Math.round(n).toLocaleString('he-IL', { style: 'currency', currency: 'ILS', maximumFractionDigits: 0 }); }
+  function parseNum(txt) { const n = parseFloat(String(txt || '').replace(/[^\d.\-]/g, '')); return Number.isFinite(n) ? n : NaN; }
+  function pickRiskTrack(stockPct) { if (stockPct <= 10) return 'low'; if (stockPct <= 70) return 'medium'; return 'high'; }
+  function readDashboardState() {
+    const total = parseNum($('totalBalance') ? $('totalBalance').textContent : '');
+    const stockPct = parseNum($('aggStock') ? $('aggStock').textContent : '');
+    const fee = parseNum($('feeSavings') ? $('feeSavings').textContent : '');
+    return { total: Number.isFinite(total) && total > 0 ? total : 0, stockPct: Number.isFinite(stockPct) ? stockPct : 0, fee: Number.isFinite(fee) && fee > 0 ? fee : null, hasPortfolio: Number.isFinite(total) && total > 0 };
+  }
+  function refreshPrefill() {
+    const state = readDashboardState();
+    const empty = $('projEmpty'), form = $('projForm'), results = $('projResults');
+    const riskLabel = $('projRiskLabel'), stockPctEl = $('projStockPct');
+    const initialInput = $('projInitial'), feeInput = $('projFee');
+    if (!empty || !form || !riskLabel || !stockPctEl || !initialInput || !feeInput) return;
+    if (state.hasPortfolio) {
+      empty.hidden = true; form.hidden = false;
+      const track = pickRiskTrack(state.stockPct);
+      riskLabel.textContent = RISK_LABELS[track]; stockPctEl.textContent = state.stockPct.toFixed(1);
+      if (!initialInput.dataset.userEdited) initialInput.value = Math.round(state.total);
+      if (state.fee !== null && !feeInput.dataset.userEdited) feeInput.value = state.fee.toFixed(2);
+    } else {
+      empty.hidden = false; form.hidden = true; if (results) results.hidden = true;
+      riskLabel.textContent = '—'; stockPctEl.textContent = '—';
+    }
+  }
+  function getSelectedYears() { const n = parseInt(($('projYears') || {}).value, 10); if (!Number.isFinite(n) || n < 1) return 1; return Math.min(n, 30); }
+  function simulate({ initial, monthly, years, feePct, yields }) {
+    let amount = initial, contrib = initial, worstYield = Infinity, worstHistYear = null; const yearly = []; const feeMonthly = (feePct / 100) / 12;
+    for (let y = 0; y < years; y++) {
+      const idx = y % yields.length, annualYield = yields[idx] / 100, monthlyYield = annualYield / 12;
+      for (let m = 0; m < 12; m++) { amount += monthly; contrib += monthly; amount += amount * monthlyYield; amount -= amount * feeMonthly; }
+      const histYear = START_YEAR + idx; yearly.push({ n: y + 1, histYear, yieldPct: yields[idx], balance: amount });
+      if (yields[idx] < worstYield) { worstYield = yields[idx]; worstHistYear = histYear; }
+    }
+    return { finalAmount: amount, totalContrib: contrib, totalInterest: amount - contrib, yearly, worstYield, worstHistYear };
+  }
+  function renderResults(sim) {
+    $('projFinal').textContent = fmtILS(sim.finalAmount); $('projContrib').textContent = fmtILS(sim.totalContrib);
+    const interestEl = $('projInterest'); interestEl.textContent = fmtILS(sim.totalInterest); interestEl.className = 'proj-metric-value ' + (sim.totalInterest >= 0 ? 'proj-pos' : 'proj-neg');
+    $('projWorstYear').textContent = `${sim.worstYield.toFixed(2)}% (${sim.worstHistYear})`;
+    const yearlyBody = $('projYearlyBody'); yearlyBody.innerHTML = '';
+    sim.yearly.forEach(row => { const tr = document.createElement('tr'); if (row.yieldPct < -5) tr.className = 'bad-year'; const cls = row.yieldPct >= 0 ? 'proj-pos' : 'proj-neg'; tr.innerHTML = `<td>שנה ${row.n} <span style="color:var(--ink-faint);font-size:11px">(${row.histYear})</span></td><td class="num ${cls}">${row.yieldPct.toFixed(2)}%</td><td class="num">${fmtILS(row.balance)}</td>`; yearlyBody.appendChild(tr); });
+    $('projResults').hidden = false;
+  }
+  function syncSectionVisibility() {
+    const section = $('projectionSection'); if (!section) return; const state = readDashboardState(); section.hidden = !state.hasPortfolio; if (state.hasPortfolio && $('projToggle') && $('projToggle').getAttribute('aria-expanded') === 'true') refreshPrefill();
+  }
+  window.openProjection = function() {
+    const section = $('projectionSection'), toggle = $('projToggle'), body = $('projBody'); if (!section || !toggle || !body) return; const state = readDashboardState(); if (!state.hasPortfolio) return;
+    section.hidden = false; toggle.setAttribute('aria-expanded', 'true'); body.hidden = false; refreshPrefill(); section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  window.backToTop = function() { const hero = document.querySelector('.premium-hero') || document.body; hero.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+  document.addEventListener('DOMContentLoaded', function() {
+    ['projInitial','projFee'].forEach(id => { const el = $(id); if (el) el.addEventListener('input', () => { el.dataset.userEdited = '1'; }); });
+    const yearsInput = $('projYears'); if (yearsInput) yearsInput.addEventListener('blur', () => { yearsInput.value = String(getSelectedYears()); });
+    const toggle = $('projToggle'), body = $('projBody'); if (toggle && body) toggle.addEventListener('click', () => { const expanded = toggle.getAttribute('aria-expanded') === 'true'; toggle.setAttribute('aria-expanded', String(!expanded)); body.hidden = expanded; if (!expanded) refreshPrefill(); });
+    const runBtn = $('projRunBtn'); if (runBtn) runBtn.addEventListener('click', () => { const state = readDashboardState(); if (!state.hasPortfolio) { refreshPrefill(); return; } const initial = parseFloat(($('projInitial') || {}).value) || 0; const monthly = parseFloat(($('projMonthly') || {}).value) || 0; const feePct = parseFloat(($('projFee') || {}).value) || 0; const years = getSelectedYears(); const track = pickRiskTrack(state.stockPct); renderResults(simulate({ initial, monthly, years, feePct, yields: RAW_YIELDS[track] })); $('projResults').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
+    syncSectionVisibility();
+    const observer = new MutationObserver(syncSectionVisibility); ['totalBalance','aggStock','feeSavings'].forEach(id => { const el = $(id); if (el) observer.observe(el, { childList: true, characterData: true, subtree: true }); });
+  });
+})();
+</script>
+
 <script>
 (function() {
   function closeLandingPanels(exceptId) {
@@ -6266,6 +6443,17 @@ document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn
 
   const startBtn = document.getElementById('landingStartBtn');
   const searchSection = document.getElementById('searchSection');
+  function returnToLanding() {
+    if (!searchSection) return;
+    searchSection.classList.add('landing-hidden');
+    document.body.classList.remove('landing-started');
+    if (startBtn) startBtn.setAttribute('aria-expanded', 'false');
+    const hero = document.querySelector('.premium-hero');
+    if (hero) hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  window.returnToLanding = returnToLanding;
+  const returnBtn = document.getElementById('returnLandingBtn');
+  if (returnBtn) returnBtn.addEventListener('click', returnToLanding);
   if (startBtn && searchSection) {
     startBtn.addEventListener('click', function() {
       const isHidden = searchSection.classList.contains('landing-hidden');
