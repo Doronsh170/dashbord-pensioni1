@@ -2352,15 +2352,16 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
     margin: 0 auto;
-    max-width: 780px;
+    max-width: 820px;
+    align-items: stretch;
   }
   .landing-card {
     appearance: none;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #dbe3ee;
     background: #ffffff;
     border-radius: 24px;
     padding: 24px 22px;
-    min-height: 156px;
+    min-height: 178px;
     box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
     cursor: pointer;
     text-align: right;
@@ -2368,14 +2369,14 @@
     color: #0f172a;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 12px;
     transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background 0.16s ease;
     -webkit-tap-highlight-color: transparent;
   }
   .landing-card:hover,
   .landing-card:focus-visible {
-    border-color: #bfdbfe;
+    border-color: #93c5fd;
     box-shadow: 0 14px 36px rgba(15, 23, 42, 0.10), 0 2px 6px rgba(15, 23, 42, 0.05);
     transform: translateY(-2px);
     outline: none;
@@ -2383,24 +2384,24 @@
   .landing-card[aria-expanded="true"],
   .landing-card.landing-primary[aria-expanded="true"] {
     border-color: #1e3a8a;
-    background: #eef6ff;
+    background: #eff6ff;
   }
   .landing-card.landing-primary {
-    background: #0f172a;
-    color: #ffffff;
-    border-color: #0f172a;
+    background: #ffffff;
+    color: #0f172a;
+    border-color: #dbe3ee;
   }
   .landing-card.landing-primary:hover,
   .landing-card.landing-primary:focus-visible {
-    background: #1e3a8a;
-    border-color: #1e3a8a;
+    background: #ffffff;
+    border-color: #93c5fd;
   }
   .landing-card-kicker {
     font-size: 12px;
     font-weight: 800;
-    color: #64748b;
+    color: #1e3a8a;
   }
-  .landing-primary .landing-card-kicker { color: rgba(255,255,255,0.70); }
+  .landing-primary .landing-card-kicker { color: #1e3a8a; }
   .landing-card-title {
     font-size: 24px;
     font-weight: 900;
@@ -2409,11 +2410,11 @@
   }
   .landing-card-text {
     font-size: 14px;
-    line-height: 1.55;
+    line-height: 1.6;
     color: #64748b;
     margin: 0;
   }
-  .landing-primary .landing-card-text { color: rgba(255,255,255,0.78); }
+  .landing-primary .landing-card-text { color: #64748b; }
   .landing-panel {
     max-width: 780px;
     margin: 16px auto 0;
@@ -2447,10 +2448,11 @@
   @media (max-width: 760px) {
     .premium-hero { padding: 26px 0 22px !important; }
     .premium-header { margin-bottom: 22px !important; }
-    .landing-actions { grid-template-columns: 1fr; gap: 12px; }
-    .landing-card { min-height: 126px; padding: 20px 18px; border-radius: 20px; }
-    .landing-card-title { font-size: 22px; }
-    .landing-card-text { font-size: 13.5px; }
+    .landing-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .landing-card { min-height: 168px; padding: 18px 16px; border-radius: 20px; }
+    .landing-card-title { font-size: 20px; }
+    .landing-card-text { font-size: 12.7px; line-height: 1.55; }
+    .landing-card-kicker { font-size: 10.8px; }
     .landing-panel { border-radius: 18px; padding: 17px 18px; font-size: 13.5px; }
   }
 
@@ -2473,7 +2475,7 @@
       <button type="button" class="landing-card" id="landingAboutBtn" aria-expanded="false" aria-controls="landingAboutPanel">
         <span class="landing-card-kicker">הסבר פשוט</span>
         <span class="landing-card-title">מה הכלי עושה?</span>
-        <p class="landing-card-text">הכלי עוזר להבין איך החיסכון שלך מושקע: חשיפה למניות, לחו״ל ולמט״ח.</p>
+        <p class="landing-card-text">הכלי מחבר את הקופות והקרנות שלך לתמונה אחת פשוטה: כמה מהחיסכון חשוף למניות, לחו״ל ולמט״ח, לפי היתרות שתזין.</p>
       </button>
 
       <button type="button" class="landing-card landing-primary" id="landingStartBtn" aria-expanded="false" aria-controls="searchSection">
@@ -2497,7 +2499,7 @@
 
     <div class="landing-panel" id="landingAboutPanel" hidden>
       <h3>מה הכלי עושה?</h3>
-      הכלי מאפשר לך להוסיף את הקופות והקרנות שלך, להזין יתרה ודמי ניהול אישיים, ולקבל תמונה מצרפית של החשיפה למניות, לחו״ל, למט״ח ולנכסים סחירים. המטרה היא להנגיש תמונת מצב פשוטה וברורה, גם למי שאינו מכיר לעומק את מבנה החיסכון הפנסיוני והפיננסי.
+      הכלי מיועד לעזור גם למי שפחות מכיר את עולם החיסכון הפנסיוני והפיננסי. במקום להסתכל על כל קופה בנפרד, אפשר להוסיף את הקופות והקרנות שלך, להזין יתרה ודמי ניהול אישיים, ולקבל תמונה אחת מרוכזת: מה החשיפה הכוללת למניות, כמה מהכסף מושקע בחו״ל, מה החשיפה למט״ח, ומה המשקל של כל מוצר בתיק. המטרה היא לתת תמונת מצב פשוטה וברורה, לא המלצה ולא ייעוץ.
     </div>
 
     <div class="landing-panel" id="landingDisclosurePanel" hidden>
