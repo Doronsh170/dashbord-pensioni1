@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.64</title>
+<title>דשבורד חשיפות חיסכון | v3.71</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
@@ -3126,6 +3126,7 @@
       </div>
     </div>
   </div>
+  <div class="dashboard-credit">פותח ע״י דורון שרייבמן</div>
 </section>
 
 <section class="projection-section" id="projectionSection" hidden>
@@ -6889,11 +6890,33 @@ document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn
     $('projResults').hidden = false;
   }
   function syncSectionVisibility() {
-    const section = $('projectionSection'); if (!section) return; const state = readDashboardState(); section.hidden = !state.hasPortfolio; if (state.hasPortfolio && $('projToggle') && $('projToggle').getAttribute('aria-expanded') === 'true') refreshPrefill();
+    const section = $('projectionSection');
+    if (!section) return;
+    const state = readDashboardState();
+    if (!state.hasPortfolio) {
+      section.hidden = true;
+      section.dataset.opened = 'false';
+      const toggle = $('projToggle'), body = $('projBody'), results = $('projResults');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      if (body) body.hidden = true;
+      if (results) results.hidden = true;
+      return;
+    }
+    const isOpened = section.dataset.opened === 'true';
+    section.hidden = !isOpened;
+    if (isOpened && $('projToggle') && $('projToggle').getAttribute('aria-expanded') === 'true') refreshPrefill();
   }
   window.openProjection = function() {
-    const section = $('projectionSection'), toggle = $('projToggle'), body = $('projBody'); if (!section || !toggle || !body) return; const state = readDashboardState(); if (!state.hasPortfolio) return;
-    section.hidden = false; toggle.setAttribute('aria-expanded', 'true'); body.hidden = false; refreshPrefill(); section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const section = $('projectionSection'), toggle = $('projToggle'), body = $('projBody');
+    if (!section || !toggle || !body) return;
+    const state = readDashboardState();
+    if (!state.hasPortfolio) return;
+    section.dataset.opened = 'true';
+    section.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+    body.hidden = false;
+    refreshPrefill();
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   window.backToTop = function() { const hero = document.querySelector('.premium-hero') || document.body; hero.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
   document.addEventListener('DOMContentLoaded', function() {
@@ -6983,6 +7006,19 @@ document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn
     if (manual) manual.hidden = true;
     const manualToggle = document.getElementById('manualSearchToggle');
     if (manualToggle) manualToggle.setAttribute('aria-expanded', 'false');
+
+    const projection = document.getElementById('projectionSection');
+    if (projection) {
+      projection.hidden = true;
+      projection.dataset.opened = 'false';
+    }
+    const projToggle = document.getElementById('projToggle');
+    if (projToggle) projToggle.setAttribute('aria-expanded', 'false');
+    const projBody = document.getElementById('projBody');
+    if (projBody) projBody.hidden = true;
+    const projResults = document.getElementById('projResults');
+    if (projResults) projResults.hidden = true;
+
     const input = document.getElementById('searchInput');
     if (input) input.value = '';
     document.querySelectorAll('.product-type-btn.active, .company-btn.is-selected, .sub-product-btn.active').forEach(function(btn) {
@@ -7016,6 +7052,184 @@ document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn
   }
 })();
 </script>
+
+
+<style id="v3-71-projection-and-credit-fixes">
+  /* v3.71: dashboard credit + calculator appears only after explicit click */
+  .dashboard-credit {
+    max-width: 1180px;
+    margin: 22px auto 0;
+    padding: 18px 28px 0;
+    text-align: center;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  body.pdf-mode .dashboard-credit { display: block !important; color: #444 !important; }
+  @media print { .dashboard-credit { display: block !important; color: #444 !important; font-size: 8px !important; padding-top: 4px !important; } }
+
+  .projection-section[hidden] { display: none !important; }
+  .projection-section {
+    background: #f8fafc !important;
+    padding: 28px 0 56px !important;
+  }
+  .projection-section .container {
+    max-width: 980px !important;
+  }
+  .proj-toggle {
+    background: #ffffff !important;
+    border: 1px solid #dbe3ee !important;
+    border-radius: 22px !important;
+    padding: 18px 22px !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06) !important;
+  }
+  .proj-toggle[aria-expanded="true"] {
+    border-color: #cbd5e1 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+  .proj-toggle-title {
+    color: #0f172a !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+  }
+  .proj-toggle-sub {
+    color: #64748b !important;
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+  }
+  .proj-toggle-icon {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 14px !important;
+    background: #eef2ff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 21px !important;
+  }
+  .proj-body {
+    background: #ffffff !important;
+    border: 1px solid #dbe3ee !important;
+    border-top: 0 !important;
+    border-bottom-left-radius: 22px !important;
+    border-bottom-right-radius: 22px !important;
+    padding: 24px !important;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08) !important;
+  }
+  .proj-intro {
+    margin: 0 0 20px !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-right: 4px solid #1e3a8a !important;
+    color: #334155 !important;
+    border-radius: 16px !important;
+    padding: 15px 17px !important;
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+  }
+  .proj-intro strong { color: #1e3a8a !important; }
+  .proj-input-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+  .proj-input {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    padding: 14px !important;
+  }
+  .proj-input-label {
+    color: #0f172a !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+  }
+  .proj-input input[type="number"] {
+    margin-top: 7px !important;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 12px !important;
+    padding: 12px 13px !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+  }
+  .proj-input-hint {
+    margin-top: 6px !important;
+    color: #64748b !important;
+    font-size: 11.5px !important;
+    line-height: 1.45 !important;
+  }
+  .proj-action-row {
+    margin-top: 18px !important;
+    justify-content: flex-start !important;
+  }
+  .proj-run-btn {
+    background: #1e3a8a !important;
+    color: #ffffff !important;
+    border-radius: 14px !important;
+    padding: 13px 28px !important;
+    box-shadow: 0 8px 18px rgba(30, 58, 138, 0.18) !important;
+  }
+  .proj-run-btn:hover { background: #0f2d6b !important; }
+  .proj-results {
+    margin-top: 26px !important;
+    padding-top: 22px !important;
+    border-top: 1px solid #e2e8f0 !important;
+  }
+  .proj-summary {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+  .proj-metric {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    padding: 15px 16px !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
+  }
+  .proj-metric-main {
+    background: #eef2ff !important;
+    border-color: #c7d2fe !important;
+  }
+  .proj-metric-label {
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+  }
+  .proj-metric-value {
+    color: #0f172a !important;
+    font-size: 24px !important;
+    font-weight: 900 !important;
+  }
+  .proj-yearly {
+    margin-top: 16px !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    padding: 12px 14px !important;
+  }
+  .proj-disclaimer {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    color: #475569 !important;
+    font-size: 12px !important;
+    line-height: 1.65 !important;
+    padding: 13px 14px !important;
+  }
+  @media (max-width: 760px) {
+    .dashboard-credit { padding: 14px 18px 0 !important; margin-top: 14px !important; }
+    .projection-section { padding: 18px 0 42px !important; }
+    .proj-body { padding: 18px !important; }
+    .proj-input-grid, .proj-summary { grid-template-columns: 1fr !important; }
+    .proj-toggle { align-items: center !important; flex-direction: row !important; padding: 16px !important; }
+    .proj-toggle-title { font-size: 16px !important; }
+    .proj-toggle-sub { font-size: 12px !important; }
+  }
+</style>
 
 </body>
 </html>
