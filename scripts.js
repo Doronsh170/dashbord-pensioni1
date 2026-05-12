@@ -1001,6 +1001,9 @@ if (manualSearchToggle && manualSearchControls) {
 // v3.48: זרימה פשוטה יותר — בחירת סוג מוצר, אחר כך יצרן, ואז קופה
 let selectedCompanyQuery = '';
 let selectedProductFilter = 'all';
+let selectedSubProductType = typeof selectedSubProductType !== 'undefined' ? selectedSubProductType : '';
+let currentInsideResultsQuery = typeof currentInsideResultsQuery !== 'undefined' ? currentInsideResultsQuery : '';
+let resultVisibleLimit = typeof resultVisibleLimit !== 'undefined' ? resultVisibleLimit : 15;
 
 function setActiveProductFilter(filter) {
   activeFilter = filter || 'all';

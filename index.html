@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.58</title>
+<title>דשבורד חשיפות חיסכון | v3.61</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
@@ -2350,23 +2350,6 @@
       <h1>תראה איך הכסף שלך באמת <em>מושקע</em></h1>
       <p class="hero-sub">בלי הרשמה. בלי העלאת מסמכים. הנתונים נשארים אצלך במכשיר.</p>
 
-      <div class="premium-stats" aria-label="נתוני המאגר">
-        <div class="premium-stat">
-          <div class="premium-stat-num">1,300+</div>
-          <div class="premium-stat-label">קופות, קרנות ופוליסות</div>
-        </div>
-        <div class="premium-stat-divider" aria-hidden="true"></div>
-        <div class="premium-stat">
-          <div class="premium-stat-num">2.8T<span class="premium-curr">₪</span></div>
-          <div class="premium-stat-label">נכסים מנוהלים במאגר</div>
-        </div>
-        <div class="premium-stat-divider" aria-hidden="true"></div>
-        <div class="premium-stat">
-          <div class="premium-stat-num premium-date">מרץ 2026</div>
-          <div class="premium-stat-label">עדכון אחרון</div>
-        </div>
-      </div>
-
       <div class="premium-attribution">מבוסס על נתוני <strong>גמל נט</strong> · <strong>פנסיה נט</strong> · <strong>ביטוח נט</strong> · אינו תחליף לייעוץ השקעות, ייעוץ פנסיוני או ייעוץ מס</div>
       <div class="info-cube-tooltip" id="cubeTooltip" role="region" aria-live="polite" hidden></div>
     </div>
@@ -3536,6 +3519,17 @@ function getCompanyAssetsForCurrentScope() {
 
 function handleCompanySelection(btn) {
   const query = btn.dataset.query || '';
+  const isAlreadySelected = btn.classList.contains('is-selected') && selectedCompanyQuery === query;
+
+  if (isAlreadySelected) {
+    selectedCompanyQuery = '';
+    btn.classList.remove('is-selected');
+    const input = document.getElementById('searchInput');
+    if (input) input.value = '';
+    resetSearchResultsOnly();
+    return;
+  }
+
   selectedCompanyQuery = query;
   document.querySelectorAll('.company-btn').forEach(b => b.classList.remove('is-selected'));
   btn.classList.add('is-selected');
@@ -4455,6 +4449,34 @@ function hideCompanyChooser() {
   if (companyGrid) companyGrid.style.display = 'none';
   document.querySelectorAll('.company-btn').forEach(b => b.classList.remove('is-selected'));
 }
+
+function hideSubProductChooser() {
+  const panel = document.getElementById('subProductPanel');
+  const grid = document.getElementById('subProductGrid');
+  if (panel) panel.style.display = 'none';
+  if (grid) {
+    grid.innerHTML = '';
+    grid.querySelectorAll?.('.sub-product-btn').forEach(b => b.classList.remove('active'));
+  }
+  selectedSubProductType = '';
+}
+
+function clearGuidedSelectionState() {
+  selectedCompanyQuery = '';
+  selectedSubProductType = '';
+  selectedProductFilter = 'all';
+  activeFilter = 'all';
+  const input = document.getElementById('searchInput');
+  if (input) input.value = '';
+  document.querySelectorAll('.product-type-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  const allFilterBtn = document.querySelector('.filter-btn[data-filter="all"]');
+  if (allFilterBtn) allFilterBtn.classList.add('active');
+  hideCompanyChooser();
+  hideSubProductChooser();
+  resetSearchResultsOnly();
+}
+
 function showCompanyChooser() {
   const companyLabel = document.getElementById('companyGridLabel');
   const companyGrid = document.getElementById('companyGrid');
@@ -4500,7 +4522,19 @@ function renderSubProductOptions(filter) {
   panel.style.display = 'block';
   grid.querySelectorAll('.sub-product-btn').forEach(button => {
     button.addEventListener('click', () => {
-      selectedSubProductType = button.dataset.subtype || '';
+      const subtype = button.dataset.subtype || '';
+      const isAlreadySelected = button.classList.contains('active') && selectedSubProductType === subtype;
+      if (isAlreadySelected) {
+        selectedSubProductType = '';
+        selectedCompanyQuery = '';
+        button.classList.remove('active');
+        hideCompanyChooser();
+        const input = document.getElementById('searchInput');
+        if (input) input.value = '';
+        resetSearchResultsOnly();
+        return;
+      }
+      selectedSubProductType = subtype;
       grid.querySelectorAll('.sub-product-btn').forEach(b => b.classList.remove('active'));
       button.classList.add('active');
       selectedCompanyQuery = '';
@@ -4517,6 +4551,13 @@ function renderSubProductOptions(filter) {
 document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn => {
   btn.addEventListener('click', () => {
     const filter = btn.dataset.filter || 'all';
+    const isAlreadySelected = btn.classList.contains('active') && selectedProductFilter === filter;
+
+    if (isAlreadySelected) {
+      clearGuidedSelectionState();
+      return;
+    }
+
     selectedCompanyQuery = '';
     setActiveProductFilter(filter);
     hideCompanyChooser();
