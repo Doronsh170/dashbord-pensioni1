@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.48</title>
+<title>דשבורד חשיפות חיסכון | v3.52</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet" />
@@ -3641,6 +3641,40 @@ function resultMatchesInternalSearch(rec, term) {
   return text.includes(q) || (qCompact && compact.includes(qCompact)) || parts.every(p => text.includes(p) || compact.includes(compactText(p)));
 }
 
+function preferredTrackRank(rec) {
+  const text = normalizeText([
+    rec.fund_name,
+    rec.classification,
+    rec.specialization,
+    rec.sub_specialization
+  ].join(' '));
+
+  const isGeneral = text.includes('כללי') || text.includes('כללית');
+  const isUpTo50 =
+    text.includes('עד גיל 50') ||
+    text.includes('עד 50') ||
+    text.includes('לבני עד 50') ||
+    text.includes('עד-50') ||
+    text.includes('עד גיל50');
+  const isEquity = text.includes('מניות') || text.includes('מנייתי') || text.includes('מניתי');
+
+  if (isGeneral) return 0;
+  if (isUpTo50) return 1;
+  if (isEquity) return 2;
+  return 3;
+}
+
+function sortByPreferredTrack(results) {
+  return results.slice().sort((a, b) => {
+    const rankDiff = preferredTrackRank(a) - preferredTrackRank(b);
+    if (rankDiff !== 0) return rankDiff;
+
+    const nameA = normalizeText(a.fund_name || '');
+    const nameB = normalizeText(b.fund_name || '');
+    return nameA.localeCompare(nameB, 'he');
+  });
+}
+
 function buildInsideResultsSearch(query, baseCount) {
   if (!(selectedCompanyQuery && query === selectedCompanyQuery && selectedProductFilter !== 'all')) return '';
   const productLabel = (document.querySelector(`.product-type-btn[data-filter="${selectedProductFilter}"]`) || {}).textContent || '';
@@ -3663,8 +3697,9 @@ function showResults(query) {
   const filteredResults = focusedCompanyMode
     ? baseResults.filter(r => resultMatchesInternalSearch(r, currentInsideResultsQuery))
     : baseResults;
+  const orderedResults = focusedCompanyMode ? sortByPreferredTrack(filteredResults) : filteredResults;
   const visibleLimit = focusedCompanyMode ? resultVisibleLimit : Infinity;
-  const displayedResults = filteredResults.slice(0, Number.isFinite(visibleLimit) ? visibleLimit : filteredResults.length);
+  const displayedResults = orderedResults.slice(0, Number.isFinite(visibleLimit) ? visibleLimit : orderedResults.length);
   if (!baseResults.length) {
     wrap.innerHTML = query.trim()
       ? '<div class="result-item result-summary"><div class="result-name">לא נמצאו תוצאות</div><div class="result-meta"><span>נסה לבחור סוג מוצר אחר או להשתמש בחיפוש הידני.</span></div></div>'
@@ -3673,13 +3708,13 @@ function showResults(query) {
     return;
   }
   const insideSearch = buildInsideResultsSearch(query, baseResults.length);
-  if (!filteredResults.length) {
+  if (!orderedResults.length) {
     wrap.innerHTML = insideSearch + '<div class="result-item result-summary"><div class="result-name">לא נמצאה קופה שמתאימה לחיפוש הפנימי</div><div class="result-meta"><span>נסה לחפש מילה קצרה יותר, לדוגמה: כללי / מניות / 50 / מספר קופה.</span></div></div>';
     wrap.classList.add('active');
     attachInsideResultsEvents(query);
     return;
   }
-  const summary = buildResultSummary(query, filteredResults, filteredResults.length, displayedResults.length);
+  const summary = buildResultSummary(query, orderedResults, orderedResults.length, displayedResults.length);
   const resultItems = displayedResults.map(r => {
     const stale = r.is_stale ? `<span class="stale-badge">${r.months_behind} ח׳ ישן</span>` : '';
     const micro = r.is_micro_fund ? `<span class="micro-badge">קטנה</span>` : '';
@@ -3705,15 +3740,15 @@ function showResults(query) {
       </div>
     `;
   }).join('');
-  const showMore = focusedCompanyMode && displayedResults.length < filteredResults.length
-    ? `<button type="button" class="show-more-results-btn" id="showMoreResultsBtn">הצג עוד ${Math.min(15, filteredResults.length - displayedResults.length)} תוצאות</button>`
+  const showMore = focusedCompanyMode && displayedResults.length < orderedResults.length
+    ? `<button type="button" class="show-more-results-btn" id="showMoreResultsBtn">הצג עוד ${Math.min(15, orderedResults.length - displayedResults.length)} תוצאות</button>`
     : '';
   wrap.innerHTML = insideSearch + summary + resultItems + showMore;
   wrap.classList.add('active');
   wrap.querySelectorAll('.select-btn[data-uid]').forEach(btn => {
     btn.addEventListener('click', (event) => {
       event.stopPropagation();
-      const found = filteredResults.find(x => x.uid === btn.dataset.uid);
+      const found = orderedResults.find(x => x.uid === btn.dataset.uid);
       if (found) addFund(found);
     });
   });
