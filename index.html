@@ -3642,21 +3642,49 @@ function resultMatchesInternalSearch(rec, term) {
 }
 
 function preferredTrackRank(rec) {
-  const text = normalizeText([
+  const rawText = [
     rec.fund_name,
     rec.classification,
     rec.specialization,
-    rec.sub_specialization
-  ].join(' '));
+    rec.sub_specialization,
+    rec.target_population
+  ].filter(Boolean).join(' ');
 
-  const isGeneral = text.includes('כללי') || text.includes('כללית');
+  const text = normalizeText(rawText);
+  const compact = compactText(rawText);
+
+  // סדר מועדף להצגת תוצאות אחרי בחירת מוצר + יצרן:
+  // 1. כללי, 2. עד גיל 50, 3. מניות, 4. כל השאר.
+  // הבדיקה רחבה כדי לתפוס ניסוחים שונים במאגר: "עד גיל 50", "50 ומטה", "לבני 50 ומטה" וכו'.
+  const isGeneral =
+    text.includes('מסלול כללי') ||
+    text.includes('כללי') ||
+    text.includes('כללית') ||
+    compact.includes('מסלולכללי');
+
   const isUpTo50 =
     text.includes('עד גיל 50') ||
+    text.includes('עד גיל50') ||
     text.includes('עד 50') ||
-    text.includes('לבני עד 50') ||
     text.includes('עד-50') ||
-    text.includes('עד גיל50');
-  const isEquity = text.includes('מניות') || text.includes('מנייתי') || text.includes('מניתי');
+    text.includes('לבני עד 50') ||
+    text.includes('לבני 50 ומטה') ||
+    text.includes('בני 50 ומטה') ||
+    text.includes('גילאי 50 ומטה') ||
+    text.includes('50 ומטה') ||
+    compact.includes('עדגיל50') ||
+    compact.includes('עד50') ||
+    compact.includes('לבני50ומטה') ||
+    compact.includes('בני50ומטה') ||
+    compact.includes('גילאי50ומטה') ||
+    compact.includes('50ומטה');
+
+  const isEquity =
+    text.includes('מסלול מניות') ||
+    text.includes('מניות') ||
+    text.includes('מנייתי') ||
+    text.includes('מניתי') ||
+    compact.includes('מסלולמניות');
 
   if (isGeneral) return 0;
   if (isUpTo50) return 1;
@@ -3666,8 +3694,16 @@ function preferredTrackRank(rec) {
 
 function sortByPreferredTrack(results) {
   return results.slice().sort((a, b) => {
-    const rankDiff = preferredTrackRank(a) - preferredTrackRank(b);
-    if (rankDiff !== 0) return rankDiff;
+    const rankA = preferredTrackRank(a);
+    const rankB = preferredTrackRank(b);
+    if (rankA !== rankB) return rankA - rankB;
+
+    // בתוך אותה עדיפות: קודם מסלולים פעילים ועדכניים יותר, ואז שם.
+    const activeDiff = Number(Boolean(b.is_active)) - Number(Boolean(a.is_active));
+    if (activeDiff !== 0) return activeDiff;
+
+    const periodDiff = (Number(b.report_period) || 0) - (Number(a.report_period) || 0);
+    if (periodDiff !== 0) return periodDiff;
 
     const nameA = normalizeText(a.fund_name || '');
     const nameB = normalizeText(b.fund_name || '');
