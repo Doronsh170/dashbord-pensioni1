@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.75</title>
+<title>דשבורד חשיפות חיסכון | v3.82</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
@@ -3145,6 +3145,90 @@
   }
 </style>
 
+
+<style>
+  /* v3.82: simplified landing hero and CTA placement */
+  .premium-header {
+    justify-content: center !important;
+    padding-bottom: 6px !important;
+  }
+  .premium-brand {
+    justify-content: center !important;
+  }
+  .premium-wordmark,
+  .premium-word,
+  .premium-subword,
+  .lux-eyebrow,
+  .lux-sub,
+  .lux-trust {
+    display: none !important;
+  }
+  .lux-hero-text {
+    margin: 10px auto 28px !important;
+  }
+  .lux-headline {
+    margin-top: 0 !important;
+    margin-bottom: 22px !important;
+  }
+  .landing-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-areas:
+      "about discl priv"
+      "primary primary primary" !important;
+    gap: 14px !important;
+  }
+  .landing-card.landing-primary {
+    grid-area: primary !important;
+  }
+  #landingAboutBtn { grid-area: about !important; }
+  #landingDisclosureBtn { grid-area: discl !important; }
+  #landingPrivacyBtn { grid-area: priv !important; }
+  @media (max-width: 760px) {
+    .premium-header { padding: 2px 0 6px !important; }
+    .lux-hero-text { margin: 8px auto 18px !important; }
+    .lux-headline {
+      font-size: 38px !important;
+      line-height: 1.08 !important;
+      margin-bottom: 16px !important;
+    }
+    .landing-actions {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      grid-template-areas:
+        "about discl priv"
+        "primary primary primary" !important;
+      gap: 10px !important;
+    }
+  }
+  @media (max-width: 520px) {
+    .landing-actions {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      grid-template-areas:
+        "about discl priv"
+        "primary primary primary" !important;
+    }
+    .landing-card:not(.landing-primary) {
+      min-height: 118px !important;
+      padding: 15px 9px 13px !important;
+    }
+    .landing-card:not(.landing-primary) .landing-card-kicker {
+      font-size: 9.2px !important;
+      padding-inline-start: 0 !important;
+    }
+    .landing-card:not(.landing-primary) .landing-card-title {
+      font-size: 15px !important;
+      line-height: 1.2 !important;
+      padding-inline-start: 0 !important;
+    }
+    .landing-card:not(.landing-primary) .landing-card-text {
+      font-size: 11px !important;
+      line-height: 1.35 !important;
+    }
+    .landing-card:not(.landing-primary)::after {
+      display: none !important;
+    }
+  }
+</style>
+
 </head>
 <body>
 <section class="hero premium-hero">
@@ -3152,52 +3236,20 @@
     <div class="premium-header" aria-label="כותרת האתר">
       <div class="premium-brand">
         <div class="premium-mark" aria-hidden="true">ד</div>
-        <div class="premium-wordmark">
-          <div class="premium-word">דשבורד חשיפות</div>
-          <div class="premium-subword">Savings & Pension Exposure</div>
-        </div>
       </div>
     </div>
 
     <div class="lux-hero-text" aria-label="הצגה ראשית">
-      <span class="lux-eyebrow">
-        <span class="lux-eyebrow-dot" aria-hidden="true"></span>
-        <span>ניתוח חשיפות · חיסכון פנסיוני, גמל וביטוח</span>
-      </span>
       <h1 class="lux-headline">
         כל החיסכון שלך<br/>
-        <em>תמונה אחת, ברורה.</em>
-      </h1>
-      <p class="lux-sub">חבר את הקופות, הקרנות וביטוחי המנהלים שלך — וקבל מבט-על על החשיפה למניות, חו״ל ומט״ח. הכל מתבצע בדפדפן שלך, ללא הרשמה.</p>
-      <div class="lux-trust" role="list">
-        <span class="lux-trust-item" role="listitem">
-          <span class="lux-trust-icon" aria-hidden="true"></span>
-          <span><strong>1,315</strong> מסלולים פעילים</span>
-        </span>
-        <span class="lux-trust-divider" aria-hidden="true"></span>
-        <span class="lux-trust-item" role="listitem">
-          <span class="lux-trust-icon" aria-hidden="true"></span>
-          <span>נתוני <strong>data.gov.il</strong></span>
-        </span>
-        <span class="lux-trust-divider" aria-hidden="true"></span>
-        <span class="lux-trust-item" role="listitem">
-          <span class="lux-trust-icon" aria-hidden="true"></span>
-          <span><strong>100%</strong> פרטי בדפדפן</span>
-        </span>
-      </div>
-    </div>
+        <em>תמונה אחת ברורה</em>
+      </h1></div>
 
     <div class="landing-actions" aria-label="אפשרויות ראשיות">
       <button type="button" class="landing-card" id="landingAboutBtn" aria-expanded="false" aria-controls="landingAboutPanel">
         <span class="landing-card-kicker">הסבר פשוט</span>
         <span class="landing-card-title">מה הכלי עושה?</span>
         <p class="landing-card-text">הכלי מחבר את הקופות והקרנות שלך לתמונה אחת פשוטה: כמה מהחיסכון חשוף למניות, לחו״ל ולמט״ח, לפי היתרות שתזין.</p>
-      </button>
-
-      <button type="button" class="landing-card landing-primary" id="landingStartBtn" aria-expanded="false" aria-controls="searchSection">
-        <span class="landing-card-kicker">פעולה מרכזית</span>
-        <span class="landing-card-title">כאן מתחילים</span>
-        <p class="landing-card-text">בחר מוצר, סוג, חברה וקופה, ולאחר מכן הזן יתרה ודמי ניהול.</p>
       </button>
 
       <button type="button" class="landing-card" id="landingDisclosureBtn" aria-expanded="false" aria-controls="landingDisclosurePanel">
@@ -3211,7 +3263,13 @@
         <span class="landing-card-title">פרטיות ומקור נתונים</span>
         <p class="landing-card-text">הנתונים שאתה מזין נשמרים בדפדפן שלך. מקור הנתונים הוא מאגרי רשות שוק ההון.</p>
       </button>
-    </div>
+    <button type="button" class="landing-card landing-primary" id="landingStartBtn" aria-expanded="false" aria-controls="searchSection">
+        <span class="landing-card-kicker">פעולה מרכזית</span>
+        <span class="landing-card-title">כאן מתחילים</span>
+        <p class="landing-card-text">בחר מוצר, סוג, חברה וקופה, ולאחר מכן הזן יתרה ודמי ניהול.</p>
+      </button>
+
+      </div>
 
     <div class="landing-panel" id="landingAboutPanel" hidden>
       <h3>מה הכלי עושה?</h3>
@@ -8185,6 +8243,66 @@ window.backToTop = function() { const hero = document.querySelector('.premium-he
 
   /* Hide the lux text once the user has started — same rule as landing-actions */
   body.landing-started .lux-hero-text { display: none !important; }
+</style>
+
+
+<style>
+  /* v3.82 final overrides: top headline only, no upper title/ellipse/subtext, start below three cards */
+  .premium-wordmark,
+  .premium-word,
+  .premium-subword,
+  .lux-eyebrow,
+  .lux-sub,
+  .lux-trust {
+    display: none !important;
+  }
+  .premium-header {
+    justify-content: center !important;
+    padding: 2px 0 8px !important;
+    margin-bottom: 0 !important;
+  }
+  .premium-brand { justify-content: center !important; }
+  .lux-hero-text {
+    margin: 8px auto 24px !important;
+  }
+  .lux-headline {
+    margin: 0 auto 20px !important;
+    text-align: center !important;
+  }
+  .landing-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-areas:
+      "about discl priv"
+      "primary primary primary" !important;
+    gap: 14px !important;
+  }
+  .landing-card.landing-primary { grid-area: primary !important; }
+  #landingAboutBtn { grid-area: about !important; }
+  #landingDisclosureBtn { grid-area: discl !important; }
+  #landingPrivacyBtn { grid-area: priv !important; }
+  @media (max-width: 760px) {
+    .premium-header { padding: 2px 0 6px !important; }
+    .lux-hero-text { margin: 6px auto 18px !important; }
+    .lux-headline { font-size: 38px !important; line-height: 1.08 !important; margin-bottom: 16px !important; }
+    .landing-actions {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      grid-template-areas:
+        "about discl priv"
+        "primary primary primary" !important;
+      gap: 10px !important;
+    }
+    .landing-card.landing-primary { min-height: auto !important; }
+  }
+  @media (max-width: 520px) {
+    .landing-card:not(.landing-primary) {
+      min-height: 118px !important;
+      padding: 15px 9px 13px !important;
+    }
+    .landing-card:not(.landing-primary)::after { display: none !important; }
+    .landing-card:not(.landing-primary) .landing-card-kicker { font-size: 9.2px !important; padding-inline-start: 0 !important; }
+    .landing-card:not(.landing-primary) .landing-card-title { font-size: 15px !important; line-height: 1.2 !important; padding-inline-start: 0 !important; }
+    .landing-card:not(.landing-primary) .landing-card-text { font-size: 11px !important; line-height: 1.35 !important; }
+  }
 </style>
 
 </body>
