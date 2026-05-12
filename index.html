@@ -2150,16 +2150,7 @@
     </div>
 
     <p class="company-grid-label" id="companyGridLabel" style="display:none;">באיזו חברה מנוהל המוצר?</p>
-    <div class="company-grid" id="companyGrid" style="display:none;">
-      <button type="button" class="company-btn" data-query="מנורה">מנורה מבטחים</button>
-      <button type="button" class="company-btn" data-query="הראל">הראל</button>
-      <button type="button" class="company-btn" data-query="הפניקס">הפניקס</button>
-      <button type="button" class="company-btn" data-query="כלל">כלל</button>
-      <button type="button" class="company-btn" data-query="מגדל">מגדל</button>
-      <button type="button" class="company-btn" data-query="מיטב">מיטב</button>
-      <button type="button" class="company-btn" data-query="מור">מור</button>
-      <button type="button" class="company-btn" data-query="אלטשולר">אלטשולר שחם</button>
-    </div>
+    <div class="company-grid" id="companyGrid" style="display:none;"></div>
 
     <button type="button" class="manual-search-toggle" id="manualSearchToggle" aria-expanded="false" aria-controls="manualSearchControls">
       לא מצאת את הקופה? חיפוש ידני
@@ -3040,6 +3031,70 @@ function getSubProductOptions(filter) {
   return [];
 }
 
+const COMPANY_OPTIONS = [
+  { query: 'מנורה', label: 'מנורה מבטחים' },
+  { query: 'הראל', label: 'הראל' },
+  { query: 'הפניקס', label: 'הפניקס' },
+  { query: 'כלל', label: 'כלל' },
+  { query: 'מגדל', label: 'מגדל' },
+  { query: 'מיטב', label: 'מיטב' },
+  { query: 'מור', label: 'מור' },
+  { query: 'אלטשולר', label: 'אלטשולר שחם' }
+];
+
+function recMatchesCurrentProductScope(rec) {
+  const filter = selectedProductFilter || activeFilter || 'all';
+  if (filter !== 'all' && rec.source !== filter) return false;
+  if (selectedSubProductType && !recMatchesSubProduct(rec, selectedSubProductType)) return false;
+  if (!rec.is_active || (Number(rec.total_assets) || 0) <= 0) return false;
+  return true;
+}
+
+function getCompanyAssetsForCurrentScope() {
+  return COMPANY_OPTIONS.map(company => {
+    let totalAssets = 0;
+    let count = 0;
+    for (const rec of DATA) {
+      if (!recMatchesCurrentProductScope(rec)) continue;
+      if (!recMatchesSelectedCompany(rec, company.query)) continue;
+      totalAssets += Number(rec.total_assets) || 0;
+      count += 1;
+    }
+    return { ...company, totalAssets, count };
+  })
+  .filter(company => company.count > 0 && company.totalAssets > 0)
+  .sort((a, b) => {
+    if (b.totalAssets !== a.totalAssets) return b.totalAssets - a.totalAssets;
+    return a.label.localeCompare(b.label, 'he');
+  });
+}
+
+function handleCompanySelection(btn) {
+  const query = btn.dataset.query || '';
+  selectedCompanyQuery = query;
+  document.querySelectorAll('.company-btn').forEach(b => b.classList.remove('is-selected'));
+  btn.classList.add('is-selected');
+
+  const input = document.getElementById('searchInput');
+  if (input) input.value = query;
+  currentInsideResultsQuery = '';
+  resultVisibleLimit = 15;
+
+  showResults(query);
+  const resultsWrap = document.getElementById('searchResults');
+  if (resultsWrap && resultsWrap.scrollIntoView) {
+    resultsWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  const insideInput = document.getElementById('insideResultsInput');
+  if (insideInput) setTimeout(() => insideInput.focus(), 120);
+}
+
+function attachCompanyButtonEvents() {
+  document.querySelectorAll('.company-btn').forEach(btn => {
+    btn.addEventListener('click', () => handleCompanySelection(btn));
+  });
+}
+
 function searchFunds(query, limit = Infinity, filterOverride = activeFilter, allowEmptyAll = false) {
   const q = normalizeText(query);
   const qCompact = compactText(query);
@@ -3741,14 +3796,11 @@ function preferredTrackRank(rec) {
 }
 
 function sortByPreferredTrack(results) {
+  // v3.56: אחרי בחירת מוצר / תת-מוצר / יצרן,
+  // התוצאות מסודרות לפי שווי נכסים בקטגוריה, מהגדול לקטן.
   return results.slice().sort((a, b) => {
-    const rankA = preferredTrackRank(a);
-    const rankB = preferredTrackRank(b);
-    if (rankA !== rankB) return rankA - rankB;
-
-    // בתוך אותה עדיפות: קודם מסלולים פעילים ועדכניים יותר, ואז שם.
-    const activeDiff = Number(Boolean(b.is_active)) - Number(Boolean(a.is_active));
-    if (activeDiff !== 0) return activeDiff;
+    const assetDiff = (Number(b.total_assets) || 0) - (Number(a.total_assets) || 0);
+    if (assetDiff !== 0) return assetDiff;
 
     const periodDiff = (Number(b.report_period) || 0) - (Number(a.report_period) || 0);
     if (periodDiff !== 0) return periodDiff;
@@ -3941,9 +3993,26 @@ function hideCompanyChooser() {
 function showCompanyChooser() {
   const companyLabel = document.getElementById('companyGridLabel');
   const companyGrid = document.getElementById('companyGrid');
-  if (companyLabel) companyLabel.style.display = '';
-  if (companyGrid) companyGrid.style.display = 'grid';
-  if (companyGrid && companyGrid.scrollIntoView) {
+  if (!companyGrid) return;
+
+  const companies = getCompanyAssetsForCurrentScope();
+  companyGrid.innerHTML = companies.length
+    ? companies.map(company => `
+        <button type="button" class="company-btn" data-query="${escapeHtml(company.query)}" title="${Math.round(company.totalAssets).toLocaleString('he-IL')} מיליון ₪">
+          <span>${escapeHtml(company.label)}</span>
+        </button>
+      `).join('')
+    : '<div class="result-item result-summary"><div class="result-name">לא נמצאו חברות רלוונטיות בקטגוריה שנבחרה</div><div class="result-meta"><span>נסה לבחור סוג מוצר אחר או להשתמש בחיפוש הידני.</span></div></div>';
+
+  if (companyLabel) {
+    companyLabel.style.display = '';
+    companyLabel.textContent = companies.length
+      ? 'באיזו חברה מנוהל המוצר? החברות מסודרות לפי שווי נכסים בקטגוריה שנבחרה.'
+      : 'לא נמצאו חברות רלוונטיות';
+  }
+  companyGrid.style.display = 'grid';
+  attachCompanyButtonEvents();
+  if (companyGrid.scrollIntoView) {
     companyGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
@@ -3999,27 +4068,7 @@ document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn
   });
 });
 
-document.querySelectorAll('.company-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const query = btn.dataset.query || '';
-    selectedCompanyQuery = query;
-    document.querySelectorAll('.company-btn').forEach(b => b.classList.remove('is-selected'));
-    btn.classList.add('is-selected');
-
-    const input = document.getElementById('searchInput');
-    if (input) input.value = query;
-    currentInsideResultsQuery = '';
-    resultVisibleLimit = 15;
-
-    showResults(query);
-    const resultsWrap = document.getElementById('searchResults');
-    if (resultsWrap && resultsWrap.scrollIntoView) {
-      resultsWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    const insideInput = document.getElementById('insideResultsInput');
-    if (insideInput) setTimeout(() => insideInput.focus(), 120);
-  });
-});
+// כפתורי החברות נוצרים דינמית לפי שווי נכסים בקטגוריה שנבחרה.
 
 // חיפוש ידני מוסתר כברירת מחדל ונפתח רק בלחיצה, כדי לא להעמיס על המשתמש.
 
