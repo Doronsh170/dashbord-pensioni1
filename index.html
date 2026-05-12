@@ -3482,7 +3482,7 @@
             <div class="sim-result-value" id="simFinalAmount">-</div>
           </div>
           <div class="sim-result-card">
-            <div class="sim-result-label">סך הפקדות</div>
+            <div class="sim-result-label">סך הפקדות עתידיות</div>
             <div class="sim-result-value" id="simTotalContrib">-</div>
           </div>
           <div class="sim-result-card">
@@ -4059,29 +4059,33 @@ function runHistoricalSimulation() {
   const feePct = Math.max(0, Number(feeInput?.value) || 0);
   if (feeInput) feeInput.value = feePct ? feePct.toFixed(2) : '';
 
+  // יתרה קיימת היא הון התחלתי בלבד, לא הפקדה נוספת.
+  // לכן סך ההפקדות שמוצג בתוצאות כולל רק הפקדות עתידיות שהמשתמש הזין.
   let amount = totalBalance;
-  let contributions = totalBalance;
+  let futureContributions = 0;
   const monthlyFee = (feePct / 100) / 12;
 
   for (let y = 0; y < years; y++) {
     const annualYield = (yields[y % yields.length] || 0) / 100;
     const monthlyYield = annualYield / 12;
     for (let m = 0; m < 12; m++) {
-      amount += monthly;
-      contributions += monthly;
       amount += amount * monthlyYield;
       amount -= amount * monthlyFee;
+      if (monthly > 0) {
+        amount += monthly;
+        futureContributions += monthly;
+      }
     }
   }
 
-  const gain = amount - contributions;
+  const gain = amount - totalBalance - futureContributions;
   const finalEl = document.getElementById('simFinalAmount');
   const contribEl = document.getElementById('simTotalContrib');
   const gainEl = document.getElementById('simGainAmount');
   const resultsEl = document.getElementById('simResults');
 
   if (finalEl) finalEl.textContent = fmtSimCurrency(amount);
-  if (contribEl) contribEl.textContent = fmtSimCurrency(contributions);
+  if (contribEl) contribEl.textContent = fmtSimCurrency(futureContributions);
   if (gainEl) {
     gainEl.textContent = fmtSimCurrency(gain);
     gainEl.classList.toggle('sim-positive', gain >= 0);
