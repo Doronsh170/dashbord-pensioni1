@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.61</title>
+<title>דשבורד חשיפות חיסכון | v3.71</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
@@ -1013,7 +1013,6 @@
   }
   .action-btn[onclick*="saveAsPDF"]::before { content: "📄"; }
   .action-btn[onclick*="shareWhatsApp"]::before { content: "💬"; }
-  .action-btn[onclick*="openProjection"]::before { content: "📈"; }
   .action-btn[onclick*="resetAllData"]::before { content: "↺"; }
   .action-btn:hover {
     border-color: rgba(255, 255, 255, 0.45);
@@ -2330,275 +2329,166 @@
     #searchSection::after { margin-top: -8px; padding: 0 12px; font-size: 10.5px; }
   }
 
-</style>
-</head>
-<body>
-<section class="hero premium-hero">
-  <div class="container premium-hero-container">
-    <div class="premium-header" aria-label="כותרת האתר">
-      <div class="premium-brand">
-        <div class="premium-mark" aria-hidden="true">ד</div>
-        <div class="premium-wordmark">
-          <div class="premium-word">דשבורד חשיפות</div>
-          <div class="premium-subword">Savings & Pension Exposure</div>
-        </div>
-      </div>
-    </div>
 
-    <div class="premium-hero-inner">
-      <div class="premium-eyebrow">כלי עצמאי לניתוח חיסכון פנסיוני וחיסכון פיננסי</div>
-      <h1>תראה איך הכסף שלך באמת <em>מושקע</em></h1>
-      <p class="hero-sub">בלי הרשמה. בלי העלאת מסמכים. הנתונים נשארים אצלך במכשיר.</p>
 
-      <div class="info-cube-tooltip" id="cubeTooltip" role="region" aria-live="polite" hidden></div>
-    </div>
-  </div>
-</section>
+  /* === v3.64 Landing action cards under brand === */
+  .premium-hero {
+    padding: 34px 0 26px !important;
+    min-height: auto !important;
+  }
+  .premium-hero-container {
+    max-width: 920px;
+  }
+  .premium-header {
+    justify-content: center !important;
+    margin-bottom: 26px !important;
+  }
+  .premium-brand {
+    justify-content: center;
+  }
+  .landing-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0 auto;
+    max-width: 820px;
+    align-items: stretch;
+  }
+  .landing-card {
+    appearance: none;
+    border: 1px solid #dbe3ee;
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 24px 22px;
+    min-height: 178px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+    cursor: pointer;
+    text-align: right;
+    font: inherit;
+    color: #0f172a;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 12px;
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .landing-card:hover,
+  .landing-card:focus-visible {
+    border-color: #93c5fd;
+    box-shadow: 0 14px 36px rgba(15, 23, 42, 0.10), 0 2px 6px rgba(15, 23, 42, 0.05);
+    transform: translateY(-2px);
+    outline: none;
+  }
+  .landing-card[aria-expanded="true"],
+  .landing-card.landing-primary[aria-expanded="true"] {
+    border-color: #1e3a8a;
+    background: #eff6ff;
+  }
+  .landing-card.landing-primary {
+    background: #ffffff;
+    color: #0f172a;
+    border-color: #dbe3ee;
+  }
+  .landing-card.landing-primary:hover,
+  .landing-card.landing-primary:focus-visible {
+    background: #ffffff;
+    border-color: #93c5fd;
+  }
+  .landing-card-kicker {
+    font-size: 12px;
+    font-weight: 800;
+    color: #1e3a8a;
+  }
+  .landing-primary .landing-card-kicker { color: #1e3a8a; }
+  .landing-card-title {
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .landing-card-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #64748b;
+    margin: 0;
+  }
+  .landing-primary .landing-card-text { color: #64748b; }
+  .landing-panel {
+    max-width: 780px;
+    margin: 16px auto 0;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 20px 22px;
+    color: #334155;
+    font-size: 14px;
+    line-height: 1.75;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  }
+  .landing-panel[hidden] { display: none !important; }
+  .landing-panel h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    color: #0f172a;
+    font-weight: 900;
+  }
+  .landing-credit {
+    margin: 22px auto 0;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  #searchSection.landing-hidden { display: none !important; }
+  body.landing-started #searchSection { display: block !important; }
+  /* v3.67: once the user starts the guided flow, hide the four landing cards to reduce visual load */
+  body.landing-started .landing-actions { display: none !important; }
 
-<section class="section" id="searchSection">
-  <div class="container">
-    <div class="product-type-panel active" id="productTypePanel" aria-live="polite">
-      <p class="product-type-title" id="productTypeTitle">מאיפה מתחילים?</p>
-      <p class="product-type-subtitle">בחר את סוג החיסכון ואנחנו ננחה אותך משם.</p>
-      <div class="product-type-grid" id="productTypeGrid">
-        <button type="button" class="product-type-btn" data-filter="pensia">פנסיה</button>
-        <button type="button" class="product-type-btn" data-filter="bituach">ביטוח מנהלים / פוליסות חיסכון</button>
-        <button type="button" class="product-type-btn" data-filter="gemelnet">גמל / השתלמות / גמל להשקעה</button>
-        <button type="button" class="manual-search-toggle manual-search-card" id="manualSearchToggle" aria-expanded="false" aria-controls="manualSearchControls">
-          חיפוש ידני
-        </button>
-      </div>
-    </div>
+  /* v3.69: return flow, bottom credit and projection layout */
+  body.landing-started .landing-credit { display: none !important; }
+  .flow-credit { display: none; text-align: center; color: #94a3b8; font-size: 12px; font-weight: 600; padding: 24px 0 34px; }
+  body.landing-started .flow-credit { display: block; }
+  body.dashboard-reached #searchSection,
+  body.dashboard-reached #portfolioSection { display: none !important; }
+  body.dashboard-reached .landing-credit,
+  body.dashboard-reached .flow-credit { display: none !important; }
+  .flow-top-actions { display: flex; justify-content: center; margin: 0 0 18px; }
+  .return-landing-btn { border: 1px solid var(--line); background: var(--card); color: var(--ink-mid); border-radius: var(--r-pill); padding: 10px 18px; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; box-shadow: var(--shadow-xs); }
+  .return-landing-btn:hover { border-color: var(--accent); color: var(--accent-dark); box-shadow: var(--shadow-sm); }
+  .proj-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px; cursor: pointer; text-align: right; font: inherit; }
+  .proj-toggle::after { content: 'פתח'; color: var(--accent-dark); font-weight: 900; font-size: 12px; }
+  .proj-toggle[aria-expanded="true"]::after { content: 'סגור'; }
+  .proj-body { margin-top: -2px; padding: 18px; border: 1px solid var(--line); }
+  .proj-form-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+  .proj-context { color: var(--ink-mid); font-size: 13px; margin: 6px 0 16px; }
+  .proj-results { margin-top: 20px; }
+  .proj-metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+  .proj-metric { padding: 16px; }
+  .proj-pos { color: var(--pos) !important; }
+  .proj-neg { color: var(--neg) !important; }
+  .bad-year { background: rgba(220,38,38,0.06); }
+  @media (max-width: 760px) {
+    .proj-form-grid, .proj-metric-grid { grid-template-columns: 1fr; }
+    .proj-toggle { align-items: flex-start; flex-direction: column; }
+  }
 
-    <div class="sub-product-panel" id="subProductPanel" style="display:none;" aria-live="polite">
-      <p class="product-type-title" id="subProductTitle">איזה סוג בדיוק?</p>
-      <p class="product-type-subtitle" id="subProductSubtitle">בחר תת-סוג כדי לצמצם את הרשימה לפני בחירת החברה.</p>
-      <div class="product-type-grid" id="subProductGrid"></div>
-    </div>
+  footer { display: none !important; }
+  .loading { display: none; }
+  @media (max-width: 760px) {
+    .premium-hero { padding: 26px 0 22px !important; }
+    .premium-header { margin-bottom: 22px !important; }
+    .landing-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .landing-card { min-height: 168px; padding: 18px 16px; border-radius: 20px; }
+    .landing-card-title { font-size: 20px; }
+    .landing-card-text { font-size: 12.7px; line-height: 1.55; }
+    .landing-card-kicker { font-size: 10.8px; }
+    .landing-panel { border-radius: 18px; padding: 17px 18px; font-size: 13.5px; }
+  }
 
-    <p class="company-grid-label" id="companyGridLabel" style="display:none;">באיזו חברה מנוהל המוצר?</p>
-    <div class="company-grid" id="companyGrid" style="display:none;"></div>
 
-    <div class="manual-search-controls" id="manualSearchControls" hidden>
-      <p class="search-also">חיפוש ידני לפי שם חברה, מסלול או מספר קופה:</p>
-      <div class="filters" id="filters">
-        <button class="filter-btn active" data-filter="all" data-label="הכל">הכל</button>
-        <button class="filter-btn" data-filter="gemelnet" data-label="גמל / השתלמות / גמל להשקעה">גמל / השתלמות / גמל להשקעה</button>
-        <button class="filter-btn" data-filter="pensia" data-label="קרנות פנסיה">קרנות פנסיה</button>
-        <button class="filter-btn" data-filter="bituach" data-label="פוליסות חיסכון / ביטוחי מנהלים">פוליסות חיסכון / ביטוחי מנהלים</button>
-      </div>
-      <div class="search-wrap">
-        <input type="text" class="search-input" id="searchInput" placeholder="שם החברה או המסלול — לדוגמה: מנורה, הראל, מיטב, אלטשולר" autocomplete="off" />
-      </div>
-    </div>
-    <div class="quick-editor" id="quickEditor"></div>
-    <div class="search-results" id="searchResults"></div>
-  </div>
-</section>
-
-<section class="section" id="portfolioSection" style="display:none;">
-  <div class="container">
-    <h2 class="section-title"><span class="num">02</span>התיק שלך</h2>
-    <div class="funds-list" id="fundsList"></div>
-  </div>
-</section>
-
-<section class="dashboard" id="dashboard">
-  <div class="container">
-    <h2>דשבורד מצרפי</h2>
-    <div class="subtitle">החישוב משוקלל לפי היתרות שהוזנו לכל מוצר</div>
-    <div class="action-toolbar" aria-label="פעולות דוח">
-      <button type="button" class="action-btn" onclick="saveAsPDF()">שמירה / הדפסה ל-PDF</button>
-      <button type="button" class="action-btn" onclick="shareWhatsApp()">שליחה לווטסאפ</button>
-      <button type="button" class="action-btn" onclick="openProjection()">סימולציה על בסיס תשואות עבר</button>
-      <button type="button" class="action-btn" onclick="resetAllData()">איפוס הכל</button>
-    </div>
-    <div class="action-note">שמירה ל-PDF נפתחת דרך חלון ההדפסה של הדפדפן. בשל מגבלות דפדפן, שליחה לווטסאפ שולחת סיכום טקסטואלי וקישור, לא מצרפת PDF אוטומטית.</div>
-
-    <div class="total-row">
-      <div>
-        <div class="total" id="totalBalance">-</div>
-        <div class="total-label">יתרה כוללת שהוזנה</div>
-      </div>
-      <div class="source-mix" id="sourceMix"></div>
-    </div>
-
-    <div class="metric-grid">
-      <div class="metric-card">
-        <div class="metric-label">חשיפה למניות</div>
-        <div class="metric-value"><span id="aggStock">0</span><span class="pct">%</span></div>
-        <div class="metric-bar"><div class="metric-bar-fill stock-fill" id="aggStockBar"></div></div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">חשיפה לחו״ל</div>
-        <div class="metric-value"><span id="aggForeign">0</span><span class="pct">%</span></div>
-        <div class="metric-bar"><div class="metric-bar-fill foreign-fill" id="aggForeignBar"></div></div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">חשיפה למט״ח</div>
-        <div class="metric-value"><span id="aggFx">0</span><span class="pct">%</span></div>
-        <div class="metric-bar"><div class="metric-bar-fill fx-fill" id="aggFxBar"></div></div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">נכסים סחירים</div>
-        <div class="metric-value"><span id="aggLiquid">0</span><span class="pct">%</span></div>
-        <div class="metric-bar"><div class="metric-bar-fill liquid-fill" id="aggLiquidBar"></div></div>
-      </div>
-    </div>
-
-    <div class="perf-wrap">
-      <div class="perf-title">אינדיקציית ביצועי מסלולים</div>
-      <div class="perf-note">מידע תומך בלבד: הנתונים משקפים את תשואות המסלולים הציבוריות לפי המאגר, ולא את התשואה האישית בפועל.</div>
-      <div class="metric-grid">
-        <div class="metric-card">
-          <div class="metric-label">תשואה חודשית</div>
-          <div class="metric-value"><span id="perfMonth">-</span><span class="pct">%</span></div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">מתחילת שנה</div>
-          <div class="metric-value"><span id="perfYtd">-</span><span class="pct">%</span></div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">3 שנים מצטבר</div>
-          <div class="metric-value"><span id="perf3y">-</span><span class="pct">%</span></div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">דמי ניהול אישיים</div>
-          <div class="metric-value"><span id="feeSavings">לא הוזן</span><span class="pct" id="feeSavingsPct" style="display:none">%</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="details" id="detailsSection">
-  <div class="container">
-    <h2>פירוט לפי מוצר</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>מוצר</th>
-            <th class="num">משקל</th>
-            <th class="num">מניות</th>
-            <th class="num">חו״ל</th>
-            <th class="num">מט״ח</th>
-            <th class="num">סחיר</th>
-            <th class="num">חודשי</th>
-            <th class="num">YTD</th>
-            <th class="num">3Y מצטבר</th>
-            <th class="num">דמי ניהול שהוזנו</th>
-          </tr>
-        </thead>
-        <tbody id="detailsRows"></tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ====================================================================== -->
-<!-- כרטיס "תרגיל היסטורי" — drop-in לדשבורד                                -->
-<!-- הדבק את כל הבלוק הזה ב-index.html של הדשבורד, ממש לפני <footer>        -->
-<!-- ====================================================================== -->
-<section class="projection-section" id="projectionSection" hidden>
-  <div class="container">
-    <button type="button" class="proj-toggle" id="projToggle" aria-expanded="false" aria-controls="projBody">
-      <span class="proj-toggle-icon" aria-hidden="true">📊</span>
-      <span class="proj-toggle-text">
-        <span class="proj-toggle-title">סימולציה על בסיס תשואות עבר</span>
-        <span class="proj-toggle-sub">על סמך תשואות עבר, כך הסכומים עשויים להיראות לאורך זמן</span>
-      </span>
-      <span class="proj-toggle-chevron" aria-hidden="true">▾</span>
-    </button>
-
-    <div class="proj-body" id="projBody" hidden>
-      <p class="proj-intro">
-        הסימולציה מבוססת על תשואות עבר של 30 השנים האחרונות (1995–2024), עבור מסלולים בעלי פרופיל
-        <strong id="projRiskLabel">—</strong>
-        — בהתאם לחשיפה המנייתית בתיק שלך (<span id="projStockPct">—</span>%).
-        <br><small>סיווג הסיכון: עד 10% מניות = נמוך, מעל 10% ועד 70% = בינוני, מעל 70% = גבוה.</small>
-      </p>
-
-      <div class="proj-empty" id="projEmpty">
-        עדיין לא הוספת קופות לתיק. חזור למעלה, חפש קופה והזן יתרה — ואז נוכל להריץ סימולציה על בסיס תשואות עבר.
-      </div>
-
-      <div class="proj-form" id="projForm" hidden>
-        <div class="proj-input-grid">
-          <label class="proj-input">
-            <span class="proj-input-label">סכום התחלתי (₪)</span>
-            <input type="number" id="projInitial" inputmode="numeric" min="0" />
-            <span class="proj-input-hint">נטען מהיתרה הכוללת בדשבורד</span>
-          </label>
-          <label class="proj-input">
-            <span class="proj-input-label">הפקדה חודשית (₪)</span>
-            <input type="number" id="projMonthly" inputmode="numeric" min="0" value="0" />
-            <span class="proj-input-hint">לא חובה — השאר 0 לבדיקה של היתרה הקיימת בלבד</span>
-          </label>
-          <label class="proj-input">
-            <span class="proj-input-label">דמי ניהול שנתיים (%)</span>
-            <input type="number" id="projFee" step="0.01" min="0" value="0.7" />
-            <span class="proj-input-hint">נטען אוטומטית אם הזנת בכרטיסי הקופות</span>
-          </label>
-          <label class="proj-input">
-            <span class="proj-input-label">אופק זמן (שנים)</span>
-            <input type="number" id="projYears" inputmode="numeric" min="1" max="30" step="1" value="20" />
-            <span class="proj-input-hint">בחר 1–30 שנים, בהתאם לטווח הנתונים ההיסטוריים (1995–2024)</span>
-          </label>
-        </div>
-
-        <div class="proj-action-row">
-          <button type="button" class="proj-run-btn" id="projRunBtn">הרץ סימולציה</button>
-        </div>
-      </div>
-
-      <div class="proj-results" id="projResults" hidden>
-        <div class="proj-summary">
-          <div class="proj-metric proj-metric-main">
-            <div class="proj-metric-label">סכום מחושב בסוף התקופה</div>
-            <div class="proj-metric-value" id="projFinal">—</div>
-          </div>
-          <div class="proj-metric">
-            <div class="proj-metric-label">סך הפקדות בתקופה</div>
-            <div class="proj-metric-value" id="projContrib">—</div>
-          </div>
-          <div class="proj-metric">
-            <div class="proj-metric-label">צבירה מתשואה (נטו)</div>
-            <div class="proj-metric-value" id="projInterest">—</div>
-          </div>
-          <div class="proj-metric proj-metric-warn">
-            <div class="proj-metric-label">השנה הגרועה בתקופה</div>
-            <div class="proj-metric-value" id="projWorstYear">—</div>
-          </div>
-        </div>
-
-        <details class="proj-yearly">
-          <summary>פירוט שנה-שנה</summary>
-          <div class="proj-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>שנה (היסטורית)</th>
-                  <th class="num">תשואה שנתית</th>
-                  <th class="num">יתרה בסוף השנה</th>
-                </tr>
-              </thead>
-              <tbody id="projYearlyBody"></tbody>
-            </table>
-          </div>
-        </details>
-
-        <p class="proj-disclaimer">
-          <strong>גילוי נאות:</strong> הסימולציה מבוססת על נתוני עבר בלבד ומיועדת להמחשה וחינוך פיננסי. אין לראות בה תחזית, הבטחה לתשואה, ייעוץ השקעות, ייעוץ פנסיוני או המלצה. ביצועי עבר אינם מנבאים את העתיד.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<style>
-  /* === Historical Projection card === */
-  .projection-section {
+/* v3.69: restored previous projection calculator structure and explanation */
+.projection-section {
     padding: 8px 0 56px;
     background: var(--bg);
   }
@@ -3057,248 +2947,214 @@
     #productTypePanel .product-type-btn::before { top: 50%; right: 18px; transform: translateY(-50%); }
     #searchSection::after { margin-top: -8px; padding: 0 12px; font-size: 10.5px; }
   }
-
 </style>
+</head>
+<body>
+<section class="hero premium-hero">
+  <div class="container premium-hero-container">
+    <div class="premium-header" aria-label="כותרת האתר">
+      <div class="premium-brand">
+        <div class="premium-mark" aria-hidden="true">ד</div>
+        <div class="premium-wordmark">
+          <div class="premium-word">דשבורד חשיפות</div>
+          <div class="premium-subword">Savings & Pension Exposure</div>
+        </div>
+      </div>
+    </div>
 
-<script>
-(function() {
-  'use strict';
+    <div class="landing-actions" aria-label="אפשרויות ראשיות">
+      <button type="button" class="landing-card" id="landingAboutBtn" aria-expanded="false" aria-controls="landingAboutPanel">
+        <span class="landing-card-kicker">הסבר פשוט</span>
+        <span class="landing-card-title">מה הכלי עושה?</span>
+        <p class="landing-card-text">הכלי מחבר את הקופות והקרנות שלך לתמונה אחת פשוטה: כמה מהחיסכון חשוף למניות, לחו״ל ולמט״ח, לפי היתרות שתזין.</p>
+      </button>
 
-  // === נתוני תשואות היסטוריים (1995-2024) — זהים למחשבון הקיים ===
-  const RAW_YIELDS = {
-    low:    [22.66, 6.42, 13.62, 15.60, 0.18, 9.39, 1.67, 5.01, 6.11, 5.12, 3.33, 5.27, 8.12, -0.30, -0.37, 7.07, 10.05, 5.98, 0.61, 9.16, 1.05, 2.83, 6.99, -0.06, 13.25, 10.47, 3.05, -13.89, 8.60, 5.03],
-    medium: [30.82, 14.37, 23.60, 22.47, 9.89, 0.71, -4.99, -7.81, 17.20, 8.09, 4.06, 10.29, 6.78, -14.72, 11.58, 11.81, 6.85, 10.61, 15.11, 11.89, 1.21, 7.30, 14.10, -2.55, 22.29, 14.80, 15.54, -16.96, 17.26, 14.61],
-    high:   [35.83, 20.56, 30.78, 27.00, 17.98, -6.46, -10.11, -18.26, 25.56, 10.11, 4.63, 14.24, 5.95, -30.89, 22.23, 14.18, 3.49, 14.60, 28.03, 13.24, 1.37, 10.66, 19.73, -3.81, 29.05, 17.35, 25.18, -18.02, 23.84, 22.23]
-  };
-  const START_YEAR = 1995;
-  const RISK_LABELS = { low: 'סיכון נמוך', medium: 'סיכון בינוני', high: 'סיכון גבוה' };
+      <button type="button" class="landing-card landing-primary" id="landingStartBtn" aria-expanded="false" aria-controls="searchSection">
+        <span class="landing-card-kicker">פעולה מרכזית</span>
+        <span class="landing-card-title">כאן מתחילים</span>
+        <p class="landing-card-text">בחר מוצר, סוג, חברה וקופה, ולאחר מכן הזן יתרה ודמי ניהול.</p>
+      </button>
 
-  // === מיפוי DOM ===
-  const $ = (id) => document.getElementById(id);
-  const section       = $('projectionSection');
-  const toggle        = $('projToggle');
-  const body          = $('projBody');
-  const riskLabel     = $('projRiskLabel');
-  const stockPctEl    = $('projStockPct');
-  const empty         = $('projEmpty');
-  const form          = $('projForm');
-  const initialInput  = $('projInitial');
-  const monthlyInput  = $('projMonthly');
-  const feeInput      = $('projFee');
-  const yearsInput   = $('projYears');
-  const runBtn        = $('projRunBtn');
-  const results       = $('projResults');
-  const finalEl       = $('projFinal');
-  const contribEl     = $('projContrib');
-  const interestEl    = $('projInterest');
-  const worstEl       = $('projWorstYear');
-  const yearlyBody    = $('projYearlyBody');
+      <button type="button" class="landing-card" id="landingDisclosureBtn" aria-expanded="false" aria-controls="landingDisclosurePanel">
+        <span class="landing-card-kicker">חשוב לדעת</span>
+        <span class="landing-card-title">הבהרה מקצועית</span>
+        <p class="landing-card-text">הדשבורד מציג נתונים ציבוריים להמחשה בלבד ואינו מהווה ייעוץ או המלצה.</p>
+      </button>
 
-  // === Helpers ===
-  const fmtILS = (n) => Math.round(n).toLocaleString('he-IL', {
-    style: 'currency', currency: 'ILS', maximumFractionDigits: 0
-  });
-  const parseNum = (txt) => {
-    if (!txt) return NaN;
-    const cleaned = String(txt).replace(/[^\d.\-]/g, '');
-    const n = parseFloat(cleaned);
-    return Number.isFinite(n) ? n : NaN;
-  };
+      <button type="button" class="landing-card" id="landingPrivacyBtn" aria-expanded="false" aria-controls="landingPrivacyPanel">
+        <span class="landing-card-kicker">אמון ופרטיות</span>
+        <span class="landing-card-title">פרטיות ומקור נתונים</span>
+        <p class="landing-card-text">הנתונים שאתה מזין נשמרים בדפדפן שלך. מקור הנתונים הוא מאגרי רשות שוק ההון.</p>
+      </button>
+    </div>
 
-  // מיפוי חשיפה מנייתית → מסלול היסטורי
-  function pickRiskTrack(stockPct) {
-    if (stockPct <= 10) return 'low';
-    if (stockPct <= 70) return 'medium';
-    return 'high';
-  }
+    <div class="landing-panel" id="landingAboutPanel" hidden>
+      <h3>מה הכלי עושה?</h3>
+      הכלי מיועד לעזור גם למי שפחות מכיר את עולם החיסכון הפנסיוני והפיננסי. במקום להסתכל על כל קופה בנפרד, אפשר להוסיף את הקופות והקרנות שלך, להזין יתרה ודמי ניהול אישיים, ולקבל תמונה אחת מרוכזת: מה החשיפה הכוללת למניות, כמה מהכסף מושקע בחו״ל, מה החשיפה למט״ח, ומה המשקל של כל מוצר בתיק. המטרה היא לתת תמונת מצב פשוטה וברורה, לא המלצה ולא ייעוץ.
+    </div>
 
-  // קריאת מצב הדשבורד מתוך ה-DOM שכבר רונדר
-  function readDashboardState() {
-    const totalText = $('totalBalance') ? $('totalBalance').textContent : '';
-    const stockText = $('aggStock')     ? $('aggStock').textContent     : '';
-    const feeText   = $('feeSavings')   ? $('feeSavings').textContent   : '';
-    const total    = parseNum(totalText);
-    const stockPct = parseNum(stockText);
-    const fee      = parseNum(feeText);
-    return {
-      total:        Number.isFinite(total) && total > 0 ? total : 0,
-      stockPct:     Number.isFinite(stockPct) ? stockPct : 0,
-      fee:          Number.isFinite(fee) && fee > 0 ? fee : null,
-      hasPortfolio: Number.isFinite(total) && total > 0
-    };
-  }
+    <div class="landing-panel" id="landingDisclosurePanel" hidden>
+      <h3>הבהרה מקצועית</h3>
+      הדשבורד מציג חשיפות וביצועים מתוך נתונים ציבוריים של המסלולים בלבד. הוא אינו מושך יתרות אישיות ממסלקה פנסיונית, אינו מחליף ייעוץ פנסיוני או פיננסי, ואינו מציג המלצה. נתוני התשואה הם נתוני מסלול ציבוריים, ודמי הניהול בדשבורד מבוססים רק על הנתון שהוזן ידנית עבור כל מוצר.
+    </div>
 
-  // טעינה מחדש של ברירות מחדל מתוך הדשבורד (בלי לדרוס מה שהמשתמש ערך)
-  function refreshPrefill() {
-    const state = readDashboardState();
-    if (state.hasPortfolio) {
-      empty.hidden = true;
-      form.hidden = false;
-      const track = pickRiskTrack(state.stockPct);
-      riskLabel.textContent = RISK_LABELS[track];
-      stockPctEl.textContent = state.stockPct.toFixed(1);
-      if (!initialInput.dataset.userEdited) {
-        initialInput.value = Math.round(state.total);
-      }
-      if (state.fee !== null && !feeInput.dataset.userEdited) {
-        feeInput.value = state.fee.toFixed(2);
-      }
-    } else {
-      empty.hidden = false;
-      form.hidden = true;
-      results.hidden = true;
-      riskLabel.textContent = '—';
-      stockPctEl.textContent = '—';
-    }
-  }
+    <div class="landing-panel" id="landingPrivacyPanel" hidden>
+      <h3>פרטיות ומקור נתונים</h3>
+      היתרות ודמי הניהול שהזנת נשמרים בדפדפן שלך. הם אינם נשמרים בשרת ואינם משויכים לפרטים אישיים. מקור הנתונים: קובצי המידע הציבוריים של רשות שוק ההון, הביטוח והחיסכון, מתוך מאגרי גמל נט, פנסיה נט וביטוח נט כפי שפורסמו ב-data.gov.il.
+    </div>
 
-  // סימון שדות שהמשתמש ערך ידנית — כדי לא לדרוס בעדכון חוזר
-  [initialInput, feeInput].forEach(el => {
-    el.addEventListener('input', () => { el.dataset.userEdited = '1'; });
-  });
-
-  // === בחירת אופק זמן (1–30 שנים) ===
-  function getSelectedYears() {
-    const n = parseInt(yearsInput.value, 10);
-    if (!Number.isFinite(n) || n < 1) return 1;
-    if (n > 30) return 30;
-    return n;
-  }
-  yearsInput.addEventListener('blur', () => {
-    const clamped = getSelectedYears();
-    if (String(clamped) !== yearsInput.value) yearsInput.value = String(clamped);
-  });
-
-  // === קיפול/פתיחה של הכרטיס ===
-  toggle.addEventListener('click', () => {
-    const expanded = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!expanded));
-    body.hidden = expanded;
-    if (!expanded) refreshPrefill();
-  });
-
-  // === מנוע הסימולציה (זהה לוגית למחשבון של דורון) ===
-  function simulate({ initial, monthly, years, feePct, yields }) {
-    let amount = initial;
-    let contrib = initial;
-    const yearly = [];
-    let worstYield = Infinity;
-    let worstHistYear = null;
-    const feeMonthly = (feePct / 100) / 12;
-
-    for (let y = 0; y < years; y++) {
-      const idx = y % yields.length;
-      const annualYield = yields[idx] / 100;
-      const monthlyYield = annualYield / 12;
-
-      for (let m = 0; m < 12; m++) {
-        amount += monthly;
-        contrib += monthly;
-        amount += amount * monthlyYield;
-        amount -= amount * feeMonthly;
-      }
-
-      const histYear = START_YEAR + idx;
-      yearly.push({ n: y + 1, histYear, yieldPct: yields[idx], balance: amount });
-
-      if (yields[idx] < worstYield) {
-        worstYield = yields[idx];
-        worstHistYear = histYear;
-      }
-    }
-    return {
-      finalAmount: amount,
-      totalContrib: contrib,
-      totalInterest: amount - contrib,
-      yearly, worstYield, worstHistYear
-    };
-  }
-
-  // === רינדור התוצאות ===
-  function renderResults(sim) {
-    finalEl.textContent    = fmtILS(sim.finalAmount);
-    contribEl.textContent  = fmtILS(sim.totalContrib);
-    interestEl.textContent = fmtILS(sim.totalInterest);
-    interestEl.className   = 'proj-metric-value ' + (sim.totalInterest >= 0 ? 'proj-pos' : 'proj-neg');
-    worstEl.textContent    = `${sim.worstYield.toFixed(2)}% (${sim.worstHistYear})`;
-
-    yearlyBody.innerHTML = '';
-    sim.yearly.forEach(row => {
-      const tr = document.createElement('tr');
-      if (row.yieldPct < -5) tr.className = 'bad-year';
-      const yieldClass = row.yieldPct >= 0 ? 'proj-pos' : 'proj-neg';
-      tr.innerHTML = `
-        <td>שנה ${row.n} <span style="color:var(--ink-faint);font-size:11px">(${row.histYear})</span></td>
-        <td class="num ${yieldClass}">${row.yieldPct.toFixed(2)}%</td>
-        <td class="num">${fmtILS(row.balance)}</td>
-      `;
-      yearlyBody.appendChild(tr);
-    });
-    results.hidden = false;
-  }
-
-  // === כפתור ההרצה ===
-  runBtn.addEventListener('click', () => {
-    const state = readDashboardState();
-    if (!state.hasPortfolio) { refreshPrefill(); return; }
-
-    const initial = parseFloat(initialInput.value) || 0;
-    const monthly = parseFloat(monthlyInput.value) || 0;
-    const feePct  = parseFloat(feeInput.value) || 0;
-    const years   = getSelectedYears();
-    const track   = pickRiskTrack(state.stockPct);
-
-    const sim = simulate({ initial, monthly, years, feePct, yields: RAW_YIELDS[track] });
-    renderResults(sim);
-    results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  });
-
-  // פתיחה מהירה של אזור הסימולציה מתוך כפתור הדשבורד
-  window.openProjection = function() {
-    const state = readDashboardState();
-    if (!state.hasPortfolio) return;
-    section.hidden = false;
-    toggle.setAttribute('aria-expanded', 'true');
-    body.hidden = false;
-    refreshPrefill();
-    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  // === הצגה / הסתרה לפי מצב התיק ===
-  function syncSectionVisibility() {
-    const state = readDashboardState();
-    section.hidden = !state.hasPortfolio;
-    if (state.hasPortfolio && toggle.getAttribute('aria-expanded') === 'true') {
-      refreshPrefill();
-    }
-  }
-  syncSectionVisibility();
-
-  // === מעקב אחרי שינויים בדשבורד ===
-  const observer = new MutationObserver(syncSectionVisibility);
-  ['totalBalance', 'aggStock', 'feeSavings'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) observer.observe(el, { childList: true, characterData: true, subtree: true });
-  });
-})();
-</script>
-<!-- ====================================================================== -->
-<!-- סוף הכרטיס                                                              -->
-<!-- ====================================================================== -->
-
-
-<footer>
-  <div class="container">
-    <strong class="footer-disclaimer-title">הבהרה מקצועית ומקור נתונים</strong>
-    <div class="footer-disclaimer-brief">מקור הנתונים: מאגרי גמל נט, פנסיה נט וביטוח נט דרך data.gov.il. הדשבורד מציג נתונים ציבוריים להמחשה בלבד, ואינו מהווה ייעוץ או המלצה.</div>
-    <details class="footer-disclaimer-details">
-      <summary>הרחב הבהרה מלאה</summary>
-      <div class="footer-disclaimer-text">קובצי המידע הציבוריים של רשות שוק ההון, הביטוח והחיסכון, מתוך מאגרי גמל נט, פנסיה נט וביטוח נט כפי שפורסמו ב-data.gov.il. הדשבורד מציג חשיפות וביצועים מתוך נתונים ציבוריים של המסלולים בלבד. הוא אינו מושך יתרות אישיות ממסלקה פנסיונית, אינו מחליף ייעוץ פנסיוני או פיננסי, ואינו מציג המלצה. "חשיפה לחו״ל" אינה שקולה בהכרח ל"מניות חו״ל", משום שבקבצים היא כוללת גם חשיפות זרות שאינן מנייתיות. נתוני התשואה הם נתוני מסלול ציבוריים: חודשית, מתחילת שנה ו-3 שנים מצטבר. דמי הניהול בדשבורד מבוססים רק על הנתון שהוזן ידנית עבור כל מוצר, ולא על דמי הניהול הממוצעים במאגר.</div>
-    </details>
-    <div class="data-update-meta" id="dataUpdateMeta"></div>
-    <div class="developer-credit">פותח ע"י דורון שרייבמן</div>
+    <div class="landing-credit">פותח ע״י דורון שרייבמן</div>
   </div>
-</footer>
+</section>
+
+<section class="section landing-hidden" id="searchSection">
+  <div class="container">
+    <div class="flow-top-actions">
+      <button type="button" class="return-landing-btn" id="returnLandingBtn">חזרה למסך הראשי</button>
+    </div>
+    <div class="product-type-panel active" id="productTypePanel" aria-live="polite">
+      <p class="product-type-title" id="productTypeTitle">מאיפה מתחילים?</p>
+      <p class="product-type-subtitle">בחר את סוג החיסכון ואנחנו ננחה אותך משם.</p>
+      <div class="product-type-grid" id="productTypeGrid">
+        <button type="button" class="product-type-btn" data-filter="pensia">פנסיה</button>
+        <button type="button" class="product-type-btn" data-filter="bituach">ביטוח מנהלים / פוליסות חיסכון</button>
+        <button type="button" class="product-type-btn" data-filter="gemelnet">גמל / השתלמות / גמל להשקעה</button>
+        <button type="button" class="manual-search-toggle manual-search-card" id="manualSearchToggle" aria-expanded="false" aria-controls="manualSearchControls">
+          חיפוש ידני
+        </button>
+      </div>
+    </div>
+
+    <div class="sub-product-panel" id="subProductPanel" style="display:none;" aria-live="polite">
+      <p class="product-type-title" id="subProductTitle">איזה סוג בדיוק?</p>
+      <p class="product-type-subtitle" id="subProductSubtitle">בחר תת-סוג כדי לצמצם את הרשימה לפני בחירת החברה.</p>
+      <div class="product-type-grid" id="subProductGrid"></div>
+    </div>
+
+    <p class="company-grid-label" id="companyGridLabel" style="display:none;">באיזו חברה מנוהל המוצר?</p>
+    <div class="company-grid" id="companyGrid" style="display:none;"></div>
+
+    <div class="manual-search-controls" id="manualSearchControls" hidden>
+      <p class="search-also">חיפוש ידני לפי שם חברה, מסלול או מספר קופה:</p>
+      <div class="filters" id="filters">
+        <button class="filter-btn active" data-filter="all" data-label="הכל">הכל</button>
+        <button class="filter-btn" data-filter="gemelnet" data-label="גמל / השתלמות / גמל להשקעה">גמל / השתלמות / גמל להשקעה</button>
+        <button class="filter-btn" data-filter="pensia" data-label="קרנות פנסיה">קרנות פנסיה</button>
+        <button class="filter-btn" data-filter="bituach" data-label="פוליסות חיסכון / ביטוחי מנהלים">פוליסות חיסכון / ביטוחי מנהלים</button>
+      </div>
+      <div class="search-wrap">
+        <input type="text" class="search-input" id="searchInput" placeholder="שם החברה או המסלול — לדוגמה: מנורה, הראל, מיטב, אלטשולר" autocomplete="off" />
+      </div>
+    </div>
+    <div class="quick-editor" id="quickEditor"></div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</section>
+
+<section class="section" id="portfolioSection" style="display:none;">
+  <div class="container">
+    <h2 class="section-title"><span class="num">02</span>התיק שלך</h2>
+    <div class="funds-list" id="fundsList"></div>
+  </div>
+</section>
+
+<section class="dashboard" id="dashboard">
+  <div class="container">
+    <h2>דשבורד מצרפי</h2>
+    <div class="subtitle">החישוב משוקלל לפי היתרות שהוזנו לכל מוצר</div>
+    <div class="action-toolbar" aria-label="פעולות דוח">
+      <button type="button" class="action-btn" onclick="saveAsPDF()">שמירה / הדפסה ל-PDF</button>
+      <button type="button" class="action-btn" onclick="shareWhatsApp()">שליחה לווטסאפ</button>
+      <button type="button" class="action-btn" onclick="backToTop()">חזרה לראש העמוד</button>
+      <button type="button" class="action-btn" onclick="resetAllData()">איפוס הכל</button>
+    </div>
+    <div class="action-note">שמירה ל-PDF נפתחת דרך חלון ההדפסה של הדפדפן. בשל מגבלות דפדפן, שליחה לווטסאפ שולחת סיכום טקסטואלי וקישור, לא מצרפת PDF אוטומטית.</div>
+
+    <div class="total-row">
+      <div>
+        <div class="total" id="totalBalance">-</div>
+        <div class="total-label">יתרה כוללת שהוזנה</div>
+      </div>
+      <div class="source-mix" id="sourceMix"></div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">חשיפה למניות</div>
+        <div class="metric-value"><span id="aggStock">0</span><span class="pct">%</span></div>
+        <div class="metric-bar"><div class="metric-bar-fill stock-fill" id="aggStockBar"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">חשיפה לחו״ל</div>
+        <div class="metric-value"><span id="aggForeign">0</span><span class="pct">%</span></div>
+        <div class="metric-bar"><div class="metric-bar-fill foreign-fill" id="aggForeignBar"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">חשיפה למט״ח</div>
+        <div class="metric-value"><span id="aggFx">0</span><span class="pct">%</span></div>
+        <div class="metric-bar"><div class="metric-bar-fill fx-fill" id="aggFxBar"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">נכסים סחירים</div>
+        <div class="metric-value"><span id="aggLiquid">0</span><span class="pct">%</span></div>
+        <div class="metric-bar"><div class="metric-bar-fill liquid-fill" id="aggLiquidBar"></div></div>
+      </div>
+    </div>
+
+    <div class="perf-wrap">
+      <div class="perf-title">אינדיקציית ביצועי מסלולים</div>
+      <div class="perf-note">מידע תומך בלבד: הנתונים משקפים את תשואות המסלולים הציבוריות לפי המאגר, ולא את התשואה האישית בפועל.</div>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-label">תשואה חודשית</div>
+          <div class="metric-value"><span id="perfMonth">-</span><span class="pct">%</span></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">מתחילת שנה</div>
+          <div class="metric-value"><span id="perfYtd">-</span><span class="pct">%</span></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">3 שנים מצטבר</div>
+          <div class="metric-value"><span id="perf3y">-</span><span class="pct">%</span></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">דמי ניהול אישיים</div>
+          <div class="metric-value"><span id="feeSavings">לא הוזן</span><span class="pct" id="feeSavingsPct" style="display:none">%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dashboard-credit">פותח ע״י דורון שרייבמן</div>
+</section>
+
+<section class="details" id="detailsSection">
+  <div class="container">
+    <h2>פירוט לפי מוצר</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>מוצר</th>
+            <th class="num">משקל</th>
+            <th class="num">מניות</th>
+            <th class="num">חו״ל</th>
+            <th class="num">מט״ח</th>
+            <th class="num">סחיר</th>
+            <th class="num">חודשי</th>
+            <th class="num">YTD</th>
+            <th class="num">3Y מצטבר</th>
+            <th class="num">דמי ניהול שהוזנו</th>
+          </tr>
+        </thead>
+        <tbody id="detailsRows"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="flow-credit">פותח ע״י דורון שרייבמן</div>
+
+<!-- כרטיס תרגיל היסטורי - קוד הדשבורד הראשי -->
 
 <div class="loading" id="loadingState">טוען נתונים...</div>
 
@@ -3877,6 +3733,9 @@ function goToDashboard() {
     return;
   }
   renderDashboard();
+  if (typeof window.enterDashboardView === 'function') {
+    window.enterDashboardView();
+  }
   const dashboard = document.getElementById('dashboard');
   if (dashboard) dashboard.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -5045,7 +4904,7 @@ document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn
 
 
 
-  /* === v3.58 color refresh: dark financial blue as primary, teal as secondary === */
+  /* === v3.69 color refresh: dark financial blue as primary, teal as secondary === */
   :root {
     --bg: #f6f8fb;
     --bg-soft: #eef3f8;
@@ -6870,6 +6729,313 @@ document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn
       font-size: 12px !important;
       padding-top: 54px !important;
     }
+  }
+</style>
+
+
+
+<script>
+window.backToTop = function() { const hero = document.querySelector('.premium-hero') || document.body; hero.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+</script>
+
+<script>
+(function() {
+  function closeLandingPanels(exceptId) {
+    ['landingAboutPanel', 'landingDisclosurePanel', 'landingPrivacyPanel'].forEach(function(id) {
+      const panel = document.getElementById(id);
+      const btn = document.querySelector('[aria-controls="' + id + '"]');
+      if (!panel || id === exceptId) return;
+      panel.hidden = true;
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    });
+  }
+  function togglePanel(btnId, panelId) {
+    const btn = document.getElementById(btnId);
+    const panel = document.getElementById(panelId);
+    if (!btn || !panel) return;
+    btn.addEventListener('click', function() {
+      const willOpen = panel.hidden;
+      closeLandingPanels(panelId);
+      panel.hidden = !willOpen;
+      btn.setAttribute('aria-expanded', String(willOpen));
+      if (willOpen && panel.scrollIntoView) {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  }
+  togglePanel('landingAboutBtn', 'landingAboutPanel');
+  togglePanel('landingDisclosureBtn', 'landingDisclosurePanel');
+  togglePanel('landingPrivacyBtn', 'landingPrivacyPanel');
+
+  const startBtn = document.getElementById('landingStartBtn');
+  const searchSection = document.getElementById('searchSection');
+  function returnToLanding() {
+    if (!searchSection) return;
+    searchSection.classList.add('landing-hidden');
+    document.body.classList.remove('landing-started');
+    document.body.classList.remove('dashboard-reached');
+    if (startBtn) startBtn.setAttribute('aria-expanded', 'false');
+    const hero = document.querySelector('.premium-hero');
+    if (hero) hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  window.returnToLanding = returnToLanding;
+  window.closeLandingPanels = closeLandingPanels;
+
+  window.enterDashboardView = function() {
+    closeLandingPanels('');
+    document.body.classList.remove('landing-started');
+    document.body.classList.add('dashboard-reached');
+    if (startBtn) startBtn.setAttribute('aria-expanded', 'false');
+    if (searchSection) searchSection.classList.add('landing-hidden');
+
+    const editor = document.getElementById('quickEditor');
+    if (editor) { editor.classList.remove('active'); editor.innerHTML = ''; }
+
+    const results = document.getElementById('searchResults');
+    if (results) { results.classList.remove('active'); results.innerHTML = ''; }
+
+    const portfolio = document.getElementById('portfolioSection');
+    if (portfolio) portfolio.style.display = 'none';
+
+    const productPanel = document.getElementById('productTypePanel');
+    if (productPanel) productPanel.classList.add('active');
+
+    const subProductPanel = document.getElementById('subProductPanel');
+    const subProductGrid = document.getElementById('subProductGrid');
+    if (subProductPanel) subProductPanel.style.display = 'none';
+    if (subProductGrid) subProductGrid.innerHTML = '';
+
+    const companyLabel = document.getElementById('companyGridLabel');
+    const companyGrid = document.getElementById('companyGrid');
+    if (companyLabel) companyLabel.style.display = 'none';
+    if (companyGrid) { companyGrid.style.display = 'none'; companyGrid.innerHTML = ''; }
+
+    const manual = document.getElementById('manualSearchControls');
+    if (manual) manual.hidden = true;
+    const manualToggle = document.getElementById('manualSearchToggle');
+    if (manualToggle) manualToggle.setAttribute('aria-expanded', 'false');
+
+    const projection = document.getElementById('projectionSection');
+    if (projection) {
+      projection.hidden = true;
+      projection.dataset.opened = 'false';
+    }
+    const projToggle = document.getElementById('projToggle');
+    if (projToggle) projToggle.setAttribute('aria-expanded', 'false');
+    const projBody = document.getElementById('projBody');
+    if (projBody) projBody.hidden = true;
+    const projResults = document.getElementById('projResults');
+    if (projResults) projResults.hidden = true;
+
+    const input = document.getElementById('searchInput');
+    if (input) input.value = '';
+    document.querySelectorAll('.product-type-btn.active, .company-btn.is-selected, .sub-product-btn.active').forEach(function(btn) {
+      btn.classList.remove('active', 'is-selected');
+    });
+  };
+
+  const returnBtn = document.getElementById('returnLandingBtn');
+  if (returnBtn) returnBtn.addEventListener('click', returnToLanding);
+  if (startBtn && searchSection) {
+    startBtn.addEventListener('click', function() {
+      const isHidden = searchSection.classList.contains('landing-hidden');
+      closeLandingPanels('');
+      document.querySelectorAll('.landing-card[aria-controls]').forEach(function(btn) {
+        if (btn.id !== 'landingStartBtn') btn.setAttribute('aria-expanded', 'false');
+      });
+      if (isHidden) {
+        searchSection.classList.remove('landing-hidden');
+        document.body.classList.remove('dashboard-reached');
+        document.body.classList.add('landing-started');
+        startBtn.setAttribute('aria-expanded', 'true');
+        searchSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        searchSection.classList.add('landing-hidden');
+        document.body.classList.remove('landing-started');
+        startBtn.setAttribute('aria-expanded', 'false');
+        const hero = document.querySelector('.premium-hero');
+        if (hero) hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+})();
+</script>
+
+
+<style id="v3-71-projection-and-credit-fixes">
+  /* v3.71: dashboard credit + calculator appears only after explicit click */
+  .dashboard-credit {
+    max-width: 1180px;
+    margin: 22px auto 0;
+    padding: 18px 28px 0;
+    text-align: center;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  body.pdf-mode .dashboard-credit { display: block !important; color: #444 !important; }
+  @media print { .dashboard-credit { display: block !important; color: #444 !important; font-size: 8px !important; padding-top: 4px !important; } }
+
+  .projection-section[hidden] { display: none !important; }
+  .projection-section {
+    background: #f8fafc !important;
+    padding: 28px 0 56px !important;
+  }
+  .projection-section .container {
+    max-width: 980px !important;
+  }
+  .proj-toggle {
+    background: #ffffff !important;
+    border: 1px solid #dbe3ee !important;
+    border-radius: 22px !important;
+    padding: 18px 22px !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06) !important;
+  }
+  .proj-toggle[aria-expanded="true"] {
+    border-color: #cbd5e1 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+  .proj-toggle-title {
+    color: #0f172a !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+  }
+  .proj-toggle-sub {
+    color: #64748b !important;
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+  }
+  .proj-toggle-icon {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 14px !important;
+    background: #eef2ff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 21px !important;
+  }
+  .proj-body {
+    background: #ffffff !important;
+    border: 1px solid #dbe3ee !important;
+    border-top: 0 !important;
+    border-bottom-left-radius: 22px !important;
+    border-bottom-right-radius: 22px !important;
+    padding: 24px !important;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08) !important;
+  }
+  .proj-intro {
+    margin: 0 0 20px !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-right: 4px solid #1e3a8a !important;
+    color: #334155 !important;
+    border-radius: 16px !important;
+    padding: 15px 17px !important;
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+  }
+  .proj-intro strong { color: #1e3a8a !important; }
+  .proj-input-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+  .proj-input {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    padding: 14px !important;
+  }
+  .proj-input-label {
+    color: #0f172a !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+  }
+  .proj-input input[type="number"] {
+    margin-top: 7px !important;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 12px !important;
+    padding: 12px 13px !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+  }
+  .proj-input-hint {
+    margin-top: 6px !important;
+    color: #64748b !important;
+    font-size: 11.5px !important;
+    line-height: 1.45 !important;
+  }
+  .proj-action-row {
+    margin-top: 18px !important;
+    justify-content: flex-start !important;
+  }
+  .proj-run-btn {
+    background: #1e3a8a !important;
+    color: #ffffff !important;
+    border-radius: 14px !important;
+    padding: 13px 28px !important;
+    box-shadow: 0 8px 18px rgba(30, 58, 138, 0.18) !important;
+  }
+  .proj-run-btn:hover { background: #0f2d6b !important; }
+  .proj-results {
+    margin-top: 26px !important;
+    padding-top: 22px !important;
+    border-top: 1px solid #e2e8f0 !important;
+  }
+  .proj-summary {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+  .proj-metric {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    padding: 15px 16px !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
+  }
+  .proj-metric-main {
+    background: #eef2ff !important;
+    border-color: #c7d2fe !important;
+  }
+  .proj-metric-label {
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+  }
+  .proj-metric-value {
+    color: #0f172a !important;
+    font-size: 24px !important;
+    font-weight: 900 !important;
+  }
+  .proj-yearly {
+    margin-top: 16px !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    padding: 12px 14px !important;
+  }
+  .proj-disclaimer {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    color: #475569 !important;
+    font-size: 12px !important;
+    line-height: 1.65 !important;
+    padding: 13px 14px !important;
+  }
+  @media (max-width: 760px) {
+    .dashboard-credit { padding: 14px 18px 0 !important; margin-top: 14px !important; }
+    .projection-section { padding: 18px 0 42px !important; }
+    .proj-body { padding: 18px !important; }
+    .proj-input-grid, .proj-summary { grid-template-columns: 1fr !important; }
+    .proj-toggle { align-items: center !important; flex-direction: row !important; padding: 16px !important; }
+    .proj-toggle-title { font-size: 16px !important; }
+    .proj-toggle-sub { font-size: 12px !important; }
   }
 </style>
 
