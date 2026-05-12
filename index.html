@@ -2111,31 +2111,273 @@
     text-align: center !important;
   }
 
+
+
+  /* === v3.57 Premium simplified entry === */
+  .premium-hero {
+    padding: 0 0 34px;
+    background: linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
+    text-align: center;
+  }
+  .premium-hero::before {
+    top: -110px;
+    right: -90px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(13,148,136,0.10), transparent 70%);
+  }
+  .premium-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -90px;
+    left: -70px;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(99,102,241,0.07), transparent 70%);
+    pointer-events: none;
+  }
+  .premium-hero-container { position: relative; z-index: 1; }
+  .premium-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 0 22px;
+  }
+  .premium-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .premium-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 1;
+    box-shadow: 0 8px 18px rgba(13,148,136,0.18);
+  }
+  .premium-wordmark { line-height: 1.1; text-align: right; }
+  .premium-word { font-size: 18px; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
+  .premium-subword { font-size: 9.5px; font-weight: 700; color: var(--ink-muted); letter-spacing: 0.13em; direction: ltr; text-transform: uppercase; margin-top: 3px; text-align: left; }
+  .premium-hero-inner { max-width: 820px; margin: 0 auto; }
+  .premium-eyebrow {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: var(--accent-dark);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-soft-2);
+    padding: 6px 14px;
+    border-radius: var(--r-pill);
+    margin-bottom: 18px;
+  }
+  .premium-hero h1 {
+    max-width: 760px;
+    margin: 0 auto 14px !important;
+    text-align: center !important;
+    font-size: 42px;
+  }
+  .premium-hero .hero-sub {
+    max-width: 620px;
+    margin: 0 auto 26px !important;
+    font-size: 15.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    text-align: center !important;
+  }
+  .premium-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 26px;
+    margin: 0 auto 12px;
+    flex-wrap: wrap;
+  }
+  .premium-stat { text-align: center; }
+  .premium-stat-num {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .premium-stat-num .premium-curr {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink-mid);
+    margin-right: 2px;
+  }
+  .premium-date { font-size: 17px; }
+  .premium-stat-label {
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  .premium-stat-divider { width: 1px; height: 34px; background: var(--line); }
+  .premium-attribution {
+    font-size: 11.5px;
+    color: var(--ink-faint);
+    margin-top: 16px;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  .premium-attribution strong { color: var(--ink-mid); font-weight: 800; }
+
+  #searchSection {
+    padding-top: 28px;
+    background: var(--bg);
+  }
+  #productTypePanel.product-type-panel {
+    display: none;
+    margin: 0 0 28px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+  #productTypePanel.product-type-panel.active { display: block; }
+  #productTypePanel .product-type-title {
+    text-align: center;
+    font-size: 17px;
+    margin-bottom: 5px;
+  }
+  #productTypePanel .product-type-subtitle {
+    text-align: center;
+    font-size: 12.5px;
+    margin-bottom: 18px;
+  }
+  #productTypePanel .product-type-grid { gap: 12px; }
+  #productTypePanel .product-type-btn {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-xs);
+    padding: 68px 14px 18px;
+    min-height: 132px;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 900;
+  }
+  #productTypePanel .product-type-btn::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    right: 50%;
+    transform: translateX(50%);
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-soft-2);
+    color: var(--accent-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 900;
+  }
+  #productTypePanel .product-type-btn[data-filter="pensia"]::before { content: '₪'; }
+  #productTypePanel .product-type-btn[data-filter="bituach"]::before { content: '◈'; }
+  #productTypePanel .product-type-btn[data-filter="gemelnet"]::before { content: '↗'; }
+  #productTypePanel .product-type-btn:hover {
+    background: var(--card-tint);
+    box-shadow: var(--shadow-sm);
+  }
+  #productTypePanel .product-type-btn.active {
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    border-color: var(--accent);
+  }
+  #searchSection::after {
+    content: 'איך זה עובד: מוצר ← סוג ← חברה ← קופה ← דשבורד תיק מצרפי';
+    display: block;
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 11.5px;
+    font-weight: 600;
+    margin-top: -14px;
+  }
+  @media (max-width: 760px) {
+    .premium-hero { padding-bottom: 24px; }
+    .premium-header { padding: 12px 0 16px; }
+    .premium-mark { width: 32px; height: 32px; font-size: 18px; }
+    .premium-word { font-size: 16px; }
+    .premium-subword { font-size: 8.5px; }
+    .premium-eyebrow { font-size: 9px; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .premium-hero h1 { font-size: 31px !important; line-height: 1.14; }
+    .premium-hero .hero-sub { font-size: 13.5px; margin-bottom: 20px !important; }
+    .premium-stats { gap: 0; justify-content: space-between; width: 100%; }
+    .premium-stat { flex: 1; min-width: 0; }
+    .premium-stat-divider { height: 28px; }
+    .premium-stat-num { font-size: 19px; }
+    .premium-date { font-size: 13px; }
+    .premium-stat-label { font-size: 10px; }
+    .premium-attribution { font-size: 10.5px; margin-top: 12px; }
+    #searchSection { padding-top: 22px; }
+    #productTypePanel .product-type-grid { grid-template-columns: 1fr; }
+    #productTypePanel .product-type-btn { min-height: 92px; padding: 18px 64px 18px 14px; text-align: right; }
+    #productTypePanel .product-type-btn::before { top: 50%; right: 18px; transform: translateY(-50%); }
+    #searchSection::after { margin-top: -8px; padding: 0 12px; font-size: 10.5px; }
+  }
+
 </style>
 </head>
 <body>
-<section class="hero">
-  <div class="container">
-    <h1>תראה איך הכסף שלך מושקע</h1>
-    <p class="hero-sub">בלי הרשמה. הנתונים נשארים אצלך במכשיר.</p>
-    <div class="step-indicator" aria-label="שלבי השימוש">
-      <span class="step-pill step-pill-active">1. בחר מוצר</span>
-      <span class="step-sep">←</span>
-      <span class="step-pill">2. בחר סוג</span>
-      <span class="step-sep">←</span>
-      <span class="step-pill">3. בחר חברה</span>
-      <span class="step-sep">←</span>
-      <span class="step-pill">4. בחר קופה</span>
+<section class="hero premium-hero">
+  <div class="container premium-hero-container">
+    <div class="premium-header" aria-label="כותרת האתר">
+      <div class="premium-brand">
+        <div class="premium-mark" aria-hidden="true">ד</div>
+        <div class="premium-wordmark">
+          <div class="premium-word">דשבורד חשיפות</div>
+          <div class="premium-subword">Savings & Pension Exposure</div>
+        </div>
+      </div>
     </div>
-    <div class="info-cube-tooltip" id="cubeTooltip" role="region" aria-live="polite" hidden></div>
+
+    <div class="premium-hero-inner">
+      <div class="premium-eyebrow">כלי עצמאי לניתוח חיסכון פנסיוני וחיסכון פיננסי</div>
+      <h1>תראה איך הכסף שלך באמת <em>מושקע</em></h1>
+      <p class="hero-sub">בלי הרשמה. בלי העלאת מסמכים. הנתונים שלך נשארים אצלך במכשיר.</p>
+
+      <div class="premium-stats" aria-label="נתוני המאגר">
+        <div class="premium-stat">
+          <div class="premium-stat-num">1,300+</div>
+          <div class="premium-stat-label">קופות, קרנות ופוליסות</div>
+        </div>
+        <div class="premium-stat-divider" aria-hidden="true"></div>
+        <div class="premium-stat">
+          <div class="premium-stat-num">2.8T<span class="premium-curr">₪</span></div>
+          <div class="premium-stat-label">נכסים מנוהלים במאגר</div>
+        </div>
+        <div class="premium-stat-divider" aria-hidden="true"></div>
+        <div class="premium-stat">
+          <div class="premium-stat-num premium-date">מרץ 2026</div>
+          <div class="premium-stat-label">עדכון אחרון</div>
+        </div>
+      </div>
+
+      <div class="premium-attribution">מבוסס על נתוני <strong>גמל נט</strong> · <strong>פנסיה נט</strong> · <strong>ביטוח נט</strong> · אינו תחליף לייעוץ השקעות, ייעוץ פנסיוני או ייעוץ מס</div>
+      <div class="info-cube-tooltip" id="cubeTooltip" role="region" aria-live="polite" hidden></div>
+    </div>
   </div>
 </section>
 
 <section class="section" id="searchSection">
   <div class="container">
     <div class="product-type-panel active" id="productTypePanel" aria-live="polite">
-      <p class="product-type-title" id="productTypeTitle">איזה מוצר תרצה לבדוק?</p>
-      <p class="product-type-subtitle">בחר קודם את סוג החיסכון, ולאחר מכן את החברה שמנהלת אותו.</p>
+      <p class="product-type-title" id="productTypeTitle">מאיפה מתחילים?</p>
+      <p class="product-type-subtitle">בחר את סוג החיסכון ואנחנו ננחה אותך משם.</p>
       <div class="product-type-grid" id="productTypeGrid">
         <button type="button" class="product-type-btn" data-filter="pensia">פנסיה</button>
         <button type="button" class="product-type-btn" data-filter="bituach">ביטוח מנהלים או פוליסות חיסכון</button>
@@ -2615,6 +2857,225 @@
     .proj-metric-value { font-size: 18px; }
     .proj-run-btn { width: 100%; }
   }
+
+
+  /* === v3.57 Premium simplified entry === */
+  .premium-hero {
+    padding: 0 0 34px;
+    background: linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
+    text-align: center;
+  }
+  .premium-hero::before {
+    top: -110px;
+    right: -90px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(13,148,136,0.10), transparent 70%);
+  }
+  .premium-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -90px;
+    left: -70px;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(99,102,241,0.07), transparent 70%);
+    pointer-events: none;
+  }
+  .premium-hero-container { position: relative; z-index: 1; }
+  .premium-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 0 22px;
+  }
+  .premium-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .premium-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 1;
+    box-shadow: 0 8px 18px rgba(13,148,136,0.18);
+  }
+  .premium-wordmark { line-height: 1.1; text-align: right; }
+  .premium-word { font-size: 18px; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
+  .premium-subword { font-size: 9.5px; font-weight: 700; color: var(--ink-muted); letter-spacing: 0.13em; direction: ltr; text-transform: uppercase; margin-top: 3px; text-align: left; }
+  .premium-hero-inner { max-width: 820px; margin: 0 auto; }
+  .premium-eyebrow {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: var(--accent-dark);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-soft-2);
+    padding: 6px 14px;
+    border-radius: var(--r-pill);
+    margin-bottom: 18px;
+  }
+  .premium-hero h1 {
+    max-width: 760px;
+    margin: 0 auto 14px !important;
+    text-align: center !important;
+    font-size: 42px;
+  }
+  .premium-hero .hero-sub {
+    max-width: 620px;
+    margin: 0 auto 26px !important;
+    font-size: 15.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    text-align: center !important;
+  }
+  .premium-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 26px;
+    margin: 0 auto 12px;
+    flex-wrap: wrap;
+  }
+  .premium-stat { text-align: center; }
+  .premium-stat-num {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .premium-stat-num .premium-curr {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink-mid);
+    margin-right: 2px;
+  }
+  .premium-date { font-size: 17px; }
+  .premium-stat-label {
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  .premium-stat-divider { width: 1px; height: 34px; background: var(--line); }
+  .premium-attribution {
+    font-size: 11.5px;
+    color: var(--ink-faint);
+    margin-top: 16px;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  .premium-attribution strong { color: var(--ink-mid); font-weight: 800; }
+
+  #searchSection {
+    padding-top: 28px;
+    background: var(--bg);
+  }
+  #productTypePanel.product-type-panel {
+    display: none;
+    margin: 0 0 28px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+  #productTypePanel.product-type-panel.active { display: block; }
+  #productTypePanel .product-type-title {
+    text-align: center;
+    font-size: 17px;
+    margin-bottom: 5px;
+  }
+  #productTypePanel .product-type-subtitle {
+    text-align: center;
+    font-size: 12.5px;
+    margin-bottom: 18px;
+  }
+  #productTypePanel .product-type-grid { gap: 12px; }
+  #productTypePanel .product-type-btn {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-xs);
+    padding: 68px 14px 18px;
+    min-height: 132px;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 900;
+  }
+  #productTypePanel .product-type-btn::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    right: 50%;
+    transform: translateX(50%);
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-soft-2);
+    color: var(--accent-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 900;
+  }
+  #productTypePanel .product-type-btn[data-filter="pensia"]::before { content: '₪'; }
+  #productTypePanel .product-type-btn[data-filter="bituach"]::before { content: '◈'; }
+  #productTypePanel .product-type-btn[data-filter="gemelnet"]::before { content: '↗'; }
+  #productTypePanel .product-type-btn:hover {
+    background: var(--card-tint);
+    box-shadow: var(--shadow-sm);
+  }
+  #productTypePanel .product-type-btn.active {
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    border-color: var(--accent);
+  }
+  #searchSection::after {
+    content: 'איך זה עובד: מוצר ← סוג ← חברה ← קופה ← דשבורד תיק מצרפי';
+    display: block;
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 11.5px;
+    font-weight: 600;
+    margin-top: -14px;
+  }
+  @media (max-width: 760px) {
+    .premium-hero { padding-bottom: 24px; }
+    .premium-header { padding: 12px 0 16px; }
+    .premium-mark { width: 32px; height: 32px; font-size: 18px; }
+    .premium-word { font-size: 16px; }
+    .premium-subword { font-size: 8.5px; }
+    .premium-eyebrow { font-size: 9px; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .premium-hero h1 { font-size: 31px !important; line-height: 1.14; }
+    .premium-hero .hero-sub { font-size: 13.5px; margin-bottom: 20px !important; }
+    .premium-stats { gap: 0; justify-content: space-between; width: 100%; }
+    .premium-stat { flex: 1; min-width: 0; }
+    .premium-stat-divider { height: 28px; }
+    .premium-stat-num { font-size: 19px; }
+    .premium-date { font-size: 13px; }
+    .premium-stat-label { font-size: 10px; }
+    .premium-attribution { font-size: 10.5px; margin-top: 12px; }
+    #searchSection { padding-top: 22px; }
+    #productTypePanel .product-type-grid { grid-template-columns: 1fr; }
+    #productTypePanel .product-type-btn { min-height: 92px; padding: 18px 64px 18px 14px; text-align: right; }
+    #productTypePanel .product-type-btn::before { top: 50%; right: 18px; transform: translateY(-50%); }
+    #searchSection::after { margin-top: -8px; padding: 0 12px; font-size: 10.5px; }
+  }
+
 </style>
 
 <script>
@@ -4313,6 +4774,225 @@ document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn
       box-shadow: none !important;
     }
   }
+
+
+  /* === v3.57 Premium simplified entry === */
+  .premium-hero {
+    padding: 0 0 34px;
+    background: linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
+    text-align: center;
+  }
+  .premium-hero::before {
+    top: -110px;
+    right: -90px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(13,148,136,0.10), transparent 70%);
+  }
+  .premium-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -90px;
+    left: -70px;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(99,102,241,0.07), transparent 70%);
+    pointer-events: none;
+  }
+  .premium-hero-container { position: relative; z-index: 1; }
+  .premium-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 0 22px;
+  }
+  .premium-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .premium-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 1;
+    box-shadow: 0 8px 18px rgba(13,148,136,0.18);
+  }
+  .premium-wordmark { line-height: 1.1; text-align: right; }
+  .premium-word { font-size: 18px; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
+  .premium-subword { font-size: 9.5px; font-weight: 700; color: var(--ink-muted); letter-spacing: 0.13em; direction: ltr; text-transform: uppercase; margin-top: 3px; text-align: left; }
+  .premium-hero-inner { max-width: 820px; margin: 0 auto; }
+  .premium-eyebrow {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: var(--accent-dark);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-soft-2);
+    padding: 6px 14px;
+    border-radius: var(--r-pill);
+    margin-bottom: 18px;
+  }
+  .premium-hero h1 {
+    max-width: 760px;
+    margin: 0 auto 14px !important;
+    text-align: center !important;
+    font-size: 42px;
+  }
+  .premium-hero .hero-sub {
+    max-width: 620px;
+    margin: 0 auto 26px !important;
+    font-size: 15.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    text-align: center !important;
+  }
+  .premium-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 26px;
+    margin: 0 auto 12px;
+    flex-wrap: wrap;
+  }
+  .premium-stat { text-align: center; }
+  .premium-stat-num {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .premium-stat-num .premium-curr {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink-mid);
+    margin-right: 2px;
+  }
+  .premium-date { font-size: 17px; }
+  .premium-stat-label {
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  .premium-stat-divider { width: 1px; height: 34px; background: var(--line); }
+  .premium-attribution {
+    font-size: 11.5px;
+    color: var(--ink-faint);
+    margin-top: 16px;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  .premium-attribution strong { color: var(--ink-mid); font-weight: 800; }
+
+  #searchSection {
+    padding-top: 28px;
+    background: var(--bg);
+  }
+  #productTypePanel.product-type-panel {
+    display: none;
+    margin: 0 0 28px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+  #productTypePanel.product-type-panel.active { display: block; }
+  #productTypePanel .product-type-title {
+    text-align: center;
+    font-size: 17px;
+    margin-bottom: 5px;
+  }
+  #productTypePanel .product-type-subtitle {
+    text-align: center;
+    font-size: 12.5px;
+    margin-bottom: 18px;
+  }
+  #productTypePanel .product-type-grid { gap: 12px; }
+  #productTypePanel .product-type-btn {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-xs);
+    padding: 68px 14px 18px;
+    min-height: 132px;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 900;
+  }
+  #productTypePanel .product-type-btn::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    right: 50%;
+    transform: translateX(50%);
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-soft-2);
+    color: var(--accent-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 900;
+  }
+  #productTypePanel .product-type-btn[data-filter="pensia"]::before { content: '₪'; }
+  #productTypePanel .product-type-btn[data-filter="bituach"]::before { content: '◈'; }
+  #productTypePanel .product-type-btn[data-filter="gemelnet"]::before { content: '↗'; }
+  #productTypePanel .product-type-btn:hover {
+    background: var(--card-tint);
+    box-shadow: var(--shadow-sm);
+  }
+  #productTypePanel .product-type-btn.active {
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    border-color: var(--accent);
+  }
+  #searchSection::after {
+    content: 'איך זה עובד: מוצר ← סוג ← חברה ← קופה ← דשבורד תיק מצרפי';
+    display: block;
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 11.5px;
+    font-weight: 600;
+    margin-top: -14px;
+  }
+  @media (max-width: 760px) {
+    .premium-hero { padding-bottom: 24px; }
+    .premium-header { padding: 12px 0 16px; }
+    .premium-mark { width: 32px; height: 32px; font-size: 18px; }
+    .premium-word { font-size: 16px; }
+    .premium-subword { font-size: 8.5px; }
+    .premium-eyebrow { font-size: 9px; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .premium-hero h1 { font-size: 31px !important; line-height: 1.14; }
+    .premium-hero .hero-sub { font-size: 13.5px; margin-bottom: 20px !important; }
+    .premium-stats { gap: 0; justify-content: space-between; width: 100%; }
+    .premium-stat { flex: 1; min-width: 0; }
+    .premium-stat-divider { height: 28px; }
+    .premium-stat-num { font-size: 19px; }
+    .premium-date { font-size: 13px; }
+    .premium-stat-label { font-size: 10px; }
+    .premium-attribution { font-size: 10.5px; margin-top: 12px; }
+    #searchSection { padding-top: 22px; }
+    #productTypePanel .product-type-grid { grid-template-columns: 1fr; }
+    #productTypePanel .product-type-btn { min-height: 92px; padding: 18px 64px 18px 14px; text-align: right; }
+    #productTypePanel .product-type-btn::before { top: 50%; right: 18px; transform: translateY(-50%); }
+    #searchSection::after { margin-top: -8px; padding: 0 12px; font-size: 10.5px; }
+  }
+
 </style>
 
 </body>
