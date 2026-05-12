@@ -2443,6 +2443,8 @@
   }
   #searchSection.landing-hidden { display: none !important; }
   body.landing-started #searchSection { display: block !important; }
+  /* v3.67: once the user starts the guided flow, hide the four landing cards to reduce visual load */
+  body.landing-started .landing-actions { display: none !important; }
   footer { display: none !important; }
   .loading { display: none; }
   @media (max-width: 760px) {
@@ -2657,9 +2659,7 @@
   </div>
 </section>
 
-<!-- ====================================================================== -->
-<!-- כרטיס "תרגיל היסטורי" — drop-in לדשבורד                                -->
-<!-- הדבק את כל הבלוק הזה ב-index.html של הדשבורד, ממש לפני <footer><div class="container"><div class="developer-credit">פותח ע״י דורון שרייבמן</div></div></footer>
+<!-- כרטיס תרגיל היסטורי - קוד הדשבורד הראשי -->
 
 <div class="loading" id="loadingState">טוען נתונים...</div>
 
