@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.73</title>
+<title>דשבורד חשיפות חיסכון | v3.75</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
@@ -2970,8 +2970,8 @@
 </style>
 
 
-/* v3.73: bottom action bar placed after product details */
 <style id="v3-73-bottom-actions">
+  /* v3.73: bottom action bar placed after product details */
   .bottom-actions {
     background: var(--bg-soft) !important;
     border-top: 1px solid var(--line-soft);
@@ -3010,6 +3010,21 @@
   @media print {
     .bottom-actions { display: none !important; }
   }
+
+  /* v3.75: single persistent bottom credit */
+  .site-credit {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 22px 28px 36px;
+    text-align: center;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .landing-credit, .flow-credit, .dashboard-credit { display: none !important; }
+  body.pdf-mode .site-credit { display: block !important; color: #444 !important; }
+  @media print { .site-credit { display: block !important; color: #444 !important; font-size: 8px !important; padding-top: 4px !important; } }
 </style>
 
 </head>
@@ -3067,7 +3082,6 @@
       היתרות ודמי הניהול שהזנת נשמרים בדפדפן שלך. הם אינם נשמרים בשרת ואינם משויכים לפרטים אישיים. מקור הנתונים: קובצי המידע הציבוריים של רשות שוק ההון, הביטוח והחיסכון, מתוך מאגרי גמל נט, פנסיה נט וביטוח נט כפי שפורסמו ב-data.gov.il.
     </div>
 
-    <div class="landing-credit">פותח ע״י דורון שרייבמן</div>
   </div>
 </section>
 
@@ -3219,9 +3233,6 @@
 </section>
 
 
-<div class="dashboard-credit">פותח ע״י דורון שרייבמן</div>
-<div class="flow-credit">פותח ע״י דורון שרייבמן</div>
-
 <section class="bottom-actions" id="bottomActions" aria-label="פעולות דוח" style="display:none;">
   <div class="container">
 
@@ -3235,6 +3246,7 @@
   </div>
 </section>
 
+<div class="site-credit">פותח ע״י דורון שרייבמן</div>
 
 
 <!-- כרטיס תרגיל היסטורי - קוד הדשבורד הראשי -->
