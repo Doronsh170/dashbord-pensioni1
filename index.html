@@ -2350,7 +2350,6 @@
       <h1>תראה איך הכסף שלך באמת <em>מושקע</em></h1>
       <p class="hero-sub">בלי הרשמה. בלי העלאת מסמכים. הנתונים נשארים אצלך במכשיר.</p>
 
-      <div class="premium-attribution">מבוסס על נתוני <strong>גמל נט</strong> · <strong>פנסיה נט</strong> · <strong>ביטוח נט</strong> · אינו תחליף לייעוץ השקעות, ייעוץ פנסיוני או ייעוץ מס</div>
       <div class="info-cube-tooltip" id="cubeTooltip" role="region" aria-live="polite" hidden></div>
     </div>
   </div>
@@ -2365,6 +2364,9 @@
         <button type="button" class="product-type-btn" data-filter="pensia">פנסיה</button>
         <button type="button" class="product-type-btn" data-filter="bituach">ביטוח מנהלים או פוליסות חיסכון</button>
         <button type="button" class="product-type-btn" data-filter="gemelnet">גמל, השתלמות וגמל להשקעה</button>
+        <button type="button" class="manual-search-toggle manual-search-card" id="manualSearchToggle" aria-expanded="false" aria-controls="manualSearchControls">
+          לא מצאת את הקופה? חיפוש ידני
+        </button>
       </div>
     </div>
 
@@ -2377,9 +2379,6 @@
     <p class="company-grid-label" id="companyGridLabel" style="display:none;">באיזו חברה מנוהל המוצר?</p>
     <div class="company-grid" id="companyGrid" style="display:none;"></div>
 
-    <button type="button" class="manual-search-toggle" id="manualSearchToggle" aria-expanded="false" aria-controls="manualSearchControls">
-      לא מצאת את הקופה? חיפוש ידני
-    </button>
     <div class="manual-search-controls" id="manualSearchControls" hidden>
       <p class="search-also">חיפוש ידני לפי שם חברה, מסלול או מספר קופה:</p>
       <div class="filters" id="filters">
@@ -6684,6 +6683,93 @@ document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn
     .dashboard .total-row::before,
     .inside-results-search::before,
     .quick-editor-card::before { display: none !important; }
+  }
+
+
+  /* v3.62: manual search as fourth product card + remove hero attribution */
+  .premium-attribution { display: none !important; }
+
+  #productTypePanel .product-type-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+
+  #productTypePanel .manual-search-card {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    min-height: 86px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 18px 72px 18px 18px !important;
+    border-radius: 18px !important;
+    border: 1px dashed #cbd5e1 !important;
+    background: #ffffff !important;
+    color: #475569 !important;
+    box-shadow: 0 1px 2px rgba(15,23,42,0.04) !important;
+    font: inherit !important;
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    text-align: right !important;
+    cursor: pointer !important;
+    letter-spacing: 0 !important;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease !important;
+  }
+
+  #productTypePanel .manual-search-card::before {
+    content: '?' !important;
+    position: absolute !important;
+    top: 50% !important;
+    right: 18px !important;
+    transform: translateY(-50%) !important;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 14px !important;
+    background: #f8fafc !important;
+    border: 1px solid #d8e2ee !important;
+    color: #64748b !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 22px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+  }
+
+  #productTypePanel .manual-search-card:hover,
+  #productTypePanel .manual-search-card[aria-expanded="true"] {
+    border-color: #1e3a8a !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    box-shadow: 0 10px 24px rgba(15, 42, 85, 0.08) !important;
+  }
+
+  #productTypePanel .manual-search-card[aria-expanded="true"]::before {
+    content: '×' !important;
+    background: #1e3a8a !important;
+    border-color: #1e3a8a !important;
+    color: #ffffff !important;
+  }
+
+  @media (max-width: 760px) {
+    #productTypePanel .product-type-grid {
+      grid-template-columns: 1fr !important;
+      gap: 10px !important;
+    }
+    #productTypePanel .manual-search-card {
+      min-height: 74px !important;
+      padding: 16px 62px 16px 14px !important;
+      font-size: 14.5px !important;
+      border-radius: 16px !important;
+    }
+    #productTypePanel .manual-search-card::before {
+      width: 40px !important;
+      height: 40px !important;
+      right: 16px !important;
+      border-radius: 13px !important;
+      font-size: 20px !important;
+    }
   }
 </style>
 
