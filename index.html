@@ -1918,6 +1918,15 @@
     box-shadow: var(--shadow-sm);
   }
   .product-type-panel.active { display: block; }
+  .sub-product-panel {
+    display: none;
+    background: var(--card);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r-lg);
+    padding: 18px 20px;
+    margin: -8px 0 28px;
+    box-shadow: var(--shadow-xs);
+  }
   .product-type-title {
     margin: 0 0 6px;
     font-size: 16px;
@@ -2005,7 +2014,7 @@
     .step-sep { font-size: 12px; }
     .company-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
     .company-btn { padding: 16px 8px; font-size: 14px; }
-    .product-type-panel { padding: 14px; margin: -10px 0 20px; }
+    .product-type-panel, .sub-product-panel { padding: 14px; margin: -10px 0 20px; }
     .product-type-grid { grid-template-columns: 1fr; gap: 8px; }
     .product-type-btn { padding: 14px 10px; font-size: 13px; }
   }
@@ -2112,9 +2121,11 @@
     <div class="step-indicator" aria-label="שלבי השימוש">
       <span class="step-pill step-pill-active">1. בחר מוצר</span>
       <span class="step-sep">←</span>
-      <span class="step-pill">2. בחר חברה</span>
+      <span class="step-pill">2. בחר סוג</span>
       <span class="step-sep">←</span>
-      <span class="step-pill">3. בחר קופה</span>
+      <span class="step-pill">3. בחר חברה</span>
+      <span class="step-sep">←</span>
+      <span class="step-pill">4. בחר קופה</span>
     </div>
     <div class="info-cube-tooltip" id="cubeTooltip" role="region" aria-live="polite" hidden></div>
   </div>
@@ -2123,13 +2134,19 @@
 <section class="section" id="searchSection">
   <div class="container">
     <div class="product-type-panel active" id="productTypePanel" aria-live="polite">
-      <p class="product-type-title" id="productTypeTitle">עם איזה מוצר מתחילים?</p>
+      <p class="product-type-title" id="productTypeTitle">איזה מוצר תרצה לבדוק?</p>
       <p class="product-type-subtitle">בחר קודם את סוג החיסכון, ולאחר מכן את החברה שמנהלת אותו.</p>
       <div class="product-type-grid" id="productTypeGrid">
         <button type="button" class="product-type-btn" data-filter="pensia">פנסיה</button>
         <button type="button" class="product-type-btn" data-filter="bituach">ביטוח מנהלים או פוליסות חיסכון</button>
         <button type="button" class="product-type-btn" data-filter="gemelnet">גמל, השתלמות וגמל להשקעה</button>
       </div>
+    </div>
+
+    <div class="sub-product-panel" id="subProductPanel" style="display:none;" aria-live="polite">
+      <p class="product-type-title" id="subProductTitle">איזה סוג בדיוק?</p>
+      <p class="product-type-subtitle" id="subProductSubtitle">בחר תת-סוג כדי לצמצם את הרשימה לפני בחירת החברה.</p>
+      <div class="product-type-grid" id="subProductGrid"></div>
     </div>
 
     <p class="company-grid-label" id="companyGridLabel" style="display:none;">באיזו חברה מנוהל המוצר?</p>
@@ -2930,6 +2947,54 @@ function metricClass(value) {
   return '';
 }
 
+
+function getGemelSubProduct(rec) {
+  const cls = normalizeText(rec.classification || '');
+  if (cls.includes('קרנות השתלמות')) return 'hishtalmut';
+  if (cls.includes('גמל להשקעה')) return 'gemel-invest';
+  if (rec.source === 'gemelnet') return 'gemel';
+  return '';
+}
+function getBituachSubProduct(rec) {
+  const name = normalizeText(rec.fund_name || '');
+  const cls = normalizeText(rec.classification || '');
+  const isOldPolicy = cls.includes('1990') || cls.includes('1991') || cls.includes('1992') || cls.includes('2003');
+  const looksLikeManagerPolicy = isOldPolicy || name.includes('משתתף ברווחים') || name.includes('מקבלי קצבה') || name.includes('לבני 50') || name.includes('לבני 60') || name.includes('קרן ט') || name.includes('קרן י');
+  return looksLikeManagerPolicy ? 'manager-insurance' : 'savings-policy';
+}
+function recMatchesSubProduct(rec, subtype) {
+  if (!subtype) return true;
+  if (rec.source === 'gemelnet') return getGemelSubProduct(rec) === subtype;
+  if (rec.source === 'bituach') return getBituachSubProduct(rec) === subtype;
+  return true;
+}
+function subProductLabel(subtype) {
+  const labels = {
+    'gemel': 'קופת גמל',
+    'hishtalmut': 'קרן השתלמות',
+    'gemel-invest': 'גמל להשקעה',
+    'manager-insurance': 'ביטוח מנהלים',
+    'savings-policy': 'פוליסות חיסכון'
+  };
+  return labels[subtype] || '';
+}
+function getSubProductOptions(filter) {
+  if (filter === 'gemelnet') {
+    return [
+      { type: 'gemel', label: 'קופת גמל' },
+      { type: 'hishtalmut', label: 'קרן השתלמות' },
+      { type: 'gemel-invest', label: 'גמל להשקעה' }
+    ];
+  }
+  if (filter === 'bituach') {
+    return [
+      { type: 'manager-insurance', label: 'ביטוח מנהלים' },
+      { type: 'savings-policy', label: 'פוליסות חיסכון' }
+    ];
+  }
+  return [];
+}
+
 function searchFunds(query, limit = Infinity, filterOverride = activeFilter, allowEmptyAll = false) {
   const q = normalizeText(query);
   const qCompact = compactText(query);
@@ -2939,6 +3004,7 @@ function searchFunds(query, limit = Infinity, filterOverride = activeFilter, all
   const scored = [];
   for (const rec of DATA) {
     if (filter !== 'all' && rec.source !== filter) continue;
+    if (selectedSubProductType && !recMatchesSubProduct(rec, selectedSubProductType)) continue;
 
     // בגרסת הדשבורד מציגים רק מוצרים פעילים עם נכסים, כדי שלא ייכנסו חישובי חשיפה ריקים.
     if (!rec.is_active || (Number(rec.total_assets) || 0) <= 0) continue;
@@ -3402,11 +3468,17 @@ function prepareAnotherFund() {
   const productPanel = document.getElementById('productTypePanel');
   if (productPanel) productPanel.classList.add('active');
 
+  const subProductPanel = document.getElementById('subProductPanel');
+  const subProductGrid = document.getElementById('subProductGrid');
+  if (subProductPanel) subProductPanel.style.display = 'none';
+  if (subProductGrid) subProductGrid.innerHTML = '';
+
   const companyLabel = document.getElementById('companyGridLabel');
   const companyGrid = document.getElementById('companyGrid');
   if (companyLabel) companyLabel.style.display = 'none';
   if (companyGrid) companyGrid.style.display = 'none';
 
+  selectedSubProductType = '';
   document.querySelectorAll('.company-btn').forEach(btn => btn.classList.remove('is-selected'));
   document.querySelectorAll('.product-type-btn').forEach(btn => btn.classList.remove('active'));
   setActiveProductFilter('all');
@@ -3572,10 +3644,12 @@ function resultMatchesInternalSearch(rec, term) {
 function buildInsideResultsSearch(query, baseCount) {
   if (!(selectedCompanyQuery && query === selectedCompanyQuery && selectedProductFilter !== 'all')) return '';
   const productLabel = (document.querySelector(`.product-type-btn[data-filter="${selectedProductFilter}"]`) || {}).textContent || '';
+  const subtypeText = subProductLabel(selectedSubProductType);
+  const scopeLabel = subtypeText || productLabel.trim();
   return `
     <div class="inside-results-search">
       <p class="inside-results-title">חפש מסלול בתוך התוצאות של ${escapeHtml(selectedCompanyQuery)}</p>
-      <p class="inside-results-subtitle">נמצאו ${baseCount} קופות/מסלולים בתחום ${escapeHtml(productLabel.trim())}. אפשר לצמצם לפי מסלול, גיל, מדד או מספר קופה.</p>
+      <p class="inside-results-subtitle">נמצאו ${baseCount} קופות/מסלולים בתחום ${escapeHtml(scopeLabel)}. אפשר לצמצם לפי מסלול, גיל, מדד או מספר קופה.</p>
       <input type="text" class="inside-results-input" id="insideResultsInput" value="${escapeHtml(currentInsideResultsQuery)}" placeholder="לדוגמה: כללי, מניות, S&P 500, 50 עד 60, מספר קופה" autocomplete="off" />
     </div>
   `;
@@ -3677,7 +3751,9 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    selectedSubProductType = '';
     activeFilter = btn.dataset.filter;
+    selectedProductFilter = activeFilter;
     showResults(document.getElementById('searchInput').value);
   });
 });
@@ -3689,6 +3765,7 @@ if (manualSearchToggle && manualSearchControls) {
   manualSearchToggle.addEventListener('click', () => {
     const willOpen = manualSearchControls.hasAttribute('hidden');
     if (willOpen) {
+      selectedSubProductType = '';
       manualSearchControls.removeAttribute('hidden');
       manualSearchToggle.setAttribute('aria-expanded', 'true');
       manualSearchToggle.textContent = 'סגור חיפוש ידני';
@@ -3707,6 +3784,7 @@ if (manualSearchToggle && manualSearchControls) {
 // v3.48: זרימה פשוטה יותר — בחירת סוג מוצר, אחר כך יצרן, ואז קופה
 let selectedCompanyQuery = '';
 let selectedProductFilter = 'all';
+let selectedSubProductType = '';
 let currentInsideResultsQuery = '';
 let resultVisibleLimit = 15;
 
@@ -3734,24 +3812,70 @@ function resetSearchResultsOnly() {
   }
 }
 
-document.querySelectorAll('.product-type-btn').forEach(btn => {
+function hideCompanyChooser() {
+  const companyLabel = document.getElementById('companyGridLabel');
+  const companyGrid = document.getElementById('companyGrid');
+  if (companyLabel) companyLabel.style.display = 'none';
+  if (companyGrid) companyGrid.style.display = 'none';
+  document.querySelectorAll('.company-btn').forEach(b => b.classList.remove('is-selected'));
+}
+function showCompanyChooser() {
+  const companyLabel = document.getElementById('companyGridLabel');
+  const companyGrid = document.getElementById('companyGrid');
+  if (companyLabel) companyLabel.style.display = '';
+  if (companyGrid) companyGrid.style.display = 'grid';
+  if (companyGrid && companyGrid.scrollIntoView) {
+    companyGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+function renderSubProductOptions(filter) {
+  const panel = document.getElementById('subProductPanel');
+  const grid = document.getElementById('subProductGrid');
+  const title = document.getElementById('subProductTitle');
+  const subtitle = document.getElementById('subProductSubtitle');
+  const options = getSubProductOptions(filter);
+  selectedSubProductType = '';
+  if (!panel || !grid) return false;
+  grid.innerHTML = '';
+  if (!options.length) {
+    panel.style.display = 'none';
+    return false;
+  }
+  if (title) title.textContent = filter === 'gemelnet' ? 'איזה סוג גמל יש לך?' : 'איזה סוג ביטוח / פוליסה יש לך?';
+  if (subtitle) subtitle.textContent = 'בחר תת-סוג כדי לצמצם את רשימת החברות והמסלולים.';
+  grid.innerHTML = options.map(opt => `<button type="button" class="product-type-btn sub-product-btn" data-subtype="${escapeHtml(opt.type)}">${escapeHtml(opt.label)}</button>`).join('');
+  panel.style.display = 'block';
+  grid.querySelectorAll('.sub-product-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      selectedSubProductType = button.dataset.subtype || '';
+      grid.querySelectorAll('.sub-product-btn').forEach(b => b.classList.remove('active'));
+      button.classList.add('active');
+      selectedCompanyQuery = '';
+      const input = document.getElementById('searchInput');
+      if (input) input.value = '';
+      resetSearchResultsOnly();
+      showCompanyChooser();
+    });
+  });
+  panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  return true;
+}
+
+document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn => {
   btn.addEventListener('click', () => {
     const filter = btn.dataset.filter || 'all';
     selectedCompanyQuery = '';
     setActiveProductFilter(filter);
-    document.querySelectorAll('.company-btn').forEach(b => b.classList.remove('is-selected'));
+    hideCompanyChooser();
 
     const input = document.getElementById('searchInput');
     if (input) input.value = '';
     resetSearchResultsOnly();
 
-    const companyLabel = document.getElementById('companyGridLabel');
-    const companyGrid = document.getElementById('companyGrid');
-    if (companyLabel) companyLabel.style.display = '';
-    if (companyGrid) companyGrid.style.display = 'grid';
-
-    if (companyGrid && companyGrid.scrollIntoView) {
-      companyGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const needsSubProduct = renderSubProductOptions(filter);
+    if (!needsSubProduct) {
+      selectedSubProductType = '';
+      showCompanyChooser();
     }
   });
 });
