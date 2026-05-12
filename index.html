@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.61</title>
+<title>דשבורד חשיפות חיסכון | v3.64</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
@@ -2330,6 +2330,130 @@
     #searchSection::after { margin-top: -8px; padding: 0 12px; font-size: 10.5px; }
   }
 
+
+
+  /* === v3.64 Landing action cards under brand === */
+  .premium-hero {
+    padding: 34px 0 26px !important;
+    min-height: auto !important;
+  }
+  .premium-hero-container {
+    max-width: 920px;
+  }
+  .premium-header {
+    justify-content: center !important;
+    margin-bottom: 26px !important;
+  }
+  .premium-brand {
+    justify-content: center;
+  }
+  .landing-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0 auto;
+    max-width: 780px;
+  }
+  .landing-card {
+    appearance: none;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 24px 22px;
+    min-height: 156px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+    cursor: pointer;
+    text-align: right;
+    font: inherit;
+    color: #0f172a;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .landing-card:hover,
+  .landing-card:focus-visible {
+    border-color: #bfdbfe;
+    box-shadow: 0 14px 36px rgba(15, 23, 42, 0.10), 0 2px 6px rgba(15, 23, 42, 0.05);
+    transform: translateY(-2px);
+    outline: none;
+  }
+  .landing-card[aria-expanded="true"],
+  .landing-card.landing-primary[aria-expanded="true"] {
+    border-color: #1e3a8a;
+    background: #eef6ff;
+  }
+  .landing-card.landing-primary {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+  }
+  .landing-card.landing-primary:hover,
+  .landing-card.landing-primary:focus-visible {
+    background: #1e3a8a;
+    border-color: #1e3a8a;
+  }
+  .landing-card-kicker {
+    font-size: 12px;
+    font-weight: 800;
+    color: #64748b;
+  }
+  .landing-primary .landing-card-kicker { color: rgba(255,255,255,0.70); }
+  .landing-card-title {
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .landing-card-text {
+    font-size: 14px;
+    line-height: 1.55;
+    color: #64748b;
+    margin: 0;
+  }
+  .landing-primary .landing-card-text { color: rgba(255,255,255,0.78); }
+  .landing-panel {
+    max-width: 780px;
+    margin: 16px auto 0;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 20px 22px;
+    color: #334155;
+    font-size: 14px;
+    line-height: 1.75;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  }
+  .landing-panel[hidden] { display: none !important; }
+  .landing-panel h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    color: #0f172a;
+    font-weight: 900;
+  }
+  .landing-credit {
+    margin: 22px auto 0;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  #searchSection.landing-hidden { display: none !important; }
+  body.landing-started #searchSection { display: block !important; }
+  footer { display: none !important; }
+  .loading { display: none; }
+  @media (max-width: 760px) {
+    .premium-hero { padding: 26px 0 22px !important; }
+    .premium-header { margin-bottom: 22px !important; }
+    .landing-actions { grid-template-columns: 1fr; gap: 12px; }
+    .landing-card { min-height: 126px; padding: 20px 18px; border-radius: 20px; }
+    .landing-card-title { font-size: 22px; }
+    .landing-card-text { font-size: 13.5px; }
+    .landing-panel { border-radius: 18px; padding: 17px 18px; font-size: 13.5px; }
+  }
+
 </style>
 </head>
 <body>
@@ -2345,17 +2469,52 @@
       </div>
     </div>
 
-    <div class="premium-hero-inner">
-      <div class="premium-eyebrow">כלי עצמאי לניתוח חיסכון פנסיוני וחיסכון פיננסי</div>
-      <h1>תראה איך הכסף שלך באמת <em>מושקע</em></h1>
-      <p class="hero-sub">בלי הרשמה. בלי העלאת מסמכים. הנתונים נשארים אצלך במכשיר.</p>
+    <div class="landing-actions" aria-label="אפשרויות ראשיות">
+      <button type="button" class="landing-card" id="landingAboutBtn" aria-expanded="false" aria-controls="landingAboutPanel">
+        <span class="landing-card-kicker">הסבר פשוט</span>
+        <span class="landing-card-title">מה הכלי עושה?</span>
+        <p class="landing-card-text">הכלי עוזר להבין איך החיסכון שלך מושקע: חשיפה למניות, לחו״ל ולמט״ח.</p>
+      </button>
 
-      <div class="info-cube-tooltip" id="cubeTooltip" role="region" aria-live="polite" hidden></div>
+      <button type="button" class="landing-card landing-primary" id="landingStartBtn" aria-expanded="false" aria-controls="searchSection">
+        <span class="landing-card-kicker">פעולה מרכזית</span>
+        <span class="landing-card-title">כאן מתחילים</span>
+        <p class="landing-card-text">בחר מוצר, סוג, חברה וקופה, ולאחר מכן הזן יתרה ודמי ניהול.</p>
+      </button>
+
+      <button type="button" class="landing-card" id="landingDisclosureBtn" aria-expanded="false" aria-controls="landingDisclosurePanel">
+        <span class="landing-card-kicker">חשוב לדעת</span>
+        <span class="landing-card-title">הבהרה מקצועית</span>
+        <p class="landing-card-text">הדשבורד מציג נתונים ציבוריים להמחשה בלבד ואינו מהווה ייעוץ או המלצה.</p>
+      </button>
+
+      <button type="button" class="landing-card" id="landingPrivacyBtn" aria-expanded="false" aria-controls="landingPrivacyPanel">
+        <span class="landing-card-kicker">אמון ופרטיות</span>
+        <span class="landing-card-title">פרטיות ומקור נתונים</span>
+        <p class="landing-card-text">הנתונים שאתה מזין נשמרים בדפדפן שלך. מקור הנתונים הוא מאגרי רשות שוק ההון.</p>
+      </button>
     </div>
+
+    <div class="landing-panel" id="landingAboutPanel" hidden>
+      <h3>מה הכלי עושה?</h3>
+      הכלי מאפשר לך להוסיף את הקופות והקרנות שלך, להזין יתרה ודמי ניהול אישיים, ולקבל תמונה מצרפית של החשיפה למניות, לחו״ל, למט״ח ולנכסים סחירים. המטרה היא להנגיש תמונת מצב פשוטה וברורה, גם למי שאינו מכיר לעומק את מבנה החיסכון הפנסיוני והפיננסי.
+    </div>
+
+    <div class="landing-panel" id="landingDisclosurePanel" hidden>
+      <h3>הבהרה מקצועית</h3>
+      הדשבורד מציג חשיפות וביצועים מתוך נתונים ציבוריים של המסלולים בלבד. הוא אינו מושך יתרות אישיות ממסלקה פנסיונית, אינו מחליף ייעוץ פנסיוני או פיננסי, ואינו מציג המלצה. נתוני התשואה הם נתוני מסלול ציבוריים, ודמי הניהול בדשבורד מבוססים רק על הנתון שהוזן ידנית עבור כל מוצר.
+    </div>
+
+    <div class="landing-panel" id="landingPrivacyPanel" hidden>
+      <h3>פרטיות ומקור נתונים</h3>
+      היתרות ודמי הניהול שהזנת נשמרים בדפדפן שלך. הם אינם נשמרים בשרת ואינם משויכים לפרטים אישיים. מקור הנתונים: קובצי המידע הציבוריים של רשות שוק ההון, הביטוח והחיסכון, מתוך מאגרי גמל נט, פנסיה נט וביטוח נט כפי שפורסמו ב-data.gov.il.
+    </div>
+
+    <div class="landing-credit">פותח ע״י דורון שרייבמן</div>
   </div>
 </section>
 
-<section class="section" id="searchSection">
+<section class="section landing-hidden" id="searchSection">
   <div class="container">
     <div class="product-type-panel active" id="productTypePanel" aria-live="polite">
       <p class="product-type-title" id="productTypeTitle">מאיפה מתחילים?</p>
@@ -2498,807 +2657,7 @@
 
 <!-- ====================================================================== -->
 <!-- כרטיס "תרגיל היסטורי" — drop-in לדשבורד                                -->
-<!-- הדבק את כל הבלוק הזה ב-index.html של הדשבורד, ממש לפני <footer>        -->
-<!-- ====================================================================== -->
-<section class="projection-section" id="projectionSection" hidden>
-  <div class="container">
-    <button type="button" class="proj-toggle" id="projToggle" aria-expanded="false" aria-controls="projBody">
-      <span class="proj-toggle-icon" aria-hidden="true">📊</span>
-      <span class="proj-toggle-text">
-        <span class="proj-toggle-title">סימולציה על בסיס תשואות עבר</span>
-        <span class="proj-toggle-sub">על סמך תשואות עבר, כך הסכומים עשויים להיראות לאורך זמן</span>
-      </span>
-      <span class="proj-toggle-chevron" aria-hidden="true">▾</span>
-    </button>
-
-    <div class="proj-body" id="projBody" hidden>
-      <p class="proj-intro">
-        הסימולציה מבוססת על תשואות עבר של 30 השנים האחרונות (1995–2024), עבור מסלולים בעלי פרופיל
-        <strong id="projRiskLabel">—</strong>
-        — בהתאם לחשיפה המנייתית בתיק שלך (<span id="projStockPct">—</span>%).
-        <br><small>סיווג הסיכון: עד 10% מניות = נמוך, מעל 10% ועד 70% = בינוני, מעל 70% = גבוה.</small>
-      </p>
-
-      <div class="proj-empty" id="projEmpty">
-        עדיין לא הוספת קופות לתיק. חזור למעלה, חפש קופה והזן יתרה — ואז נוכל להריץ סימולציה על בסיס תשואות עבר.
-      </div>
-
-      <div class="proj-form" id="projForm" hidden>
-        <div class="proj-input-grid">
-          <label class="proj-input">
-            <span class="proj-input-label">סכום התחלתי (₪)</span>
-            <input type="number" id="projInitial" inputmode="numeric" min="0" />
-            <span class="proj-input-hint">נטען מהיתרה הכוללת בדשבורד</span>
-          </label>
-          <label class="proj-input">
-            <span class="proj-input-label">הפקדה חודשית (₪)</span>
-            <input type="number" id="projMonthly" inputmode="numeric" min="0" value="0" />
-            <span class="proj-input-hint">לא חובה — השאר 0 לבדיקה של היתרה הקיימת בלבד</span>
-          </label>
-          <label class="proj-input">
-            <span class="proj-input-label">דמי ניהול שנתיים (%)</span>
-            <input type="number" id="projFee" step="0.01" min="0" value="0.7" />
-            <span class="proj-input-hint">נטען אוטומטית אם הזנת בכרטיסי הקופות</span>
-          </label>
-          <label class="proj-input">
-            <span class="proj-input-label">אופק זמן (שנים)</span>
-            <input type="number" id="projYears" inputmode="numeric" min="1" max="30" step="1" value="20" />
-            <span class="proj-input-hint">בחר 1–30 שנים, בהתאם לטווח הנתונים ההיסטוריים (1995–2024)</span>
-          </label>
-        </div>
-
-        <div class="proj-action-row">
-          <button type="button" class="proj-run-btn" id="projRunBtn">הרץ סימולציה</button>
-        </div>
-      </div>
-
-      <div class="proj-results" id="projResults" hidden>
-        <div class="proj-summary">
-          <div class="proj-metric proj-metric-main">
-            <div class="proj-metric-label">סכום מחושב בסוף התקופה</div>
-            <div class="proj-metric-value" id="projFinal">—</div>
-          </div>
-          <div class="proj-metric">
-            <div class="proj-metric-label">סך הפקדות בתקופה</div>
-            <div class="proj-metric-value" id="projContrib">—</div>
-          </div>
-          <div class="proj-metric">
-            <div class="proj-metric-label">צבירה מתשואה (נטו)</div>
-            <div class="proj-metric-value" id="projInterest">—</div>
-          </div>
-          <div class="proj-metric proj-metric-warn">
-            <div class="proj-metric-label">השנה הגרועה בתקופה</div>
-            <div class="proj-metric-value" id="projWorstYear">—</div>
-          </div>
-        </div>
-
-        <details class="proj-yearly">
-          <summary>פירוט שנה-שנה</summary>
-          <div class="proj-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>שנה (היסטורית)</th>
-                  <th class="num">תשואה שנתית</th>
-                  <th class="num">יתרה בסוף השנה</th>
-                </tr>
-              </thead>
-              <tbody id="projYearlyBody"></tbody>
-            </table>
-          </div>
-        </details>
-
-        <p class="proj-disclaimer">
-          <strong>גילוי נאות:</strong> הסימולציה מבוססת על נתוני עבר בלבד ומיועדת להמחשה וחינוך פיננסי. אין לראות בה תחזית, הבטחה לתשואה, ייעוץ השקעות, ייעוץ פנסיוני או המלצה. ביצועי עבר אינם מנבאים את העתיד.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<style>
-  /* === Historical Projection card === */
-  .projection-section {
-    padding: 8px 0 56px;
-    background: var(--bg);
-  }
-  .projection-section .container { padding: 0 28px; }
-
-  .proj-toggle {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--r-md);
-    padding: 18px 22px;
-    text-align: right;
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    transition: box-shadow .2s, border-color .2s;
-    font: inherit;
-    color: inherit;
-  }
-  .proj-toggle:hover { box-shadow: var(--shadow-md); border-color: var(--accent); }
-  .proj-toggle[aria-expanded="true"] {
-    border-color: var(--accent);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  .proj-toggle-icon { font-size: 22px; line-height: 1; flex-shrink: 0; }
-  .proj-toggle-text { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
-  .proj-toggle-title { font-size: 17px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
-  .proj-toggle-sub { font-size: 13px; color: var(--ink-muted); font-weight: 400; line-height: 1.4; }
-  .proj-toggle-chevron {
-    font-size: 18px;
-    color: var(--ink-muted);
-    transition: transform .25s;
-    flex-shrink: 0;
-  }
-  .proj-toggle[aria-expanded="true"] .proj-toggle-chevron { transform: rotate(180deg); }
-
-  .proj-body {
-    background: var(--card);
-    border: 1px solid var(--accent);
-    border-top: none;
-    border-bottom-left-radius: var(--r-md);
-    border-bottom-right-radius: var(--r-md);
-    padding: 22px;
-    box-shadow: var(--shadow-md);
-  }
-  .proj-intro {
-    margin: 0 0 18px;
-    font-size: 14px;
-    color: var(--ink-soft);
-    line-height: 1.6;
-    background: var(--accent-soft);
-    padding: 12px 14px;
-    border-radius: var(--r-sm);
-    border-right: 3px solid var(--accent);
-  }
-  .proj-intro strong { color: var(--accent-dark); font-weight: 700; }
-
-  .proj-empty {
-    background: var(--bg-soft);
-    border: 1px dashed var(--line);
-    border-radius: var(--r-sm);
-    padding: 22px;
-    color: var(--ink-muted);
-    text-align: center;
-    font-size: 14px;
-    line-height: 1.6;
-  }
-
-  .proj-input-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 14px;
-    margin-bottom: 18px;
-  }
-  .proj-input { display: flex; flex-direction: column; gap: 5px; }
-  .proj-input-label { font-size: 13px; font-weight: 600; color: var(--ink-soft); }
-  .proj-input input[type="number"] {
-    font: inherit;
-    font-size: 15px;
-    border: 1px solid var(--line);
-    border-radius: var(--r-sm);
-    padding: 10px 12px;
-    background: var(--card-tint);
-    color: var(--ink);
-    transition: border-color .15s, background .15s;
-    width: 100%;
-    box-sizing: border-box;
-    font-variant-numeric: tabular-nums;
-  }
-  .proj-input input[type="number"]:focus {
-    outline: none;
-    border-color: var(--accent);
-    background: var(--card);
-    box-shadow: 0 0 0 3px var(--accent-soft);
-  }
-  .proj-input-hint { font-size: 11.5px; color: var(--ink-faint); line-height: 1.4; }
-
-  .proj-years { display: flex; gap: 6px; flex-wrap: wrap; }
-  .proj-year-btn {
-    flex: 1 1 auto;
-    min-width: 70px;
-    font: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 10px 10px;
-    border: 1px solid var(--line);
-    background: var(--card-tint);
-    color: var(--ink-soft);
-    border-radius: var(--r-sm);
-    cursor: pointer;
-    transition: all .15s;
-  }
-  .proj-year-btn:hover { border-color: var(--accent); color: var(--accent-dark); }
-  .proj-year-btn.active {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
-    box-shadow: var(--shadow-xs);
-  }
-
-  .proj-action-row { display: flex; justify-content: center; }
-  .proj-run-btn {
-    font: inherit;
-    font-size: 15px;
-    font-weight: 700;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: var(--r-sm);
-    padding: 12px 32px;
-    cursor: pointer;
-    transition: background .15s, transform .1s, box-shadow .15s;
-    box-shadow: var(--shadow-sm);
-    letter-spacing: -0.01em;
-  }
-  .proj-run-btn:hover { background: var(--accent-dark); box-shadow: var(--shadow-md); }
-  .proj-run-btn:active { transform: translateY(1px); }
-
-  .proj-results { margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--line-soft); }
-  .proj-summary {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-    margin-bottom: 18px;
-  }
-  .proj-metric {
-    background: var(--card-tint);
-    border: 1px solid var(--line);
-    border-radius: var(--r-sm);
-    padding: 14px 16px;
-  }
-  .proj-metric-main {
-    background: var(--accent-soft);
-    border-color: var(--accent-soft-2);
-  }
-  .proj-metric-main .proj-metric-value { color: var(--accent-dark); }
-  .proj-metric-warn { background: #fff7ed; border-color: #fed7aa; }
-  .proj-metric-warn .proj-metric-value { color: var(--warning); }
-  .proj-metric-label {
-    font-size: 12px;
-    color: var(--ink-muted);
-    font-weight: 600;
-    margin-bottom: 6px;
-    letter-spacing: 0.01em;
-  }
-  .proj-metric-value {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--ink);
-    letter-spacing: -0.015em;
-    line-height: 1.2;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .proj-yearly { margin-top: 10px; }
-  .proj-yearly summary {
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--accent-dark);
-    padding: 10px 0;
-    list-style: none;
-    user-select: none;
-  }
-  .proj-yearly summary::-webkit-details-marker { display: none; }
-  .proj-yearly summary::before {
-    content: '▸';
-    display: inline-block;
-    margin-left: 6px;
-    transition: transform .2s;
-  }
-  .proj-yearly[open] summary::before { transform: rotate(90deg); }
-  .proj-table-wrap {
-    margin-top: 8px;
-    border: 1px solid var(--line);
-    border-radius: var(--r-sm);
-    overflow: hidden;
-  }
-  .proj-table-wrap table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .proj-table-wrap th, .proj-table-wrap td {
-    padding: 9px 14px;
-    border-bottom: 1px solid var(--line-soft);
-    text-align: right;
-  }
-  .proj-table-wrap tbody tr:last-child td { border-bottom: none; }
-  .proj-table-wrap th {
-    background: var(--bg-soft);
-    font-weight: 700;
-    color: var(--ink-soft);
-    font-size: 12px;
-  }
-  .proj-table-wrap td.num { font-variant-numeric: tabular-nums; }
-  .proj-table-wrap tr.bad-year { background: var(--danger-soft); }
-  .proj-table-wrap tr.bad-year td { color: var(--danger); font-weight: 700; }
-  .proj-pos { color: var(--pos); font-weight: 600; }
-  .proj-neg { color: var(--neg); font-weight: 600; }
-
-  .proj-disclaimer {
-    margin-top: 18px;
-    padding: 12px 14px;
-    background: var(--bg-soft);
-    border-radius: var(--r-sm);
-    font-size: 12px;
-    color: var(--ink-muted);
-    line-height: 1.65;
-  }
-  .proj-disclaimer strong { color: var(--ink-soft); }
-
-  @media (max-width: 640px) {
-    .projection-section .container { padding: 0 20px; }
-    .proj-toggle { padding: 14px 16px; gap: 12px; }
-    .proj-toggle-title { font-size: 15px; }
-    .proj-toggle-sub { font-size: 12px; }
-    .proj-body { padding: 16px; }
-    .proj-metric-value { font-size: 18px; }
-    .proj-run-btn { width: 100%; }
-  }
-
-
-  /* === v3.57 Premium simplified entry === */
-  .premium-hero {
-    padding: 0 0 34px;
-    background: linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%);
-    text-align: center;
-  }
-  .premium-hero::before {
-    top: -110px;
-    right: -90px;
-    width: 320px;
-    height: 320px;
-    background: radial-gradient(circle, rgba(13,148,136,0.10), transparent 70%);
-  }
-  .premium-hero::after {
-    content: '';
-    position: absolute;
-    bottom: -90px;
-    left: -70px;
-    width: 250px;
-    height: 250px;
-    background: radial-gradient(circle, rgba(99,102,241,0.07), transparent 70%);
-    pointer-events: none;
-  }
-  .premium-hero-container { position: relative; z-index: 1; }
-  .premium-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px 0 22px;
-  }
-  .premium-brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .premium-mark {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-family: 'Frank Ruhl Libre', serif;
-    font-weight: 900;
-    font-size: 20px;
-    line-height: 1;
-    box-shadow: 0 8px 18px rgba(13,148,136,0.18);
-  }
-  .premium-wordmark { line-height: 1.1; text-align: right; }
-  .premium-word { font-size: 18px; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
-  .premium-subword { font-size: 9.5px; font-weight: 700; color: var(--ink-muted); letter-spacing: 0.13em; direction: ltr; text-transform: uppercase; margin-top: 3px; text-align: left; }
-  .premium-hero-inner { max-width: 820px; margin: 0 auto; }
-  .premium-eyebrow {
-    display: inline-block;
-    font-size: 10.5px;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    color: var(--accent-dark);
-    background: var(--accent-soft);
-    border: 1px solid var(--accent-soft-2);
-    padding: 6px 14px;
-    border-radius: var(--r-pill);
-    margin-bottom: 18px;
-  }
-  .premium-hero h1 {
-    max-width: 760px;
-    margin: 0 auto 14px !important;
-    text-align: center !important;
-    font-size: 42px;
-  }
-  .premium-hero .hero-sub {
-    max-width: 620px;
-    margin: 0 auto 26px !important;
-    font-size: 15.5px;
-    color: var(--ink-soft);
-    line-height: 1.65;
-    text-align: center !important;
-  }
-  .premium-stats {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 26px;
-    margin: 0 auto 12px;
-    flex-wrap: wrap;
-  }
-  .premium-stat { text-align: center; }
-  .premium-stat-num {
-    font-size: 24px;
-    font-weight: 900;
-    color: var(--ink);
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.02em;
-  }
-  .premium-stat-num .premium-curr {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--ink-mid);
-    margin-right: 2px;
-  }
-  .premium-date { font-size: 17px; }
-  .premium-stat-label {
-    font-size: 11.5px;
-    color: var(--ink-muted);
-    margin-top: 6px;
-    font-weight: 600;
-  }
-  .premium-stat-divider { width: 1px; height: 34px; background: var(--line); }
-  .premium-attribution {
-    font-size: 11.5px;
-    color: var(--ink-faint);
-    margin-top: 16px;
-    font-weight: 600;
-    line-height: 1.6;
-  }
-  .premium-attribution strong { color: var(--ink-mid); font-weight: 800; }
-
-  #searchSection {
-    padding-top: 28px;
-    background: var(--bg);
-  }
-  #productTypePanel.product-type-panel {
-    display: none;
-    margin: 0 0 28px;
-    padding: 0;
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-  }
-  #productTypePanel.product-type-panel.active { display: block; }
-  #productTypePanel .product-type-title {
-    text-align: center;
-    font-size: 17px;
-    margin-bottom: 5px;
-  }
-  #productTypePanel .product-type-subtitle {
-    text-align: center;
-    font-size: 12.5px;
-    margin-bottom: 18px;
-  }
-  #productTypePanel .product-type-grid { gap: 12px; }
-  #productTypePanel .product-type-btn {
-    position: relative;
-    background: var(--card);
-    border: 1px solid var(--line);
-    box-shadow: var(--shadow-xs);
-    padding: 68px 14px 18px;
-    min-height: 132px;
-    border-radius: 16px;
-    font-size: 15px;
-    font-weight: 900;
-  }
-  #productTypePanel .product-type-btn::before {
-    content: '';
-    position: absolute;
-    top: 18px;
-    right: 50%;
-    transform: translateX(50%);
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    background: var(--accent-soft);
-    border: 1px solid var(--accent-soft-2);
-    color: var(--accent-dark);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    font-weight: 900;
-  }
-  #productTypePanel .product-type-btn[data-filter="pensia"]::before { content: '₪'; }
-  #productTypePanel .product-type-btn[data-filter="bituach"]::before { content: '◈'; }
-  #productTypePanel .product-type-btn[data-filter="gemelnet"]::before { content: '↗'; }
-  #productTypePanel .product-type-btn:hover {
-    background: var(--card-tint);
-    box-shadow: var(--shadow-sm);
-  }
-  #productTypePanel .product-type-btn.active {
-    background: var(--accent-soft);
-    color: var(--accent-dark);
-    border-color: var(--accent);
-  }
-  #searchSection::after {
-    content: 'איך זה עובד: מוצר ← סוג ← חברה ← קופה ← דשבורד תיק מצרפי';
-    display: block;
-    text-align: center;
-    color: var(--ink-faint);
-    font-size: 11.5px;
-    font-weight: 600;
-    margin-top: -14px;
-  }
-  @media (max-width: 760px) {
-    .premium-hero { padding-bottom: 24px; }
-    .premium-header { padding: 12px 0 16px; }
-    .premium-mark { width: 32px; height: 32px; font-size: 18px; }
-    .premium-word { font-size: 16px; }
-    .premium-subword { font-size: 8.5px; }
-    .premium-eyebrow { font-size: 9px; letter-spacing: 0.08em; margin-bottom: 12px; }
-    .premium-hero h1 { font-size: 31px !important; line-height: 1.14; }
-    .premium-hero .hero-sub { font-size: 13.5px; margin-bottom: 20px !important; }
-    .premium-stats { gap: 0; justify-content: space-between; width: 100%; }
-    .premium-stat { flex: 1; min-width: 0; }
-    .premium-stat-divider { height: 28px; }
-    .premium-stat-num { font-size: 19px; }
-    .premium-date { font-size: 13px; }
-    .premium-stat-label { font-size: 10px; }
-    .premium-attribution { font-size: 10.5px; margin-top: 12px; }
-    #searchSection { padding-top: 22px; }
-    #productTypePanel .product-type-grid { grid-template-columns: 1fr; }
-    #productTypePanel .product-type-btn { min-height: 92px; padding: 18px 64px 18px 14px; text-align: right; }
-    #productTypePanel .product-type-btn::before { top: 50%; right: 18px; transform: translateY(-50%); }
-    #searchSection::after { margin-top: -8px; padding: 0 12px; font-size: 10.5px; }
-  }
-
-</style>
-
-<script>
-(function() {
-  'use strict';
-
-  // === נתוני תשואות היסטוריים (1995-2024) — זהים למחשבון הקיים ===
-  const RAW_YIELDS = {
-    low:    [22.66, 6.42, 13.62, 15.60, 0.18, 9.39, 1.67, 5.01, 6.11, 5.12, 3.33, 5.27, 8.12, -0.30, -0.37, 7.07, 10.05, 5.98, 0.61, 9.16, 1.05, 2.83, 6.99, -0.06, 13.25, 10.47, 3.05, -13.89, 8.60, 5.03],
-    medium: [30.82, 14.37, 23.60, 22.47, 9.89, 0.71, -4.99, -7.81, 17.20, 8.09, 4.06, 10.29, 6.78, -14.72, 11.58, 11.81, 6.85, 10.61, 15.11, 11.89, 1.21, 7.30, 14.10, -2.55, 22.29, 14.80, 15.54, -16.96, 17.26, 14.61],
-    high:   [35.83, 20.56, 30.78, 27.00, 17.98, -6.46, -10.11, -18.26, 25.56, 10.11, 4.63, 14.24, 5.95, -30.89, 22.23, 14.18, 3.49, 14.60, 28.03, 13.24, 1.37, 10.66, 19.73, -3.81, 29.05, 17.35, 25.18, -18.02, 23.84, 22.23]
-  };
-  const START_YEAR = 1995;
-  const RISK_LABELS = { low: 'סיכון נמוך', medium: 'סיכון בינוני', high: 'סיכון גבוה' };
-
-  // === מיפוי DOM ===
-  const $ = (id) => document.getElementById(id);
-  const section       = $('projectionSection');
-  const toggle        = $('projToggle');
-  const body          = $('projBody');
-  const riskLabel     = $('projRiskLabel');
-  const stockPctEl    = $('projStockPct');
-  const empty         = $('projEmpty');
-  const form          = $('projForm');
-  const initialInput  = $('projInitial');
-  const monthlyInput  = $('projMonthly');
-  const feeInput      = $('projFee');
-  const yearsInput   = $('projYears');
-  const runBtn        = $('projRunBtn');
-  const results       = $('projResults');
-  const finalEl       = $('projFinal');
-  const contribEl     = $('projContrib');
-  const interestEl    = $('projInterest');
-  const worstEl       = $('projWorstYear');
-  const yearlyBody    = $('projYearlyBody');
-
-  // === Helpers ===
-  const fmtILS = (n) => Math.round(n).toLocaleString('he-IL', {
-    style: 'currency', currency: 'ILS', maximumFractionDigits: 0
-  });
-  const parseNum = (txt) => {
-    if (!txt) return NaN;
-    const cleaned = String(txt).replace(/[^\d.\-]/g, '');
-    const n = parseFloat(cleaned);
-    return Number.isFinite(n) ? n : NaN;
-  };
-
-  // מיפוי חשיפה מנייתית → מסלול היסטורי
-  function pickRiskTrack(stockPct) {
-    if (stockPct <= 10) return 'low';
-    if (stockPct <= 70) return 'medium';
-    return 'high';
-  }
-
-  // קריאת מצב הדשבורד מתוך ה-DOM שכבר רונדר
-  function readDashboardState() {
-    const totalText = $('totalBalance') ? $('totalBalance').textContent : '';
-    const stockText = $('aggStock')     ? $('aggStock').textContent     : '';
-    const feeText   = $('feeSavings')   ? $('feeSavings').textContent   : '';
-    const total    = parseNum(totalText);
-    const stockPct = parseNum(stockText);
-    const fee      = parseNum(feeText);
-    return {
-      total:        Number.isFinite(total) && total > 0 ? total : 0,
-      stockPct:     Number.isFinite(stockPct) ? stockPct : 0,
-      fee:          Number.isFinite(fee) && fee > 0 ? fee : null,
-      hasPortfolio: Number.isFinite(total) && total > 0
-    };
-  }
-
-  // טעינה מחדש של ברירות מחדל מתוך הדשבורד (בלי לדרוס מה שהמשתמש ערך)
-  function refreshPrefill() {
-    const state = readDashboardState();
-    if (state.hasPortfolio) {
-      empty.hidden = true;
-      form.hidden = false;
-      const track = pickRiskTrack(state.stockPct);
-      riskLabel.textContent = RISK_LABELS[track];
-      stockPctEl.textContent = state.stockPct.toFixed(1);
-      if (!initialInput.dataset.userEdited) {
-        initialInput.value = Math.round(state.total);
-      }
-      if (state.fee !== null && !feeInput.dataset.userEdited) {
-        feeInput.value = state.fee.toFixed(2);
-      }
-    } else {
-      empty.hidden = false;
-      form.hidden = true;
-      results.hidden = true;
-      riskLabel.textContent = '—';
-      stockPctEl.textContent = '—';
-    }
-  }
-
-  // סימון שדות שהמשתמש ערך ידנית — כדי לא לדרוס בעדכון חוזר
-  [initialInput, feeInput].forEach(el => {
-    el.addEventListener('input', () => { el.dataset.userEdited = '1'; });
-  });
-
-  // === בחירת אופק זמן (1–30 שנים) ===
-  function getSelectedYears() {
-    const n = parseInt(yearsInput.value, 10);
-    if (!Number.isFinite(n) || n < 1) return 1;
-    if (n > 30) return 30;
-    return n;
-  }
-  yearsInput.addEventListener('blur', () => {
-    const clamped = getSelectedYears();
-    if (String(clamped) !== yearsInput.value) yearsInput.value = String(clamped);
-  });
-
-  // === קיפול/פתיחה של הכרטיס ===
-  toggle.addEventListener('click', () => {
-    const expanded = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!expanded));
-    body.hidden = expanded;
-    if (!expanded) refreshPrefill();
-  });
-
-  // === מנוע הסימולציה (זהה לוגית למחשבון של דורון) ===
-  function simulate({ initial, monthly, years, feePct, yields }) {
-    let amount = initial;
-    let contrib = initial;
-    const yearly = [];
-    let worstYield = Infinity;
-    let worstHistYear = null;
-    const feeMonthly = (feePct / 100) / 12;
-
-    for (let y = 0; y < years; y++) {
-      const idx = y % yields.length;
-      const annualYield = yields[idx] / 100;
-      const monthlyYield = annualYield / 12;
-
-      for (let m = 0; m < 12; m++) {
-        amount += monthly;
-        contrib += monthly;
-        amount += amount * monthlyYield;
-        amount -= amount * feeMonthly;
-      }
-
-      const histYear = START_YEAR + idx;
-      yearly.push({ n: y + 1, histYear, yieldPct: yields[idx], balance: amount });
-
-      if (yields[idx] < worstYield) {
-        worstYield = yields[idx];
-        worstHistYear = histYear;
-      }
-    }
-    return {
-      finalAmount: amount,
-      totalContrib: contrib,
-      totalInterest: amount - contrib,
-      yearly, worstYield, worstHistYear
-    };
-  }
-
-  // === רינדור התוצאות ===
-  function renderResults(sim) {
-    finalEl.textContent    = fmtILS(sim.finalAmount);
-    contribEl.textContent  = fmtILS(sim.totalContrib);
-    interestEl.textContent = fmtILS(sim.totalInterest);
-    interestEl.className   = 'proj-metric-value ' + (sim.totalInterest >= 0 ? 'proj-pos' : 'proj-neg');
-    worstEl.textContent    = `${sim.worstYield.toFixed(2)}% (${sim.worstHistYear})`;
-
-    yearlyBody.innerHTML = '';
-    sim.yearly.forEach(row => {
-      const tr = document.createElement('tr');
-      if (row.yieldPct < -5) tr.className = 'bad-year';
-      const yieldClass = row.yieldPct >= 0 ? 'proj-pos' : 'proj-neg';
-      tr.innerHTML = `
-        <td>שנה ${row.n} <span style="color:var(--ink-faint);font-size:11px">(${row.histYear})</span></td>
-        <td class="num ${yieldClass}">${row.yieldPct.toFixed(2)}%</td>
-        <td class="num">${fmtILS(row.balance)}</td>
-      `;
-      yearlyBody.appendChild(tr);
-    });
-    results.hidden = false;
-  }
-
-  // === כפתור ההרצה ===
-  runBtn.addEventListener('click', () => {
-    const state = readDashboardState();
-    if (!state.hasPortfolio) { refreshPrefill(); return; }
-
-    const initial = parseFloat(initialInput.value) || 0;
-    const monthly = parseFloat(monthlyInput.value) || 0;
-    const feePct  = parseFloat(feeInput.value) || 0;
-    const years   = getSelectedYears();
-    const track   = pickRiskTrack(state.stockPct);
-
-    const sim = simulate({ initial, monthly, years, feePct, yields: RAW_YIELDS[track] });
-    renderResults(sim);
-    results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  });
-
-  // פתיחה מהירה של אזור הסימולציה מתוך כפתור הדשבורד
-  window.openProjection = function() {
-    const state = readDashboardState();
-    if (!state.hasPortfolio) return;
-    section.hidden = false;
-    toggle.setAttribute('aria-expanded', 'true');
-    body.hidden = false;
-    refreshPrefill();
-    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  // === הצגה / הסתרה לפי מצב התיק ===
-  function syncSectionVisibility() {
-    const state = readDashboardState();
-    section.hidden = !state.hasPortfolio;
-    if (state.hasPortfolio && toggle.getAttribute('aria-expanded') === 'true') {
-      refreshPrefill();
-    }
-  }
-  syncSectionVisibility();
-
-  // === מעקב אחרי שינויים בדשבורד ===
-  const observer = new MutationObserver(syncSectionVisibility);
-  ['totalBalance', 'aggStock', 'feeSavings'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) observer.observe(el, { childList: true, characterData: true, subtree: true });
-  });
-})();
-</script>
-<!-- ====================================================================== -->
-<!-- סוף הכרטיס                                                              -->
-<!-- ====================================================================== -->
-
-
-<footer>
-  <div class="container">
-    <strong class="footer-disclaimer-title">הבהרה מקצועית ומקור נתונים</strong>
-    <div class="footer-disclaimer-brief">מקור הנתונים: מאגרי גמל נט, פנסיה נט וביטוח נט דרך data.gov.il. הדשבורד מציג נתונים ציבוריים להמחשה בלבד, ואינו מהווה ייעוץ או המלצה.</div>
-    <details class="footer-disclaimer-details">
-      <summary>הרחב הבהרה מלאה</summary>
-      <div class="footer-disclaimer-text">קובצי המידע הציבוריים של רשות שוק ההון, הביטוח והחיסכון, מתוך מאגרי גמל נט, פנסיה נט וביטוח נט כפי שפורסמו ב-data.gov.il. הדשבורד מציג חשיפות וביצועים מתוך נתונים ציבוריים של המסלולים בלבד. הוא אינו מושך יתרות אישיות ממסלקה פנסיונית, אינו מחליף ייעוץ פנסיוני או פיננסי, ואינו מציג המלצה. "חשיפה לחו״ל" אינה שקולה בהכרח ל"מניות חו״ל", משום שבקבצים היא כוללת גם חשיפות זרות שאינן מנייתיות. נתוני התשואה הם נתוני מסלול ציבוריים: חודשית, מתחילת שנה ו-3 שנים מצטבר. דמי הניהול בדשבורד מבוססים רק על הנתון שהוזן ידנית עבור כל מוצר, ולא על דמי הניהול הממוצעים במאגר.</div>
-    </details>
-    <div class="data-update-meta" id="dataUpdateMeta"></div>
-    <div class="developer-credit">פותח ע"י דורון שרייבמן</div>
-  </div>
-</footer>
+<!-- הדבק את כל הבלוק הזה ב-index.html של הדשבורד, ממש לפני <footer><div class="container"><div class="developer-credit">פותח ע״י דורון שרייבמן</div></div></footer>
 
 <div class="loading" id="loadingState">טוען נתונים...</div>
 
@@ -6872,6 +6231,62 @@ document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn
     }
   }
 </style>
+
+
+<script>
+(function() {
+  function closeLandingPanels(exceptId) {
+    ['landingAboutPanel', 'landingDisclosurePanel', 'landingPrivacyPanel'].forEach(function(id) {
+      const panel = document.getElementById(id);
+      const btn = document.querySelector('[aria-controls="' + id + '"]');
+      if (!panel || id === exceptId) return;
+      panel.hidden = true;
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    });
+  }
+  function togglePanel(btnId, panelId) {
+    const btn = document.getElementById(btnId);
+    const panel = document.getElementById(panelId);
+    if (!btn || !panel) return;
+    btn.addEventListener('click', function() {
+      const willOpen = panel.hidden;
+      closeLandingPanels(panelId);
+      panel.hidden = !willOpen;
+      btn.setAttribute('aria-expanded', String(willOpen));
+      if (willOpen && panel.scrollIntoView) {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  }
+  togglePanel('landingAboutBtn', 'landingAboutPanel');
+  togglePanel('landingDisclosureBtn', 'landingDisclosurePanel');
+  togglePanel('landingPrivacyBtn', 'landingPrivacyPanel');
+
+  const startBtn = document.getElementById('landingStartBtn');
+  const searchSection = document.getElementById('searchSection');
+  if (startBtn && searchSection) {
+    startBtn.addEventListener('click', function() {
+      const isHidden = searchSection.classList.contains('landing-hidden');
+      closeLandingPanels('');
+      document.querySelectorAll('.landing-card[aria-controls]').forEach(function(btn) {
+        if (btn.id !== 'landingStartBtn') btn.setAttribute('aria-expanded', 'false');
+      });
+      if (isHidden) {
+        searchSection.classList.remove('landing-hidden');
+        document.body.classList.add('landing-started');
+        startBtn.setAttribute('aria-expanded', 'true');
+        searchSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        searchSection.classList.add('landing-hidden');
+        document.body.classList.remove('landing-started');
+        startBtn.setAttribute('aria-expanded', 'false');
+        const hero = document.querySelector('.premium-hero');
+        if (hero) hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+})();
+</script>
 
 </body>
 </html>
