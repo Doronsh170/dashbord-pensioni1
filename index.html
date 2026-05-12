@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.71</title>
+<title>דשבורד חשיפות חיסכון | v3.73</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
@@ -1014,6 +1014,7 @@
   .action-btn[onclick*="saveAsPDF"]::before { content: "📄"; }
   .action-btn[onclick*="shareWhatsApp"]::before { content: "💬"; }
   .action-btn[onclick*="resetAllData"]::before { content: "↺"; }
+  .action-btn[onclick*="backToTop"]::before { content: "↑"; }
   .action-btn:hover {
     border-color: rgba(255, 255, 255, 0.45);
     background: rgba(255, 255, 255, 0.16);
@@ -1027,6 +1028,24 @@
     line-height: 1.55;
     margin: -16px 0 28px;
     max-width: 760px;
+  }
+
+
+  /* === Bottom report actions === */
+  .bottom-actions {
+    background: var(--bg-soft);
+    padding: 22px 0 8px;
+    display: none;
+  }
+  .bottom-actions .action-toolbar {
+    max-width: 900px;
+    margin: 0 auto 12px;
+  }
+  .bottom-actions .action-note {
+    max-width: 820px;
+    margin: 0 auto;
+    text-align: center;
+    color: var(--ink-muted) !important;
   }
 
   /* === Details (table) === */
@@ -1161,7 +1180,7 @@
       print-color-adjust: exact;
     }
     body { zoom: 0.82; }
-    header, .hero, #searchSection, #portfolioSection, .floating-search-btn, .action-toolbar, .action-note {
+    header, .hero, #searchSection, #portfolioSection, .floating-search-btn, .bottom-actions, .action-toolbar, .action-note {
       display: none !important;
     }
     .container { max-width: none; padding: 0 !important; }
@@ -1650,6 +1669,7 @@
   body.pdf-mode .hero,
   body.pdf-mode #searchSection,
   body.pdf-mode #portfolioSection,
+  body.pdf-mode .bottom-actions,
   body.pdf-mode .action-toolbar,
   body.pdf-mode .action-note,
   body.pdf-mode .floating-search-btn {
@@ -2948,6 +2968,50 @@
     #searchSection::after { margin-top: -8px; padding: 0 12px; font-size: 10.5px; }
   }
 </style>
+
+
+/* v3.73: bottom action bar placed after product details */
+<style id="v3-73-bottom-actions">
+  .bottom-actions {
+    background: var(--bg-soft) !important;
+    border-top: 1px solid var(--line-soft);
+    padding: 24px 0 10px;
+  }
+  .bottom-actions .action-toolbar {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    max-width: none;
+    margin: 0 0 14px;
+  }
+  .bottom-actions .action-btn {
+    background: #ffffff !important;
+    color: var(--accent-dark) !important;
+    border: 1px solid var(--line) !important;
+    box-shadow: var(--shadow-xs) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .bottom-actions .action-btn:hover {
+    border-color: var(--accent) !important;
+    background: var(--accent-soft) !important;
+    color: var(--accent-dark) !important;
+    box-shadow: 0 8px 22px rgba(30, 58, 138, 0.10) !important;
+  }
+  .bottom-actions .action-note {
+    color: var(--ink-muted) !important;
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+  @media (max-width: 760px) {
+    .bottom-actions .action-toolbar { grid-template-columns: 1fr !important; }
+  }
+  @media print {
+    .bottom-actions { display: none !important; }
+  }
+</style>
+
 </head>
 <body>
 <section class="hero premium-hero">
@@ -3062,13 +3126,6 @@
   <div class="container">
     <h2>דשבורד מצרפי</h2>
     <div class="subtitle">החישוב משוקלל לפי היתרות שהוזנו לכל מוצר</div>
-    <div class="action-toolbar" aria-label="פעולות דוח">
-      <button type="button" class="action-btn" onclick="saveAsPDF()">שמירה / הדפסה ל-PDF</button>
-      <button type="button" class="action-btn" onclick="shareWhatsApp()">שליחה לווטסאפ</button>
-      <button type="button" class="action-btn" onclick="backToTop()">חזרה לראש העמוד</button>
-      <button type="button" class="action-btn" onclick="resetAllData()">איפוס הכל</button>
-    </div>
-    <div class="action-note">שמירה ל-PDF נפתחת דרך חלון ההדפסה של הדפדפן. בשל מגבלות דפדפן, שליחה לווטסאפ שולחת סיכום טקסטואלי וקישור, לא מצרפת PDF אוטומטית.</div>
 
     <div class="total-row">
       <div>
@@ -3101,58 +3158,84 @@
       </div>
     </div>
 
-    <div class="perf-wrap">
-      <div class="perf-title">אינדיקציית ביצועי מסלולים</div>
-      <div class="perf-note">מידע תומך בלבד: הנתונים משקפים את תשואות המסלולים הציבוריות לפי המאגר, ולא את התשואה האישית בפועל.</div>
-      <div class="metric-grid">
-        <div class="metric-card">
-          <div class="metric-label">תשואה חודשית</div>
-          <div class="metric-value"><span id="perfMonth">-</span><span class="pct">%</span></div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">מתחילת שנה</div>
-          <div class="metric-value"><span id="perfYtd">-</span><span class="pct">%</span></div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">3 שנים מצטבר</div>
-          <div class="metric-value"><span id="perf3y">-</span><span class="pct">%</span></div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">דמי ניהול אישיים</div>
-          <div class="metric-value"><span id="feeSavings">לא הוזן</span><span class="pct" id="feeSavingsPct" style="display:none">%</span></div>
+    <details class="dashboard-toggle-section perf-toggle-section" open>
+      <summary class="dashboard-toggle-summary">
+        <span>אינדיקציית ביצועי מסלולים</span>
+        <span class="dashboard-toggle-hint">פתח / סגור</span>
+      </summary>
+      <div class="perf-wrap dashboard-toggle-content">
+        <div class="perf-note">מידע תומך בלבד: הנתונים משקפים את תשואות המסלולים הציבוריות לפי המאגר, ולא את התשואה האישית בפועל.</div>
+        <div class="metric-grid">
+          <div class="metric-card">
+            <div class="metric-label">תשואה חודשית</div>
+            <div class="metric-value"><span id="perfMonth">-</span><span class="pct">%</span></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">מתחילת שנה</div>
+            <div class="metric-value"><span id="perfYtd">-</span><span class="pct">%</span></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">3 שנים מצטבר</div>
+            <div class="metric-value"><span id="perf3y">-</span><span class="pct">%</span></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">דמי ניהול אישיים</div>
+            <div class="metric-value"><span id="feeSavings">לא הוזן</span><span class="pct" id="feeSavingsPct" style="display:none">%</span></div>
+          </div>
         </div>
       </div>
-    </div>
+    </details>
   </div>
-  <div class="dashboard-credit">פותח ע״י דורון שרייבמן</div>
 </section>
 
 <section class="details" id="detailsSection">
   <div class="container">
-    <h2>פירוט לפי מוצר</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>מוצר</th>
-            <th class="num">משקל</th>
-            <th class="num">מניות</th>
-            <th class="num">חו״ל</th>
-            <th class="num">מט״ח</th>
-            <th class="num">סחיר</th>
-            <th class="num">חודשי</th>
-            <th class="num">YTD</th>
-            <th class="num">3Y מצטבר</th>
-            <th class="num">דמי ניהול שהוזנו</th>
-          </tr>
-        </thead>
-        <tbody id="detailsRows"></tbody>
-      </table>
-    </div>
+    <details class="dashboard-toggle-section details-toggle-section" open>
+      <summary class="dashboard-toggle-summary">
+        <span>פירוט לפי מוצר</span>
+        <span class="dashboard-toggle-hint">פתח / סגור</span>
+      </summary>
+      <div class="table-wrap dashboard-toggle-content">
+        <table>
+          <thead>
+            <tr>
+              <th>מוצר</th>
+              <th class="num">משקל</th>
+              <th class="num">מניות</th>
+              <th class="num">חו״ל</th>
+              <th class="num">מט״ח</th>
+              <th class="num">סחיר</th>
+              <th class="num">חודשי</th>
+              <th class="num">YTD</th>
+              <th class="num">3Y מצטבר</th>
+              <th class="num">דמי ניהול שהוזנו</th>
+            </tr>
+          </thead>
+          <tbody id="detailsRows"></tbody>
+        </table>
+      </div>
+    </details>
   </div>
 </section>
 
+
+<div class="dashboard-credit">פותח ע״י דורון שרייבמן</div>
 <div class="flow-credit">פותח ע״י דורון שרייבמן</div>
+
+<section class="bottom-actions" id="bottomActions" aria-label="פעולות דוח" style="display:none;">
+  <div class="container">
+
+    <div class="action-toolbar" aria-label="פעולות דוח">
+      <button type="button" class="action-btn" onclick="saveAsPDF()">שמירה / הדפסה ל-PDF</button>
+      <button type="button" class="action-btn" onclick="shareWhatsApp()">שליחה לווטסאפ</button>
+      <button type="button" class="action-btn" onclick="backToTop()">חזרה לראש העמוד</button>
+      <button type="button" class="action-btn" onclick="resetAllData()">איפוס הכל</button>
+    </div>
+    <div class="action-note">שמירה ל-PDF נפתחת דרך חלון ההדפסה של הדפדפן. בשל מגבלות דפדפן, שליחה לווטסאפ שולחת סיכום טקסטואלי וקישור, לא מצרפת PDF אוטומטית.</div>
+  </div>
+</section>
+
+
 
 <!-- כרטיס תרגיל היסטורי - קוד הדשבורד הראשי -->
 
@@ -3576,6 +3659,8 @@ function renderDashboard() {
   if (totalBalance <= 0) {
     document.getElementById('dashboard').style.display = 'none';
     document.getElementById('detailsSection').style.display = 'none';
+    const bottomActions = document.getElementById('bottomActions');
+    if (bottomActions) bottomActions.style.display = 'none';
     return;
   }
 
@@ -3643,6 +3728,8 @@ function renderDashboard() {
   document.getElementById('detailsRows').innerHTML = rows;
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('detailsSection').style.display = 'block';
+  const bottomActions = document.getElementById('bottomActions');
+  if (bottomActions) bottomActions.style.display = 'block';
 }
 
 
@@ -7036,6 +7123,129 @@ window.backToTop = function() { const hero = document.querySelector('.premium-he
     .proj-toggle { align-items: center !important; flex-direction: row !important; padding: 16px !important; }
     .proj-toggle-title { font-size: 16px !important; }
     .proj-toggle-sub { font-size: 12px !important; }
+  }
+
+
+  /* v3.72: collapsible dashboard sections + credit below details */
+  .dashboard-toggle-section {
+    margin-top: 36px;
+    border-top: 1px solid rgba(15, 23, 42, 0.08);
+    padding-top: 22px;
+  }
+  .dashboard-toggle-section > summary {
+    list-style: none;
+  }
+  .dashboard-toggle-section > summary::-webkit-details-marker {
+    display: none;
+  }
+  .dashboard-toggle-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    cursor: pointer;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink);
+    border-radius: var(--r-md);
+    padding: 15px 18px;
+    font-size: 18px;
+    font-weight: 900;
+    box-shadow: var(--shadow-xs);
+    user-select: none;
+  }
+  .dashboard-toggle-summary:hover {
+    border-color: var(--accent-soft-2);
+    box-shadow: var(--shadow-sm);
+  }
+  .dashboard-toggle-summary::after {
+    content: '⌄';
+    width: 30px;
+    height: 30px;
+    border-radius: var(--r-pill);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    font-size: 18px;
+    font-weight: 900;
+    transition: transform 0.18s ease;
+    flex-shrink: 0;
+  }
+  .dashboard-toggle-section[open] .dashboard-toggle-summary::after {
+    transform: rotate(180deg);
+  }
+  .dashboard-toggle-hint {
+    margin-right: auto;
+    color: var(--ink-muted);
+    font-size: 12px;
+    font-weight: 800;
+  }
+  .dashboard-toggle-content {
+    margin-top: 16px;
+  }
+  .dashboard .perf-wrap.dashboard-toggle-content {
+    margin-top: 16px !important;
+    padding-top: 0 !important;
+    border-top: 0 !important;
+  }
+  .details .dashboard-toggle-section {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+  .details .dashboard-toggle-summary {
+    margin-bottom: 16px;
+  }
+  .dashboard-credit {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 22px 28px 36px;
+    text-align: center;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    display: none;
+  }
+  body.dashboard-reached .dashboard-credit {
+    display: block;
+  }
+  @media (max-width: 760px) {
+    .dashboard-toggle-summary {
+      padding: 14px 15px;
+      font-size: 16px;
+    }
+    .dashboard-toggle-hint {
+      display: none;
+    }
+    .dashboard-credit {
+      padding: 18px 18px 32px;
+    }
+  }
+  @media print {
+    .dashboard-toggle-summary::after,
+    .dashboard-toggle-hint {
+      display: none !important;
+    }
+    .dashboard-toggle-summary {
+      border: 0 !important;
+      padding: 0 0 4px !important;
+      box-shadow: none !important;
+      background: transparent !important;
+      color: #111 !important;
+      font-size: 12px !important;
+    }
+    .dashboard-toggle-section:not([open]) > .dashboard-toggle-content {
+      display: block !important;
+    }
+    .dashboard-credit {
+      display: block !important;
+      color: #444 !important;
+      font-size: 8px !important;
+      padding-top: 4px !important;
+    }
   }
 </style>
 
