@@ -3025,6 +3025,114 @@
   .landing-credit, .flow-credit, .dashboard-credit { display: none !important; }
   body.pdf-mode .site-credit { display: block !important; color: #444 !important; }
   @media print { .site-credit { display: block !important; color: #444 !important; font-size: 8px !important; padding-top: 4px !important; } }
+
+
+  /* v3.78: compact historical-return simulation calculator */
+  .simulation-calculator-content {
+    padding-top: 16px;
+  }
+  .sim-summary-grid, .sim-results {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 16px 0 18px;
+  }
+  .sim-results {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 20px;
+  }
+  .sim-summary-card, .sim-result-card {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-xs);
+  }
+  .sim-summary-label, .sim-result-label {
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+  .sim-summary-value, .sim-result-value {
+    color: var(--ink);
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+  }
+  .sim-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    gap: 12px;
+    align-items: end;
+    margin-top: 14px;
+  }
+  .sim-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sim-field span {
+    font-size: 12px;
+    color: var(--ink-mid);
+    font-weight: 800;
+  }
+  .sim-field input {
+    width: 100%;
+    padding: 12px 13px;
+    border: 1.5px solid var(--line);
+    border-radius: var(--r-sm);
+    background: #fff;
+    color: var(--ink);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    direction: ltr;
+    text-align: left;
+    outline: none;
+  }
+  .sim-field input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+  }
+  .sim-run-btn {
+    border: 0;
+    background: var(--ink);
+    color: #fff;
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 900;
+    padding: 13px 18px;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: var(--shadow-sm);
+  }
+  .sim-run-btn:hover {
+    background: var(--accent);
+    transform: translateY(-1px);
+  }
+  .sim-disclaimer {
+    margin-top: 12px;
+    background: #f8fafc;
+    border: 1px solid var(--line-soft);
+    color: var(--ink-muted);
+    border-radius: var(--r-sm);
+    padding: 11px 13px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .sim-positive { color: var(--pos); }
+  .sim-negative { color: var(--neg); }
+  @media (max-width: 760px) {
+    .sim-summary-grid, .sim-results { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .sim-results { grid-template-columns: 1fr; }
+    .sim-form-grid { grid-template-columns: 1fr; }
+    .sim-run-btn { width: 100%; }
+    .sim-summary-value, .sim-result-value { font-size: 18px; }
+  }
 </style>
 
 </head>
@@ -3235,13 +3343,65 @@
 
 <section class="details simulation-tab-section" id="simulationTabSection">
   <div class="container">
-    <details class="dashboard-toggle-section simulation-toggle-section">
+    <details class="dashboard-toggle-section simulation-toggle-section" id="simulationDetails">
       <summary class="dashboard-toggle-summary">
         <span>סימולציה על בסיס תשואות עבר</span>
         <span class="dashboard-toggle-hint">פתח / סגור</span>
       </summary>
-      <div class="dashboard-toggle-content simulation-intro-content">
+      <div class="dashboard-toggle-content simulation-calculator-content">
         <p class="perf-note simulation-note">המחשה בלבד: כיצד הסכום שהוזן היה עשוי להתפתח לאורך זמן לפי תשואות עבר ורמת הסיכון של התיק.</p>
+
+        <div class="sim-summary-grid" aria-label="נתוני בסיס לסימולציה">
+          <div class="sim-summary-card">
+            <div class="sim-summary-label">יתרה נוכחית שהוזנה</div>
+            <div class="sim-summary-value" id="simInitialDisplay">-</div>
+          </div>
+          <div class="sim-summary-card">
+            <div class="sim-summary-label">חשיפה למניות</div>
+            <div class="sim-summary-value" id="simStockDisplay">-</div>
+          </div>
+          <div class="sim-summary-card">
+            <div class="sim-summary-label">רמת סיכון נגזרת</div>
+            <div class="sim-summary-value" id="simRiskDisplay">-</div>
+          </div>
+          <div class="sim-summary-card">
+            <div class="sim-summary-label">דמי ניהול לחישוב</div>
+            <div class="sim-summary-value" id="simFeeDisplay">לא הוזן</div>
+          </div>
+        </div>
+
+        <div class="sim-form-grid" aria-label="הגדרות סימולציה">
+          <label class="sim-field">
+            <span>הפקדה חודשית</span>
+            <input id="simMonthlyInput" type="number" min="0" step="100" inputmode="numeric" placeholder="לדוגמה 1,000" />
+          </label>
+          <label class="sim-field">
+            <span>מספר שנים</span>
+            <input id="simYearsInput" type="number" min="1" max="30" step="1" value="10" inputmode="numeric" />
+          </label>
+          <label class="sim-field">
+            <span>דמי ניהול שנתיים לחישוב</span>
+            <input id="simFeeInput" type="number" min="0" max="5" step="0.01" inputmode="decimal" placeholder="אם לא הוזן" />
+          </label>
+          <button type="button" class="sim-run-btn" id="simRunBtn">הרץ סימולציה</button>
+        </div>
+
+        <div class="sim-disclaimer">החישוב מבוסס על נתוני עבר בלבד ואינו מהווה תחזית, הבטחה לתשואה, ייעוץ השקעות, ייעוץ פנסיוני או המלצה.</div>
+
+        <div class="sim-results" id="simResults" hidden>
+          <div class="sim-result-card">
+            <div class="sim-result-label">סכום בסוף התקופה</div>
+            <div class="sim-result-value" id="simFinalAmount">-</div>
+          </div>
+          <div class="sim-result-card">
+            <div class="sim-result-label">סך הפקדות</div>
+            <div class="sim-result-value" id="simTotalContrib">-</div>
+          </div>
+          <div class="sim-result-card">
+            <div class="sim-result-label">רווח / הפסד לפי תשואות עבר</div>
+            <div class="sim-result-value" id="simGainAmount">-</div>
+          </div>
+        </div>
       </div>
     </details>
   </div>
@@ -3687,6 +3847,8 @@ function renderDashboard() {
     document.getElementById('detailsSection').style.display = 'none';
     const bottomActions = document.getElementById('bottomActions');
     if (bottomActions) bottomActions.style.display = 'none';
+    const simulationTabSection = document.getElementById('simulationTabSection');
+    if (simulationTabSection) simulationTabSection.style.display = 'none';
     return;
   }
 
@@ -3754,8 +3916,108 @@ function renderDashboard() {
   document.getElementById('detailsRows').innerHTML = rows;
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('detailsSection').style.display = 'block';
+  const simulationTabSection = document.getElementById('simulationTabSection');
+  if (simulationTabSection) simulationTabSection.style.display = 'block';
   const bottomActions = document.getElementById('bottomActions');
   if (bottomActions) bottomActions.style.display = 'block';
+  refreshSimulationDefaults();
+}
+
+const SIM_RAW_YIELDS = {
+  low:    [22.66, 6.42, 13.62, 15.60, 0.18, 9.39, 1.67, 5.01, 6.11, 5.12, 3.33, 5.27, 8.12, -0.30, -0.37, 7.07, 10.05, 5.98, 0.61, 9.16, 1.05, 2.83, 6.99, -0.06, 13.25, 10.47, 3.05, -13.89, 8.60, 5.03],
+  medium: [30.82, 14.37, 23.60, 22.47, 9.89, 0.71, -4.99, -7.81, 17.20, 8.09, 4.06, 10.29, 6.78, -14.72, 11.58, 11.81, 6.85, 10.61, 15.11, 11.89, 1.21, 7.30, 14.10, -2.55, 22.29, 14.80, 15.54, -16.96, 17.26, 14.61],
+  high:   [35.83, 20.56, 30.78, 27.00, 17.98, -6.46, -10.11, -18.26, 25.56, 10.11, 4.63, 14.24, 5.95, -30.89, 22.23, 14.18, 3.49, 14.60, 28.03, 13.24, 1.37, 10.66, 19.73, -3.81, 29.05, 17.35, 25.18, -18.02, 23.84, 22.23]
+};
+const SIM_RISK_LABELS = { low: 'סיכון נמוך', medium: 'סיכון בינוני', high: 'סיכון גבוה' };
+
+function getSimulationRiskTrack(stockPct) {
+  const pct = Number(stockPct) || 0;
+  if (pct <= 10) return 'low';
+  if (pct <= 70) return 'medium';
+  return 'high';
+}
+function fmtSimCurrency(value) {
+  return Math.round(Number(value) || 0).toLocaleString('he-IL', { style: 'currency', currency: 'ILS', maximumFractionDigits: 0 });
+}
+function refreshSimulationDefaults() {
+  const totalBalance = getTotalBalance();
+  const stockPct = weightedMetric('stock_pct', totalBalance);
+  const fee = weightedUserManagementFee(totalBalance);
+  const track = getSimulationRiskTrack(stockPct);
+
+  const initialEl = document.getElementById('simInitialDisplay');
+  const stockEl = document.getElementById('simStockDisplay');
+  const riskEl = document.getElementById('simRiskDisplay');
+  const feeDisplayEl = document.getElementById('simFeeDisplay');
+  const feeInput = document.getElementById('simFeeInput');
+
+  if (initialEl) initialEl.textContent = totalBalance > 0 ? fmtSimCurrency(totalBalance) : '-';
+  if (stockEl) stockEl.textContent = Number.isFinite(stockPct) ? stockPct.toFixed(1) + '%' : '-';
+  if (riskEl) riskEl.textContent = totalBalance > 0 ? SIM_RISK_LABELS[track] : '-';
+  if (feeDisplayEl) feeDisplayEl.textContent = Number.isFinite(fee) ? fee.toFixed(2) + '%' : 'לא הוזן';
+  if (feeInput && !feeInput.dataset.userEdited && Number.isFinite(fee)) feeInput.value = fee.toFixed(2);
+}
+function runHistoricalSimulation() {
+  const totalBalance = getTotalBalance();
+  if (totalBalance <= 0) return;
+
+  const stockPct = weightedMetric('stock_pct', totalBalance);
+  const track = getSimulationRiskTrack(stockPct);
+  const yields = SIM_RAW_YIELDS[track];
+  const monthly = Math.max(0, Number(document.getElementById('simMonthlyInput')?.value) || 0);
+  const yearsInput = Number(document.getElementById('simYearsInput')?.value) || 10;
+  const years = Math.max(1, Math.min(30, Math.round(yearsInput)));
+  const feeInput = document.getElementById('simFeeInput');
+  const feePct = Math.max(0, Number(feeInput?.value) || 0);
+  if (feeInput) feeInput.value = feePct ? feePct.toFixed(2) : '';
+
+  let amount = totalBalance;
+  let contributions = totalBalance;
+  const monthlyFee = (feePct / 100) / 12;
+
+  for (let y = 0; y < years; y++) {
+    const annualYield = (yields[y % yields.length] || 0) / 100;
+    const monthlyYield = annualYield / 12;
+    for (let m = 0; m < 12; m++) {
+      amount += monthly;
+      contributions += monthly;
+      amount += amount * monthlyYield;
+      amount -= amount * monthlyFee;
+    }
+  }
+
+  const gain = amount - contributions;
+  const finalEl = document.getElementById('simFinalAmount');
+  const contribEl = document.getElementById('simTotalContrib');
+  const gainEl = document.getElementById('simGainAmount');
+  const resultsEl = document.getElementById('simResults');
+
+  if (finalEl) finalEl.textContent = fmtSimCurrency(amount);
+  if (contribEl) contribEl.textContent = fmtSimCurrency(contributions);
+  if (gainEl) {
+    gainEl.textContent = fmtSimCurrency(gain);
+    gainEl.classList.toggle('sim-positive', gain >= 0);
+    gainEl.classList.toggle('sim-negative', gain < 0);
+  }
+  if (resultsEl) resultsEl.hidden = false;
+}
+function initSimulationCalculator() {
+  const runBtn = document.getElementById('simRunBtn');
+  if (runBtn && !runBtn.dataset.bound) {
+    runBtn.addEventListener('click', runHistoricalSimulation);
+    runBtn.dataset.bound = '1';
+  }
+  const feeInput = document.getElementById('simFeeInput');
+  if (feeInput && !feeInput.dataset.bound) {
+    feeInput.addEventListener('input', () => { feeInput.dataset.userEdited = '1'; });
+    feeInput.dataset.bound = '1';
+  }
+  const details = document.getElementById('simulationDetails');
+  if (details && !details.dataset.bound) {
+    details.addEventListener('toggle', () => { if (details.open) refreshSimulationDefaults(); });
+    details.dataset.bound = '1';
+  }
+  refreshSimulationDefaults();
 }
 
 
@@ -4574,6 +4836,12 @@ document.querySelectorAll('.product-type-btn:not(.sub-product-btn)').forEach(btn
     console.error(error);
   }
 })();
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSimulationCalculator);
+} else {
+  initSimulationCalculator();
+}
 </script>
 <script>
 /* v3.29: info cube tooltips - works on hover (desktop) and tap (mobile) */
@@ -6976,7 +7244,7 @@ window.backToTop = function() { const hero = document.querySelector('.premium-he
 
 
 <style id="v3-71-projection-and-credit-fixes">
-  /* v3.71: dashboard credit + calculator appears only after explicit click */
+  /* v3.78: dashboard credit + calculator appears only after explicit click */
   .dashboard-credit {
     max-width: 1180px;
     margin: 22px auto 0;
