@@ -3249,6 +3249,52 @@
     border-color: #93c5fd;
   }
 
+
+  /* v3.86: collapsible guidance inside about panel */
+  .guidance-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border-radius: var(--r-pill);
+    background: #ffffff;
+    color: #1e3a8a;
+    border: 1px solid rgba(191, 219, 254, 0.95);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: var(--shadow-xs);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .guidance-toggle-btn:hover {
+    background: #eff6ff;
+    border-color: #93c5fd;
+  }
+  .guidance-toggle-btn[aria-expanded="true"] {
+    background: #dbeafe;
+    border-color: #60a5fa;
+  }
+  .guidance-toggle-btn::after {
+    content: "⌄";
+    font-size: 15px;
+    line-height: 1;
+    transition: transform 0.18s ease;
+  }
+  .guidance-toggle-btn[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+  }
+  .guidance-content {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(191, 219, 254, 0.42);
+  }
+  .guidance-content[hidden] {
+    display: none !important;
+  }
+
 </style>
 
 </head>
@@ -3296,11 +3342,15 @@
     <div class="landing-panel" id="landingAboutPanel">
       <h3>מה הכלי עושה?</h3>
       הכלי מיועד לעזור גם למי שפחות מכיר את עולם החיסכון הפנסיוני והפיננסי. במקום להסתכל על כל קופה בנפרד, אפשר להוסיף את הקופות והקרנות שלך, להזין יתרה ודמי ניהול אישיים, ולקבל תמונה אחת מרוכזת: מה החשיפה הכוללת למניות, כמה מהכסף מושקע בחו״ל, מה החשיפה למט״ח, ומה המשקל של כל מוצר בתיק. המטרה היא לתת תמונת מצב פשוטה וברורה, לא המלצה ולא ייעוץ.
-      <br><br>
-      <strong>לא בטוח איפה החיסכון שלך מנוהל?</strong><br>
-      אפשר לאתר את שם החברה והמסלול בדוחות שנשלחו לדואר או למייל, או בכניסה לאזור האישי באתר חברת הביטוח, קרן הפנסיה, קופת הגמל או קרן ההשתלמות. אם עדיין אינך בטוח, ניתן להיעזר באתר “הר הכסף” של משרד האוצר. לאחר האיתור, חזור לכאן ובחר את סוג המוצר, החברה והמסלול כדי לבנות את דשבורד החשיפות שלך.
       <br>
-      <a class="external-link-btn" href="https://www.gov.il/he/service/pension_savings_search" target="_blank" rel="noopener noreferrer">מעבר להר הכסף</a>
+      <button type="button" class="guidance-toggle-btn" id="savingsLocateToggle" aria-expanded="false" aria-controls="savingsLocateContent" onclick="const panel=document.getElementById('savingsLocateContent'); const expanded=this.getAttribute('aria-expanded')==='true'; this.setAttribute('aria-expanded', String(!expanded)); panel.hidden=expanded;">
+        לא בטוח איפה הכסף שלך מנוהל?
+      </button>
+      <div class="guidance-content" id="savingsLocateContent" hidden>
+        אפשר לאתר את שם החברה והמסלול בדוחות שנשלחו לדואר או למייל, או בכניסה לאזור האישי באתר חברת הביטוח, קרן הפנסיה, קופת הגמל או קרן ההשתלמות. אם עדיין אינך בטוח, ניתן להיעזר באתר “הר הכסף” של משרד האוצר. לאחר האיתור, חזור לכאן ובחר את סוג המוצר, החברה והמסלול כדי לבנות את דשבורד החשיפות שלך.
+        <br>
+        <a class="external-link-btn" href="https://www.gov.il/he/service/pension_savings_search" target="_blank" rel="noopener noreferrer">מעבר להר הכסף</a>
+      </div>
     </div>
 
     <div class="landing-panel" id="landingDisclosurePanel" hidden>
