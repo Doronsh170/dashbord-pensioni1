@@ -3453,7 +3453,7 @@
       </div>
     </div>
 
-    <details class="dashboard-toggle-section perf-toggle-section" open>
+    <details class="dashboard-toggle-section perf-toggle-section">
       <summary class="dashboard-toggle-summary">
         <span>אינדיקציית ביצועי מסלולים</span>
         <span class="dashboard-toggle-hint">פתח / סגור</span>
@@ -3485,7 +3485,7 @@
 
 <section class="details" id="detailsSection">
   <div class="container">
-    <details class="dashboard-toggle-section details-toggle-section" open>
+    <details class="dashboard-toggle-section details-toggle-section">
       <summary class="dashboard-toggle-summary">
         <span>פירוט לפי מוצר</span>
         <span class="dashboard-toggle-hint">פתח / סגור</span>
@@ -4081,6 +4081,15 @@ function renderDashboard() {
   document.getElementById('detailsRows').innerHTML = rows;
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('detailsSection').style.display = 'block';
+  // v3.87: when the dashboard is shown, all dashboard accordion tabs start closed by default
+  const perfToggle = document.querySelector('.perf-toggle-section');
+  const detailsToggle = document.querySelector('.details-toggle-section');
+  const simulationToggle = document.getElementById('simulationDetails');
+  [perfToggle, detailsToggle, simulationToggle].forEach(section => {
+    if (section) section.open = false;
+  });
+  const simulationResults = document.getElementById('simResults');
+  if (simulationResults) simulationResults.hidden = true;
   const simulationTabSection = document.getElementById('simulationTabSection');
   if (simulationTabSection) simulationTabSection.style.display = 'block';
   const bottomActions = document.getElementById('bottomActions');
