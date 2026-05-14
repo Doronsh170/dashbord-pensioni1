@@ -3471,6 +3471,7 @@
       </summary>
       <div class="perf-wrap dashboard-toggle-content">
         <div class="perf-note">מידע תומך בלבד: הנתונים משקפים את תשואות המסלולים הציבוריות לפי המאגר, ולא את התשואה האישית בפועל.</div>
+        <div class="perf-note perf-report-period" id="perfReportPeriod">נתוני התשואה מוצגים לפי הדיווח האחרון הזמין במאגר.</div>
         <div class="metric-grid">
           <div class="metric-card">
             <div class="metric-label">תשואה חודשית</div>
@@ -3639,6 +3640,14 @@ function fmtPeriod(yyyymm) {
   if (!yyyymm) return '-';
   const s = String(yyyymm);
   return s.slice(4, 6) + '/' + s.slice(0, 4);
+}
+function fmtPeriodHebrew(yyyymm) {
+  if (!yyyymm) return '-';
+  const s = String(yyyymm);
+  const y = s.slice(0, 4);
+  const m = parseInt(s.slice(4, 6), 10);
+  const months = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+  return `${months[m - 1] || fmtPeriod(yyyymm)} ${y}`;
 }
 function monthDiff(periodA, periodB) {
   if (!periodA || !periodB) return 0;
@@ -3959,6 +3968,10 @@ function renderDatasetMeta() {
   const el = document.getElementById('dataUpdateMeta');
   if (el) {
     el.textContent = `תאריך עדכון נתוני המאגר: ${fmtPeriod(DATASET_MAX_PERIOD)}`;
+  }
+  const perfPeriod = document.getElementById('perfReportPeriod');
+  if (perfPeriod) {
+    perfPeriod.textContent = `נתוני התשואה מוצגים לפי הדיווח האחרון הזמין במאגר: ${fmtPeriodHebrew(DATASET_MAX_PERIOD)}`;
   }
 }
 
