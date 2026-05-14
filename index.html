@@ -3032,9 +3032,20 @@
     font-weight: 700;
     letter-spacing: 0.01em;
   }
+  .site-copyright {
+    margin-top: 6px;
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.015em;
+  }
   .landing-credit, .flow-credit, .dashboard-credit { display: none !important; }
   body.pdf-mode .site-credit { display: block !important; color: #444 !important; }
-  @media print { .site-credit { display: block !important; color: #444 !important; font-size: 8px !important; padding-top: 4px !important; } }
+  body.pdf-mode .site-copyright { color: #555 !important; }
+  @media print {
+    .site-credit { display: block !important; color: #444 !important; font-size: 8px !important; padding-top: 4px !important; }
+    .site-copyright { color: #555 !important; font-size: 7px !important; margin-top: 2px !important; }
+  }
 
 
   /* v3.78: compact historical-return simulation calculator */
@@ -3585,7 +3596,7 @@
   </div>
 </section>
 
-<div class="site-credit">פותח ע״י דורון שרייבמן</div>
+<div class="site-credit">פותח ע״י דורון שרייבמן<div class="site-copyright">© 2026 דורון שרייבמן. כל הזכויות שמורות.</div></div>
 
 
 <!-- כרטיס תרגיל היסטורי - קוד הדשבורד הראשי -->
