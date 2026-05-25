@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>דשבורד חשיפות חיסכון | v3.85</title>
+<title>דשבורד חשיפות חיסכון | v3.82</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
@@ -3032,20 +3032,9 @@
     font-weight: 700;
     letter-spacing: 0.01em;
   }
-  .site-copyright {
-    margin-top: 6px;
-    color: #94a3b8;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.015em;
-  }
   .landing-credit, .flow-credit, .dashboard-credit { display: none !important; }
   body.pdf-mode .site-credit { display: block !important; color: #444 !important; }
-  body.pdf-mode .site-copyright { color: #555 !important; }
-  @media print {
-    .site-credit { display: block !important; color: #444 !important; font-size: 8px !important; padding-top: 4px !important; }
-    .site-copyright { color: #555 !important; font-size: 7px !important; margin-top: 2px !important; }
-  }
+  @media print { .site-credit { display: block !important; color: #444 !important; font-size: 8px !important; padding-top: 4px !important; } }
 
 
   /* v3.78: compact historical-return simulation calculator */
@@ -3238,74 +3227,6 @@
       display: none !important;
     }
   }
-
-  /* v3.85: landing guidance link */
-  .landing-panel .external-link-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 12px;
-    padding: 9px 14px;
-    border-radius: var(--r-pill);
-    background: #ffffff;
-    color: #1e3a8a;
-    border: 1px solid rgba(191, 219, 254, 0.9);
-    font-size: 13px;
-    font-weight: 800;
-    text-decoration: none;
-    box-shadow: var(--shadow-xs);
-  }
-  .landing-panel .external-link-btn:hover {
-    background: #eff6ff;
-    border-color: #93c5fd;
-  }
-
-
-  /* v3.86: collapsible guidance inside about panel */
-  .guidance-toggle-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 14px;
-    padding: 10px 16px;
-    border-radius: var(--r-pill);
-    background: #ffffff;
-    color: #1e3a8a;
-    border: 1px solid rgba(191, 219, 254, 0.95);
-    font: inherit;
-    font-size: 13px;
-    font-weight: 900;
-    cursor: pointer;
-    box-shadow: var(--shadow-xs);
-    -webkit-tap-highlight-color: transparent;
-  }
-  .guidance-toggle-btn:hover {
-    background: #eff6ff;
-    border-color: #93c5fd;
-  }
-  .guidance-toggle-btn[aria-expanded="true"] {
-    background: #dbeafe;
-    border-color: #60a5fa;
-  }
-  .guidance-toggle-btn::after {
-    content: "⌄";
-    font-size: 15px;
-    line-height: 1;
-    transition: transform 0.18s ease;
-  }
-  .guidance-toggle-btn[aria-expanded="true"]::after {
-    transform: rotate(180deg);
-  }
-  .guidance-content {
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(191, 219, 254, 0.42);
-  }
-  .guidance-content[hidden] {
-    display: none !important;
-  }
-
 </style>
 
 </head>
@@ -3353,15 +3274,6 @@
     <div class="landing-panel" id="landingAboutPanel">
       <h3>מה הכלי עושה?</h3>
       הכלי מיועד לעזור גם למי שפחות מכיר את עולם החיסכון הפנסיוני והפיננסי. במקום להסתכל על כל קופה בנפרד, אפשר להוסיף את הקופות והקרנות שלך, להזין יתרה ודמי ניהול אישיים, ולקבל תמונה אחת מרוכזת: מה החשיפה הכוללת למניות, כמה מהכסף מושקע בחו״ל, מה החשיפה למט״ח, ומה המשקל של כל מוצר בתיק. המטרה היא לתת תמונת מצב פשוטה וברורה, לא המלצה ולא ייעוץ.
-      <br>
-      <button type="button" class="guidance-toggle-btn" id="savingsLocateToggle" aria-expanded="false" aria-controls="savingsLocateContent" onclick="const panel=document.getElementById('savingsLocateContent'); const expanded=this.getAttribute('aria-expanded')==='true'; this.setAttribute('aria-expanded', String(!expanded)); panel.hidden=expanded;">
-        לא בטוח איפה הכסף שלך מנוהל?
-      </button>
-      <div class="guidance-content" id="savingsLocateContent" hidden>
-        אפשר לאתר את שם החברה והמסלול בדוחות שנשלחו לדואר או למייל, או בכניסה לאזור האישי באתר חברת הביטוח, קרן הפנסיה, קופת הגמל או קרן ההשתלמות. אם עדיין אינך בטוח, ניתן להיעזר באתר “הר הכסף” של משרד האוצר. לאחר האיתור, חזור לכאן ובחר את סוג המוצר, החברה והמסלול כדי לבנות את דשבורד החשיפות שלך.
-        <br>
-        <a class="external-link-btn" href="https://www.gov.il/he/service/pension_savings_search" target="_blank" rel="noopener noreferrer">מעבר להר הכסף</a>
-      </div>
     </div>
 
     <div class="landing-panel" id="landingDisclosurePanel" hidden>
@@ -3464,14 +3376,13 @@
       </div>
     </div>
 
-    <details class="dashboard-toggle-section perf-toggle-section">
+    <details class="dashboard-toggle-section perf-toggle-section" open>
       <summary class="dashboard-toggle-summary">
         <span>אינדיקציית ביצועי מסלולים</span>
         <span class="dashboard-toggle-hint">פתח / סגור</span>
       </summary>
       <div class="perf-wrap dashboard-toggle-content">
         <div class="perf-note">מידע תומך בלבד: הנתונים משקפים את תשואות המסלולים הציבוריות לפי המאגר, ולא את התשואה האישית בפועל.</div>
-        <div class="perf-note perf-report-period" id="perfReportPeriod">נתוני התשואה מוצגים לפי הדיווח האחרון הזמין במאגר.</div>
         <div class="metric-grid">
           <div class="metric-card">
             <div class="metric-label">תשואה חודשית</div>
@@ -3497,7 +3408,7 @@
 
 <section class="details" id="detailsSection">
   <div class="container">
-    <details class="dashboard-toggle-section details-toggle-section">
+    <details class="dashboard-toggle-section details-toggle-section" open>
       <summary class="dashboard-toggle-summary">
         <span>פירוט לפי מוצר</span>
         <span class="dashboard-toggle-hint">פתח / סגור</span>
@@ -3597,7 +3508,7 @@
   </div>
 </section>
 
-<div class="site-credit">פותח ע״י דורון שרייבמן<div class="site-copyright">© 2026 דורון שרייבמן. כל הזכויות שמורות.</div></div>
+<div class="site-credit">פותח ע״י דורון שרייבמן</div>
 
 
 <!-- כרטיס תרגיל היסטורי - קוד הדשבורד הראשי -->
@@ -3640,14 +3551,6 @@ function fmtPeriod(yyyymm) {
   if (!yyyymm) return '-';
   const s = String(yyyymm);
   return s.slice(4, 6) + '/' + s.slice(0, 4);
-}
-function fmtPeriodHebrew(yyyymm) {
-  if (!yyyymm) return '-';
-  const s = String(yyyymm);
-  const y = s.slice(0, 4);
-  const m = parseInt(s.slice(4, 6), 10);
-  const months = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
-  return `${months[m - 1] || fmtPeriod(yyyymm)} ${y}`;
 }
 function monthDiff(periodA, periodB) {
   if (!periodA || !periodB) return 0;
@@ -3846,7 +3749,7 @@ function handleCompanySelection(btn) {
   const input = document.getElementById('searchInput');
   if (input) input.value = query;
   currentInsideResultsQuery = '';
-  resultVisibleLimit = 5;
+  resultVisibleLimit = 3;
 
   showResults(query);
   const resultsWrap = document.getElementById('searchResults');
@@ -3968,10 +3871,6 @@ function renderDatasetMeta() {
   const el = document.getElementById('dataUpdateMeta');
   if (el) {
     el.textContent = `תאריך עדכון נתוני המאגר: ${fmtPeriod(DATASET_MAX_PERIOD)}`;
-  }
-  const perfPeriod = document.getElementById('perfReportPeriod');
-  if (perfPeriod) {
-    perfPeriod.textContent = `נתוני התשואה מוצגים לפי הדיווח האחרון הזמין במאגר: ${fmtPeriodHebrew(DATASET_MAX_PERIOD)}`;
   }
 }
 
@@ -4105,15 +4004,6 @@ function renderDashboard() {
   document.getElementById('detailsRows').innerHTML = rows;
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('detailsSection').style.display = 'block';
-  // v3.87: when the dashboard is shown, all dashboard accordion tabs start closed by default
-  const perfToggle = document.querySelector('.perf-toggle-section');
-  const detailsToggle = document.querySelector('.details-toggle-section');
-  const simulationToggle = document.getElementById('simulationDetails');
-  [perfToggle, detailsToggle, simulationToggle].forEach(section => {
-    if (section) section.open = false;
-  });
-  const simulationResults = document.getElementById('simResults');
-  if (simulationResults) simulationResults.hidden = true;
   const simulationTabSection = document.getElementById('simulationTabSection');
   if (simulationTabSection) simulationTabSection.style.display = 'block';
   const bottomActions = document.getElementById('bottomActions');
@@ -4770,10 +4660,10 @@ function showResults(query) {
       </div>
     `;
   }).join('');
-  const canToggleMore = focusedCompanyMode && orderedResults.length > 5;
-  const expandedResults = canToggleMore && resultVisibleLimit !== 5 && displayedResults.length >= orderedResults.length;
+  const canToggleMore = focusedCompanyMode && orderedResults.length > 3;
+  const expandedResults = canToggleMore && resultVisibleLimit !== 3 && displayedResults.length >= orderedResults.length;
   const showMore = canToggleMore
-    ? `<button type="button" class="show-more-results-btn" id="showMoreResultsBtn">${expandedResults ? 'סגור תוצאות נוספות' : `הצג עוד ${orderedResults.length - 5} תוצאות`}</button>`
+    ? `<button type="button" class="show-more-results-btn" id="showMoreResultsBtn">${expandedResults ? 'סגור תוצאות נוספות' : `הצג עוד ${orderedResults.length - 3} תוצאות`}</button>`
     : '';
   wrap.innerHTML = insideSearch + summary + resultItems + showMore;
   wrap.classList.add('active');
@@ -4788,7 +4678,7 @@ function showResults(query) {
   const showMoreBtn = document.getElementById('showMoreResultsBtn');
   if (showMoreBtn) {
     showMoreBtn.addEventListener('click', () => {
-      resultVisibleLimit = expandedResults ? 5 : Infinity;
+      resultVisibleLimit = expandedResults ? 3 : Infinity;
       showResults(query);
       const nextBtn = document.getElementById('showMoreResultsBtn');
       if (nextBtn && nextBtn.scrollIntoView) {
@@ -4803,7 +4693,7 @@ function attachInsideResultsEvents(query) {
   if (!insideInput) return;
   insideInput.addEventListener('input', e => {
     currentInsideResultsQuery = e.target.value;
-    resultVisibleLimit = 5;
+    resultVisibleLimit = 3;
     showResults(query);
     const nextInput = document.getElementById('insideResultsInput');
     if (nextInput) {
@@ -4857,7 +4747,7 @@ let selectedCompanyQuery = '';
 let selectedProductFilter = 'all';
 let selectedSubProductType = '';
 let currentInsideResultsQuery = '';
-let resultVisibleLimit = 5;
+let resultVisibleLimit = 3;
 
 function setActiveProductFilter(filter) {
   activeFilter = filter || 'all';
@@ -4870,7 +4760,7 @@ function setActiveProductFilter(filter) {
 
 function resetSearchResultsOnly() {
   currentInsideResultsQuery = '';
-  resultVisibleLimit = 5;
+  resultVisibleLimit = 3;
   const resultsWrap = document.getElementById('searchResults');
   if (resultsWrap) {
     resultsWrap.innerHTML = '';
